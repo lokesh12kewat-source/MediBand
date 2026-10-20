@@ -1,15 +1,22 @@
 {
   "name": "mediband",
-  "version": "0.1.0",
+  "version": "0.1.4",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test:gtin": "npx ts-node --project tsconfig.test.json lib/gtin.test.ts"
+    "test": "VITE_CONFIG_NATIVE_IGNORE_WARNING=true npx vitest run",
+    "test:watch": "VITE_CONFIG_NATIVE_IGNORE_WARNING=true npx vitest",
+    "test:gtin": "npx ts-node --project tsconfig.test.json lib/gtin.test.ts",
+    "test:diff": "npx ts-node --project tsconfig.test.json lib/diff.test.ts",
+    "test:dates": "npx ts-node --project tsconfig.test.json lib/dates.test.ts",
+    "test:gs1": "npx ts-node --project tsconfig.test.json lib/gs1-parser.test.ts"
   },
   "dependencies": {
+    "@zxing/browser": "^0.2.1",
+    "@zxing/library": "^0.23.0",
     "next": "16.4.2",
     "react": "19.3.0",
     "react-dom": "19.3.0"
@@ -24,6 +31,8 @@
     "tailwindcss": "^4",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vite": "^6",
+    "vitest": "^5"
   }
 }

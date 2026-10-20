@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { getScenario } from '@/data/demo-scenarios';
 import { runVerification } from '@/lib/verification-engine';
 import { addToCabinet } from '@/store/cabinet-store';
+import { addEvidenceRecord } from '@/store/evidence-store';
 import { VerificationResult, DemoScenario, MedicationPack } from '@/types';
 import EvidenceLedger from '@/components/evidence/EvidenceLedger';
 import AssessmentBanner from '@/components/evidence/AssessmentBanner';
@@ -16,6 +17,39 @@ function generateId() {
   return `pack-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
 }
 
+/** Build a synthetic DemoScenario from custom scan sessionStorage data */
+function buildCustomScenario(data: Record<string, string>): DemoScenario {
+  const medId = `custom-${Date.now()}`;
+  const packId = generateId();
+  return {
+    id: 'X' as DemoScenario['id'],
+    label: data.brandName || 'Custom Scan',
+    description: 'Manually entered or camera-scanned pack',
+    expectedAssessment: 'INSUFFICIENT_EVIDENCE',
+    medication: {
+      id: medId,
+      brandName: data.brandName || 'Unknown Product',
+      genericName: '',
+      strength: '',
+      manufacturer: '',
+      dosageForm: '',
+      activeIngredientId: '',
+      regulatorySchedule: ['OTC'],
+    },
+    pack: {
+      id: packId,
+      medicationId: medId,
+      gtin: data.gtin || '',
+      batchEncoded: data.batchEncoded || '',
+      batchPrinted: data.batchPrinted || '',
+      expiryEncoded: data.expiryEncoded || '',
+      expiryPrinted: data.expiryPrinted || '',
+      serial: data.serial || '',
+      addedAt: new Date().toISOString(),
+    },
+  };
+}
+
 export default function ScanResultPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -24,8 +58,44 @@ export default function ScanResultPage() {
   const [loading, setLoading] = useState(true);
   const [addedToCabinet, setAddedToCabinet] = useState(false);
   const [showPassport, setShowPassport] = useState(false);
+  const [isCustomScan, setIsCustomScan] = useState(false);
 
   useEffect(() => {
+    const isCustom = searchParams.get('custom') === '1';
+    setIsCustomScan(isCustom);
+
+    if (isCustom) {
+      // Read custom scan data from sessionStorage
+      const raw = typeof window !== 'undefined'
+        ? sessionStorage.getItem('mediband_custom_scan')
+        : null;
+
+      if (!raw) {
+        router.push('/scan');
+        return;
+      }
+
+      let customData: Record<string, string>;
+      try {
+        customData = JSON.parse(raw);
+      } catch {
+        router.push('/scan');
+        return;
+      }
+
+      const syntheticScenario = buildCustomScenario(customData);
+      setScenario(syntheticScenario);
+
+      const packId = generateId();
+      runVerification(syntheticScenario, packId).then(r => {
+        setResult(r);
+        setLoading(false);
+      });
+
+      return;
+    }
+
+    // Demo scenario
     const sid = searchParams.get('scenario') ?? 'A';
     const demo = getScenario(sid);
     if (!demo) { router.push('/scan'); return; }
@@ -53,6 +123,7 @@ export default function ScanResultPage() {
       verificationId: result.id,
     };
     addToCabinet(scenario.medication, pack);
+    addEvidenceRecord(result);
     setAddedToCabinet(true);
   }
 
@@ -82,7 +153,10 @@ export default function ScanResultPage() {
         </button>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
           <h1 style={{ fontSize: '1.375rem' }}>Scan Result</h1>
-          <span className="demo-tag">Demo · Scenario {scenario.id}</span>
+          {isCustomScan
+            ? <span className="demo-tag">Custom Scan</span>
+            : <span className="demo-tag">Demo · Scenario {scenario.id}</span>
+          }
         </div>
         <p style={{ fontSize: '0.875rem' }}>
           {new Date(result.timestamp).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })}

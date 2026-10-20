@@ -6,9 +6,10 @@ export interface Medication {
   genericName: string;
   strength: string;
   manufacturer: string;
-  activeIngredientId: string;  // normalized ID for duplicate detection
-  dosageForm?: string;         // e.g. "tablet", "capsule"
-  regulatorySchedule?: string[]; // regulatory schedule info (renamed from schedule)
+  activeIngredientId: string;       // primary ingredient ID — for backward compat
+  activeIngredients?: string[];     // all ingredient IDs — supports combo products (e.g. Co-amoxiclav)
+  dosageForm?: string;              // e.g. "tablet", "capsule"
+  regulatorySchedule?: string[];    // regulatory schedule info (renamed from schedule)
 }
 
 export interface MedicationPack {
@@ -22,6 +23,7 @@ export interface MedicationPack {
   serial?: string;
   addedAt: string;         // ISO timestamp
   verificationId?: string;
+  evidenceRecordId?: string;
   quantity?: { remaining: number; unit: string };
   notes?: string;
   openedAt?: string;
@@ -182,6 +184,11 @@ export interface CabinetEntry {
   status: CabinetStatus;
   lastVerified?: string;
   verificationId?: string;
+  evidenceRecordId?: string;
+  inUseExpiryDate?: string;
+  effectiveExpiry?: string;
+  isEarlierInUse?: boolean;
+  daysRemaining?: number;
 }
 
 // ─── Medication Events ─────────────────────────────────────────────────────────

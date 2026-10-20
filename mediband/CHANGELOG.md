@@ -27,6 +27,182 @@
 
 ---
 
+## [v0.1.4] — 2026-10-20 18:30 IST  |  commit: (pending)
+
+### Summary
+Evidence snapshot store, combo-aware ingredient duplicate detection, adherence
+safeguards (confirm/undo/re-dose), GS1 parser (parenthesised + GS-delimited +
+Digital Link), LiveScanner real decode path (camera + image upload + manual),
+cabinet quantity/notes/openedAt UI, Vitest + CI pipeline, README + SAFETY docs.
+
+---
+
+### Files Changed
+
+#### New: `store/evidence-store.ts`
+Created. Persisted evidence snapshot store using localStorage
+(`mediband_evidence_v1`). Exports: `addEvidenceRecord(result)`,
+`getEvidenceRecord(id)`, `getEvidenceForPack(packId)`,
+`getAllEvidenceRecords()`, `clearEvidenceStore()`.
+Decision: snapshot is taken at the time the user clicks "Add to Cabinet",
+so the evidence is frozen and cannot be altered by future scans.
+
+#### Updated: `app/scan/result/page.tsx`
+- Calls `addEvidenceRecord(result)` when adding a pack to cabinet.
+- Now handles `?custom=1` query param: reads `mediband_custom_scan` from
+  sessionStorage, constructs a synthetic `DemoScenario`-like object, runs
+  full verification pipeline, shows result. Unknown GTINs produce
+  `NOT_FOUND` from all providers (no demo record).
+- Badge shows "Custom Scan" for real/manual scans vs "Demo · Scenario X".
+- Added `isCustomScan` state to drive badge rendering.
+
+#### Updated: `app/scan/page.tsx`
+- Replaced disabled "Enter manually (coming soon)" stub with `<LiveScanner />`
+  component. The LiveScanner handles its own camera/image/manual UI internally.
+
+#### New: `components/scan/LiveScanner.tsx`
+Created. Client component (`'use client'`). Tabs: Camera/Upload | Manual Entry.
+- **Camera**: `BrowserMultiFormatReader` from `@zxing/browser` — live viewfinder,
+  decodes on first result, stops camera, populates GS1 fields automatically.
+- **Image upload**: `decodeFromImageUrl` — handles barcode photos.
+- **Manual entry**: All fields editable directly. GTIN shows live
+  `validateGTIN` feedback (format, check digit).
+- **GS1 auto-fill**: `parseGS1()` populates batch/expiry/serial from decoded
+  payload (AIs 01, 10, 17, 21).
+- On "Run Evidence Check →": saves JSON to `sessionStorage.mediband_custom_scan`,
+  pushes to `/scan/result?custom=1`.
+- Requires `@zxing/browser` and `@zxing/library` (installed with
+  `--legacy-peer-deps` due to React 19 peer conflict).
+
+#### Updated: `lib/ingredient-normalizer.ts`
+Rewritten with SYNONYM_MAP (paracetamol=acetaminophen etc.), salt-word stripping
+(with bare-anion protection — "acetate" strips "ate" only if a root remains),
+`extractIngredientIds` for combo products ("|"-separated IDs),
+`getMedicationIngredients(med)`, `findDuplicateIngredients(meds)`.
+
+#### New: `lib/ingredient-normalizer.vitest.ts`
+9/9 tests. Covers synonym normalisation, salt stripping, combo products,
+duplicate detection across cabinet.
+
+#### Updated: `types/index.ts`
+- Added `activeIngredients?: string[]` to `Medication`
+- Added `evidenceRecordId?: string` to `MedicationPack`
+- Extended `CabinetEntry` with `inUseExpiryDate`, `effectiveExpiry`,
+  `isEarlierInUse`, `daysRemaining`, `evidenceRecordId`
+
+#### Updated: `store/cabinet-store.ts`
+- Removed legacy `daysUntilExpiry` import; uses `parseExpiry` from `lib/dates`.
+- Added `getEffectiveExpiryInfo()` — picks earlier of printed vs in-use expiry.
+- Added `updatePack()`, `markPackOpened()`, `updatePackQuantity()`,
+  `updatePackNotes()`.
+
+#### Updated: `app/cabinet/page.tsx`
+Full rewrite. Features: Medicine Passport button, inline qty/notes editing,
+"Mark as opened" button, in-use expiry display, effective expiry (shows earlier),
+re-dose-aware display. Uses `getEvidenceForPack` / `getEvidenceRecord` for
+passport data.
+
+#### Updated: `store/history-store.ts`
+- `recordEvent()` now returns `string` (eventId) for undo support.
+- Added `undoLastEvent()`.
+- Added `lastTakenAt(medicationId)` for re-dose window calculation.
+
+#### Updated: `app/mediband/page.tsx`
+Full rewrite. Features: confirm step before TAKEN, re-dose warning (10-min
+window), 30-second undo window with countdown, `lastTakenAt` shown on device,
+source label shown on schedule, `SCHEDULE_DISCLAIMER` imported from `lib/copy`.
+
+#### New: `lib/gs1-parser.ts`
+Parses parenthesised `(01)...`, GS-delimited (ASCII 0x1D separator), and
+Digital Link URL (`/01/...`) formats. AIs decoded: 01 (GTIN), 10 (batch),
+17 (expiry YYMMDD), 21 (serial). Fixed-length AI 01 consumed without GS
+separator; variable-length AIs read to next GS or end of string.
+
+#### New: `lib/gs1-parser.test.ts` + `lib/gs1-parser.vitest.ts`
+12 ts-node tests (ts-node runner) + 11 Vitest tests. All passing.
+Tests: parenthesised format, GS-delimited with embedded GS, Digital Link URL,
+GTIN-only plain, multi-AI decode, invalid prefix returns empty.
+
+#### New: `vitest.config.ts`
+Created. Vitest config: `environment: 'node'`, include glob `lib/**/*.vitest.ts`.
+Note: uses CommonJS `module.exports` (ESM warning suppressed via
+`VITE_CONFIG_NATIVE_IGNORE_WARNING=true` env var — set in package.json scripts).
+
+#### Updated: `package.json`
+- Version bumped to `0.1.4`.
+- Added scripts: `test` (vitest run), `test:watch`, `test:gtin`, `test:diff`,
+  `test:dates`, `test:gs1` (ts-node runners).
+- Added devDependencies: `vitest ^5`, `vite ^6`, `ts-node ^10.9.2`,
+  `tsconfig-paths ^4.2.0`.
+- Added dependencies: `@zxing/browser ^0.2.1`, `@zxing/library ^0.23.0`.
+
+#### New: `.github/workflows/ci.yml`
+GitHub Actions CI: Ubuntu, Node 20, install deps, `npx tsc --noEmit`,
+`npm run test` (Vitest), `npm run build`.
+
+#### Updated: `README.md`
+Full rewrite. Sections: what it is, what it does NOT claim, quick-start,
+architecture overview (evidence engine, copy safety, GS1), test commands,
+demo scenarios table, product principles.
+
+#### New: `docs/SAFETY.md`
+Formal safety policy. Covers: forbidden terms, `lib/copy.ts` as single source
+of truth, copy-lint enforcement, limitations box requirement, simulated provider
+labelling, no invented dosage/schedule policy.
+
+#### Updated: `data/demo-scenarios.ts`
+`SEED_PACKS` now include `quantity`, `notes`, `openedAt`, `inUseExpiryDays`
+fields for demo data so cabinet page can show in-use expiry UI.
+
+---
+
+### Logic & Decisions
+
+**Custom scan flow**: `LiveScanner` → `sessionStorage` → `?custom=1` result page.
+sessionStorage (not localStorage) is used so custom data clears on tab close,
+avoiding stale custom scan data persisting across sessions.
+
+**Undo window**: 30 seconds. After undo the event is removed from history.
+The 10-minute re-dose warning is a UI-only safeguard — it does not prevent
+the user from recording a dose; it adds a friction step and displays a warning.
+
+**Ingredient duplicate detection**: Set-based (not string equality). Combo
+products (e.g. "paracetamol + codeine") have each ingredient extracted
+separately. Synonym mapping ensures paracetamol and acetaminophen are
+treated as the same substance.
+
+**Evidence snapshot**: Frozen at cabinet-add time. A re-scan of the same
+pack does NOT overwrite a previously stored evidence record; both are kept
+(keyed by unique evidence record ID + pack ID).
+
+---
+
+### Tests
+
+```
+npx vitest run                    → 63/63 pass (5 test files)
+npx tsc --noEmit                  → 0 errors
+```
+
+Test breakdown:
+- `lib/gtin.vitest.ts`               — 15 tests (GTIN validation + data integrity)
+- `lib/diff.vitest.ts`               —  8 tests (Levenshtein alignment diff)
+- `lib/dates.vitest.ts`              — 20 tests (expiry parsing, GS1 YYMMDD)
+- `lib/gs1-parser.vitest.ts`         — 11 tests (all three GS1 formats)
+- `lib/ingredient-normalizer.vitest.ts` — 9 tests (synonyms, combos, duplicates)
+
+---
+
+### Known Limitations / Next Steps
+- Copy-lint is not yet a Vitest test (runs via ts-node only). A `.vitest.ts`
+  wrapper would let CI catch forbidden term regressions automatically.
+- `DemoScenario.id` is typed as `'A' | 'B' | 'C' | 'D'`; custom scans cast
+  to `'X'`. Consider a union type or make `id` a plain string.
+- ZXing camera requires HTTPS in production (localhost works in dev).
+- No end-to-end tests yet — Playwright or Cypress would cover the full scan flow.
+
+---
+
 ## [v0.1.0] — 2026-10-19 23:30 IST  |  commit: (initial — pre-git)
 
 ### Summary

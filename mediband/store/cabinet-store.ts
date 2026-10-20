@@ -1,7 +1,7 @@
 'use client';
 
 import { CabinetEntry, Medication, MedicationPack, CabinetStatus } from '@/types';
-import { daysUntilExpiry } from '@/lib/code-print-compare';
+import { parseExpiry } from '@/lib/dates';
 import { SEED_MEDICATIONS, SEED_PACKS } from '@/data/demo-scenarios';
 
 const MEDS_KEY    = 'mediband_medications_v1';
@@ -50,15 +50,73 @@ export function initCabinet(): void {
   markSeeded();
 }
 
-// ─── Cabinet Status ───────────────────────────────────────────────────────────
+// ─── Expiry & In-Use Calculation ──────────────────────────────────────────────
 
-function getStatus(pack: MedicationPack): CabinetStatus {
-  const expiry = pack.expiryEncoded || pack.expiryPrinted;
-  if (!expiry) return 'needs-review';
-  const days = daysUntilExpiry(expiry);
-  if (days < 0) return 'expired';
-  if (days <= 90) return 'expiring-soon';
-  return 'in-date';
+export function getEffectiveExpiryInfo(pack: MedicationPack, now: Date = new Date()) {
+  const printedStr = pack.expiryEncoded || pack.expiryPrinted;
+  const parsedPrinted = printedStr ? parseExpiry(printedStr) : null;
+
+  let printedDate: Date | null = null;
+  if (parsedPrinted) {
+    const day = parsedPrinted.day ?? new Date(parsedPrinted.year, parsedPrinted.month, 0).getDate();
+    printedDate = new Date(parsedPrinted.year, parsedPrinted.month - 1, day, 23, 59, 59);
+  }
+
+  let inUseDate: Date | null = null;
+  let inUseDateStr: string | undefined = undefined;
+  if (pack.openedAt && pack.inUseExpiryDays) {
+    const opened = new Date(pack.openedAt);
+    inUseDate = new Date(opened.getTime() + pack.inUseExpiryDays * 24 * 60 * 60 * 1000);
+    inUseDateStr = inUseDate.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
+  if (!printedDate && !inUseDate) {
+    return {
+      status: 'needs-review' as CabinetStatus,
+      effectiveExpiry: '—',
+      inUseExpiryDate: undefined,
+      isEarlierInUse: false,
+      daysRemaining: 9999,
+    };
+  }
+
+  let chosenDate: Date;
+  let effectiveExpiryStr: string;
+  let isEarlierInUse = false;
+
+  if (printedDate && inUseDate) {
+    if (inUseDate < printedDate) {
+      chosenDate = inUseDate;
+      effectiveExpiryStr = inUseDateStr!;
+      isEarlierInUse = true;
+    } else {
+      chosenDate = printedDate;
+      effectiveExpiryStr = printedStr;
+    }
+  } else if (inUseDate) {
+    chosenDate = inUseDate;
+    effectiveExpiryStr = inUseDateStr!;
+    isEarlierInUse = true;
+  } else {
+    chosenDate = printedDate!;
+    effectiveExpiryStr = printedStr;
+  }
+
+  const daysRemaining = Math.floor((chosenDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+  let status: CabinetStatus = 'in-date';
+  if (daysRemaining < 0) {
+    status = 'expired';
+  } else if (daysRemaining <= 90) {
+    status = 'expiring-soon';
+  }
+
+  return {
+    status,
+    effectiveExpiry: effectiveExpiryStr,
+    inUseExpiryDate: inUseDateStr,
+    isEarlierInUse,
+    daysRemaining,
+  };
 }
 
 // ─── Medications ──────────────────────────────────────────────────────────────
@@ -97,6 +155,29 @@ export function addPack(pack: MedicationPack): void {
   }
 }
 
+export function updatePack(packId: string, updates: Partial<MedicationPack>): void {
+  const packs = getPacks();
+  const updated = packs.map(p => p.id === packId ? { ...p, ...updates } : p);
+  savePacks(updated);
+}
+
+export function markPackOpened(packId: string, inUseExpiryDays: number = 30): void {
+  updatePack(packId, {
+    openedAt: new Date().toISOString(),
+    inUseExpiryDays,
+  });
+}
+
+export function updatePackQuantity(packId: string, remaining: number, unit: string = 'tablets'): void {
+  updatePack(packId, {
+    quantity: { remaining, unit },
+  });
+}
+
+export function updatePackNotes(packId: string, notes: string): void {
+  updatePack(packId, { notes });
+}
+
 // ─── Cabinet Entries ──────────────────────────────────────────────────────────
 
 export function getCabinetEntries(): CabinetEntry[] {
@@ -106,14 +187,20 @@ export function getCabinetEntries(): CabinetEntry[] {
     .map(pack => {
       const medication = meds.find(m => m.id === pack.medicationId);
       if (!medication) return null;
+      const info = getEffectiveExpiryInfo(pack);
       return {
         medicationId: pack.medicationId,
         packId: pack.id,
         medication,
         pack,
-        status: getStatus(pack),
+        status: info.status,
         lastVerified: pack.addedAt,
         verificationId: pack.verificationId,
+        evidenceRecordId: pack.evidenceRecordId,
+        inUseExpiryDate: info.inUseExpiryDate,
+        effectiveExpiry: info.effectiveExpiry,
+        isEarlierInUse: info.isEarlierInUse,
+        daysRemaining: info.daysRemaining,
       } as CabinetEntry;
     })
     .filter(Boolean) as CabinetEntry[];

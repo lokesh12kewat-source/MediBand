@@ -150,6 +150,10 @@ export const SEED_PACKS: MedicationPack[] = [
     serial: 'SN-00012345',
     addedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
     verificationId: 'vr-scenario-a',
+    quantity: { remaining: 24, unit: 'tablets' },
+    notes: 'Take with full glass of water',
+    openedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+    inUseExpiryDays: 90,
   },
   {
     id: 'pack-b',
@@ -160,6 +164,8 @@ export const SEED_PACKS: MedicationPack[] = [
     expiryEncoded: monthsFromNow(2),  // expiring soon (~45 days)
     expiryPrinted: monthsFromNow(2),
     addedAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+    quantity: { remaining: 10, unit: 'tablets' },
+    notes: 'Evening dose for seasonal allergy',
   },
   {
     id: 'pack-c',
@@ -170,5 +176,6 @@ export const SEED_PACKS: MedicationPack[] = [
     expiryEncoded: monthsFromNow(14),
     expiryPrinted: monthsFromNow(14),
     addedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+    quantity: { remaining: 30, unit: 'tablets' },
   },
 ];

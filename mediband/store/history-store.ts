@@ -147,7 +147,8 @@ export function recordEvent(
   eventType: EventType,
   source: EventSource = 'USER',
   packId?: string,
-): MedicationEvent {
+  scheduledFor?: string,
+): string {
   const event: MedicationEvent = {
     id: generateId(),
     medicationId,
@@ -157,10 +158,32 @@ export function recordEvent(
     eventType,
     timestamp: new Date().toISOString(),
     source,
+    scheduledFor,
   };
   const events = getEvents();
   saveEvents([event, ...events]);
-  return event;
+  return event.id;  // return id so callers can offer undo
+}
+
+/**
+ * Return the most recent TAKEN event for a medication, or null if none recorded.
+ */
+export function lastTakenAt(medicationId: string): MedicationEvent | null {
+  const events = getEvents();
+  for (const e of events) {
+    if (e.medicationId === medicationId && e.eventType === 'TAKEN') {
+      return e;
+    }
+  }
+  return null;
+}
+
+/**
+ * Remove an event by id. Used for the undo window.
+ * Only call within the UNDO_WINDOW_MS after recordEvent.
+ */
+export function undoLastEvent(eventId: string): void {
+  saveEvents(getEvents().filter(e => e.id !== eventId));
 }
 
 // ─── Schedule Store ───────────────────────────────────────────────────────────

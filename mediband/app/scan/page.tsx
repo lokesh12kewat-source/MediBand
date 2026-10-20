@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { ALL_SCENARIOS, getScenario } from '@/data/demo-scenarios';
 import { DemoScenario } from '@/types';
+import LiveScanner from '@/components/scan/LiveScanner';
 
 const STEPS = [
   'Capturing',
@@ -112,20 +113,8 @@ export default function ScanPage() {
             </div>
           </div>
 
-          <div className="card">
-            <div className="card-title">Manual entry</div>
-            <p style={{ fontSize: '0.8125rem', marginBottom: '0.75rem' }}>
-              Enter medicine details manually.
-            </p>
-            <button
-              className="btn btn-ghost btn-sm"
-              disabled
-              style={{ opacity: 0.5, cursor: 'not-allowed' }}
-              title="Manual entry — future feature"
-            >
-              Enter manually (coming soon)
-            </button>
-          </div>
+          {/* Live Scanner & Manual Entry */}
+          <LiveScanner />
         </>
       ) : (
         <ScanProgress currentStep={currentStep} />
