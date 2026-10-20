@@ -27,7 +27,7 @@
 
 ---
 
-## [v0.1.5] — 2026-10-20 19:35 IST  |  commit: (pending)
+## [v0.1.5] — 2026-10-20 19:35 IST  |  commit: 771c407
 
 ### Summary
 UI Redesign replicating the Delhi Grid Intelligence (Vidyut AI) design language:
