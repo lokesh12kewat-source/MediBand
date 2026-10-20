@@ -3,8 +3,9 @@
 import { MedicationEvent, EventType, EventSource, MedicationSchedule } from '@/types';
 import { DEMO_MEDICATION } from '@/data/demo-scenarios';
 
-const EVENTS_KEY = 'mediband_events_v1';
-const SCHEDULE_KEY = 'mediband_schedule_v1';
+const EVENTS_KEY    = 'mediband_events_v1';
+const SCHEDULE_KEY  = 'mediband_schedule_v1';
+const SEEDED_KEY    = 'mediband_history_seeded_v1';
 
 function generateId(): string {
   return `evt-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
@@ -104,13 +105,35 @@ const DEFAULT_SCHEDULES: MedicationSchedule[] = [
     strength: DEMO_MEDICATION.strength,
     times: ['08:00', '20:00'],
     active: true,
+    source: 'DEMO',
+    confirmedByUser: false,
   },
 ];
 
 // ─── Events Store ─────────────────────────────────────────────────────────────
 
+function isHistorySeeded(): boolean {
+  if (typeof window === 'undefined') return false;
+  return localStorage.getItem(SEEDED_KEY) === 'true';
+}
+function markHistorySeeded(): void {
+  if (typeof window === 'undefined') return;
+  localStorage.setItem(SEEDED_KEY, 'true');
+}
+
+/**
+ * Seed demo history on first visit only.
+ * Call this in a useEffect — NEVER during render.
+ */
+export function initHistory(): void {
+  if (isHistorySeeded()) return;
+  saveToStorage(EVENTS_KEY, makeSeedEvents());
+  saveToStorage(SCHEDULE_KEY, DEFAULT_SCHEDULES);
+  markHistorySeeded();
+}
+
 export function getEvents(): MedicationEvent[] {
-  return loadFromStorage<MedicationEvent[]>(EVENTS_KEY, makeSeedEvents());
+  return loadFromStorage<MedicationEvent[]>(EVENTS_KEY, []);
 }
 
 export function saveEvents(events: MedicationEvent[]): void {
@@ -170,5 +193,7 @@ export function getNextDueSchedule(): { schedule: MedicationSchedule; time: stri
 // ─── Reset ────────────────────────────────────────────────────────────────────
 
 export function resetHistory(): void {
-  saveEvents(makeSeedEvents());
+  saveToStorage(EVENTS_KEY, makeSeedEvents());
+  saveToStorage(SCHEDULE_KEY, DEFAULT_SCHEDULES);
+  markHistorySeeded();
 }

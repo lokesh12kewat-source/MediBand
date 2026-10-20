@@ -112,6 +112,25 @@ test('All-zeros GTIN-14 (00000000000000) has check digit 0', () => {
   expect(result.checkDigit).toBe(0);
 });
 
+// ─── Data integrity: every GTIN in data/demo-scenarios must pass ──────────────
+
+import { ALL_SCENARIOS, SEED_PACKS } from '../data/demo-scenarios';
+
+const dataGTINs: { gtin: string; source: string }[] = [];
+for (const s of ALL_SCENARIOS) {
+  if (s.pack.gtin) dataGTINs.push({ gtin: s.pack.gtin, source: `Scenario ${s.id}` });
+}
+for (const p of SEED_PACKS) {
+  if (p.gtin) dataGTINs.push({ gtin: p.gtin, source: `Seed pack ${p.id}` });
+}
+
+for (const { gtin, source } of dataGTINs) {
+  test(`[Data] ${source}: GTIN ${gtin} is valid`, () => {
+    const r = validateGTIN(gtin);
+    if (!r.valid) throw new Error(`${source} GTIN ${gtin}: ${r.error}`);
+  });
+}
+
 // ─── Report ───────────────────────────────────────────────────────────────────
 
 const passed = results.filter(r => r.passed).length;

@@ -1,114 +1,161 @@
-import { CharDiff, CodePrintResult } from '@/types';
-
 /**
- * Code ↔ Print Consistency Comparison — Real Logic
+ * lib/code-print-compare.ts — Code vs Print Comparison
  *
- * Compares machine-readable (encoded) values against OCR-extracted (printed)
- * values. Returns structured comparison with character-level diffs.
+ * Uses alignment-based diff (Levenshtein) instead of index-by-index.
+ * Classifies mismatches as CONFLICT, LIKELY_OCR_CONFUSION, or FORMAT_VARIATION.
+ * Uses structured date parsing for expiry comparison.
+ * Missing data is NEVER treated as a match.
  */
 
+import { CodePrintResult, ComparisonKind, DiffOp } from '@/types';
+import { diffChars, countDifferences } from './diff';
+import { parseExpiry, expiriesEqual, isExpiryPast, daysUntilExpiryParsed } from './dates';
+
+export type { DiffOp };
+
+// ─── OCR Confusion Map ─────────────────────────────────────────────────────────
+// Character pairs that OCR commonly confuses. Bidirectional.
+
+const OCR_CONFUSION_PAIRS: [string, string][] = [
+  ['O', '0'], ['I', '1'], ['I', 'L'], ['1', 'L'],
+  ['B', '8'], ['S', '5'], ['Z', '2'], ['G', '6'],
+];
+
+function isOCRConfusionPair(a: string, b: string): boolean {
+  return OCR_CONFUSION_PAIRS.some(
+    ([x, y]) => (a === x && b === y) || (a === y && b === x),
+  );
+}
+
+// ─── Comparison Classification ─────────────────────────────────────────────────
+
 /**
- * Compare two strings character by character and return diff positions.
+ * Classify the relationship between encoded and printed values.
+ * Missing data is never a match.
  */
-export function charDiff(encoded: string, printed: string): CharDiff[] {
-  const maxLen = Math.max(encoded.length, printed.length);
-  const diffs: CharDiff[] = [];
-  for (let i = 0; i < maxLen; i++) {
-    const e = encoded[i] ?? '?';
-    const p = printed[i] ?? '?';
-    if (e !== p) {
-      diffs.push({ index: i, encoded: e, printed: p });
+export function classifyComparison(encoded: string, printed: string): ComparisonKind {
+  const e = encoded.trim();
+  const p = printed.trim();
+
+  if (!e && !p) return 'BOTH_MISSING';
+  if (!e || !p) return 'MISSING';
+
+  const normE = e.toUpperCase().replace(/\s+/g, '');
+  const normP = p.toUpperCase().replace(/\s+/g, '');
+
+  if (normE === normP) {
+    // Check if only a case / whitespace difference
+    if (e !== p) return 'FORMAT_VARIATION';
+    return 'MATCH';
+  }
+
+  // Check if all differing chars are OCR confusion pairs
+  if (normE.length === normP.length) {
+    let allConfusion = true;
+    for (let i = 0; i < normE.length; i++) {
+      if (normE[i] === normP[i]) continue;
+      if (!isOCRConfusionPair(normE[i], normP[i])) {
+        allConfusion = false;
+        break;
+      }
     }
+    if (allConfusion) return 'LIKELY_OCR_CONFUSION';
   }
-  return diffs;
+
+  return 'CONFLICT';
 }
 
-/**
- * Normalize a batch string for comparison.
- * Trims whitespace, uppercases.
- */
+// ─── Batch Normalization ───────────────────────────────────────────────────────
+
 function normalizeBatch(s: string): string {
-  return s.trim().toUpperCase();
+  return s.trim().toUpperCase().replace(/\s+/g, '');
 }
 
-/**
- * Normalize an expiry string for comparison.
- * Accepts MM/YYYY or MM/YY formats.
- * Returns MM/YYYY.
- */
-function normalizeExpiry(s: string): string {
-  const t = s.trim().replace(/\s/g, '');
-  // Handle MM/YY → MM/20YY
-  const match = t.match(/^(\d{2})\/(\d{2})$/);
-  if (match) {
-    return `${match[1]}/20${match[2]}`;
-  }
-  return t;
-}
+// ─── Main Comparison ──────────────────────────────────────────────────────────
 
-/**
- * Compare encoded (machine-readable) vs printed values for a pack.
- */
 export function compareCodePrint(
   encodedBatch: string,
   printedBatch: string,
   encodedExpiry: string,
   printedExpiry: string,
 ): CodePrintResult {
-  const normEncodedBatch = normalizeBatch(encodedBatch);
-  const normPrintedBatch = normalizeBatch(printedBatch);
-  const normEncodedExpiry = normalizeExpiry(encodedExpiry);
-  const normPrintedExpiry = normalizeExpiry(printedExpiry);
+  const normEB = normalizeBatch(encodedBatch);
+  const normPB = normalizeBatch(printedBatch);
 
-  const batchHasData = normEncodedBatch !== '' && normPrintedBatch !== '';
-  const expiryHasData = normEncodedExpiry !== '' && normPrintedExpiry !== '';
+  // Batch: use structural string comparison
+  const batchKind = classifyComparison(normEB, normPB);
+  const batchMatch: boolean | null =
+    batchKind === 'BOTH_MISSING' ? null :
+    batchKind === 'MISSING'      ? null :
+    batchKind === 'MATCH' || batchKind === 'FORMAT_VARIATION' ? true :
+    false;
 
-  const batchMatch = batchHasData ? normEncodedBatch === normPrintedBatch : null;
-  const expiryMatch = expiryHasData ? normEncodedExpiry === normPrintedExpiry : null;
+  // Expiry: use structured date comparison
+  const parsedEE = parseExpiry(encodedExpiry);
+  const parsedPE = parseExpiry(printedExpiry);
+
+  let expiryKind: ComparisonKind;
+  let expiryMatch: boolean | null;
+
+  if (!parsedEE && !parsedPE) {
+    expiryKind = 'BOTH_MISSING';
+    expiryMatch = null;
+  } else if (!parsedEE || !parsedPE) {
+    expiryKind = 'MISSING';
+    expiryMatch = null;
+  } else if (expiriesEqual(encodedExpiry, printedExpiry)) {
+    expiryKind = 'MATCH';
+    expiryMatch = true;
+  } else {
+    expiryKind = 'CONFLICT';
+    expiryMatch = false;
+  }
 
   const result: CodePrintResult = {
     batchMatch,
     expiryMatch,
-    encodedBatch: normEncodedBatch,
-    printedBatch: normPrintedBatch,
-    encodedExpiry: normEncodedExpiry,
-    printedExpiry: normPrintedExpiry,
+    batchKind,
+    expiryKind,
+    encodedBatch: normEB,
+    printedBatch: normPB,
+    encodedExpiry: encodedExpiry.trim(),
+    printedExpiry: printedExpiry.trim(),
   };
 
-  if (batchHasData && !batchMatch) {
-    result.batchDiff = charDiff(normEncodedBatch, normPrintedBatch);
+  // Compute alignment diff for conflicting/confused batches
+  if (normEB && normPB && batchMatch === false) {
+    const ops = diffChars(normEB, normPB);
+    result.batchDiff = ops;
+    result.batchDiffCount = countDifferences(ops);
   }
-  if (expiryHasData && !expiryMatch) {
-    result.expiryDiff = charDiff(normEncodedExpiry, normPrintedExpiry);
+
+  // Compute display diff for conflicting expiry strings
+  if (encodedExpiry && printedExpiry && expiryMatch === false) {
+    const ops = diffChars(encodedExpiry.trim(), printedExpiry.trim());
+    result.expiryDiff = ops;
+    result.expiryDiffCount = countDifferences(ops);
   }
 
   return result;
 }
 
+// ─── Expiry Helpers ────────────────────────────────────────────────────────────
+
 /**
- * Check if an expiry date (MM/YYYY) has passed relative to a reference date.
+ * Check if an expiry string (any supported format) is past a reference date.
+ * Wraps the structured parser. Returns false if unparseable.
  */
 export function isExpired(expiry: string, referenceDate: Date = new Date()): boolean {
-  const normalized = normalizeExpiry(expiry);
-  const match = normalized.match(/^(\d{2})\/(\d{4})$/);
-  if (!match) return false;
-  const month = parseInt(match[1], 10);
-  const year = parseInt(match[2], 10);
-  // Expiry is end-of-month
-  const expiryDate = new Date(year, month, 0); // last day of month
-  return expiryDate < referenceDate;
+  const parsed = parseExpiry(expiry);
+  if (!parsed) return false;
+  return isExpiryPast(parsed, referenceDate);
 }
 
 /**
- * Calculate days until expiry (negative = already expired).
+ * Days until expiry. Negative = expired. Returns 0 if unparseable.
  */
 export function daysUntilExpiry(expiry: string, referenceDate: Date = new Date()): number {
-  const normalized = normalizeExpiry(expiry);
-  const match = normalized.match(/^(\d{2})\/(\d{4})$/);
-  if (!match) return 0;
-  const month = parseInt(match[1], 10);
-  const year = parseInt(match[2], 10);
-  const expiryDate = new Date(year, month, 0);
-  const diffMs = expiryDate.getTime() - referenceDate.getTime();
-  return Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  const parsed = parseExpiry(expiry);
+  if (!parsed) return 0;
+  return daysUntilExpiryParsed(parsed, referenceDate);
 }

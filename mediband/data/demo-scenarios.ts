@@ -1,6 +1,20 @@
 import { DemoScenario, Medication, MedicationPack } from '@/types';
 import { DEMO_GTIN_SCENARIO_A } from '@/lib/gtin';
 
+// ─── Date helpers (relative to now — no time bombs) ───────────────────────────
+
+export function monthsFromNow(n: number): string {
+  const d = new Date();
+  d.setMonth(d.getMonth() + n);
+  return `${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
+}
+
+export function monthsAgo(n: number): string {
+  const d = new Date();
+  d.setMonth(d.getMonth() - n);
+  return `${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
+}
+
 // ─── Shared Demo Medicine ─────────────────────────────────────────────────────
 
 export const DEMO_MEDICATION: Medication = {
@@ -11,14 +25,14 @@ export const DEMO_MEDICATION: Medication = {
   manufacturer: 'Demo Pharmaceuticals',
   activeIngredientId: 'ING_PARACETAMOL',
   dosageForm: 'Tablet',
-  schedule: ['08:00', '20:00'],
+  regulatorySchedule: [],
 };
 
-// ─── Scenario A — Strong Evidence ─────────────────────────────────────────────
+// ─── Scenario A — No Inconsistency ────────────────────────────────────────────
 
 export const SCENARIO_A: DemoScenario = {
   id: 'A',
-  label: 'Strong Evidence',
+  label: 'No Inconsistencies Found',
   description: 'All signals agree. GTIN valid, product identified, batch and expiry consistent.',
   expectedAssessment: 'STRONG_EVIDENCE',
   medication: DEMO_MEDICATION,
@@ -26,17 +40,17 @@ export const SCENARIO_A: DemoScenario = {
     gtin: DEMO_GTIN_SCENARIO_A,
     batchEncoded: 'A12345',
     batchPrinted: 'A12345',
-    expiryEncoded: '05/2028',
-    expiryPrinted: '05/2028',
+    expiryEncoded: monthsFromNow(18),
+    expiryPrinted: monthsFromNow(18),
     serial: 'SN-00012345',
   },
 };
 
-// ─── Scenario B — Conflict Detected ───────────────────────────────────────────
+// ─── Scenario B — Inconsistency Detected ──────────────────────────────────────
 
 export const SCENARIO_B: DemoScenario = {
   id: 'B',
-  label: 'Conflict Detected',
+  label: 'Inconsistency Detected',
   description: 'Batch mismatch: machine-readable code says A12345, printed text says A99999.',
   expectedAssessment: 'CONFLICT_DETECTED',
   medication: DEMO_MEDICATION,
@@ -44,8 +58,8 @@ export const SCENARIO_B: DemoScenario = {
     gtin: DEMO_GTIN_SCENARIO_A,
     batchEncoded: 'A12345',
     batchPrinted: 'A99999',   // ← conflict
-    expiryEncoded: '05/2028',
-    expiryPrinted: '05/2028',
+    expiryEncoded: monthsFromNow(18),
+    expiryPrinted: monthsFromNow(18),
   },
 };
 
@@ -58,12 +72,11 @@ export const SCENARIO_C: DemoScenario = {
   expectedAssessment: 'INSUFFICIENT_EVIDENCE',
   medication: {
     ...DEMO_MEDICATION,
-    // Strength unknown from partial scan
     strength: '',
     genericName: '',
   },
   pack: {
-    gtin: '',                  // unreadable code
+    gtin: '',
     batchEncoded: '',
     batchPrinted: '',
     expiryEncoded: '',
@@ -76,15 +89,15 @@ export const SCENARIO_C: DemoScenario = {
 export const SCENARIO_D: DemoScenario = {
   id: 'D',
   label: 'Expired',
-  description: 'Package expiry date (01/2026) has passed. Demo reference date: 19 Oct 2026.',
+  description: 'Package expiry date has passed. Batch/expiry are self-consistent.',
   expectedAssessment: 'EXPIRED',
   medication: DEMO_MEDICATION,
   pack: {
     gtin: DEMO_GTIN_SCENARIO_A,
     batchEncoded: 'B00001',
     batchPrinted: 'B00001',
-    expiryEncoded: '01/2026',  // ← expired
-    expiryPrinted: '01/2026',
+    expiryEncoded: monthsAgo(9),  // safely expired ~9 months ago
+    expiryPrinted: monthsAgo(9),
   },
 };
 
@@ -111,7 +124,7 @@ export const SEED_MEDICATIONS: Medication[] = [
     manufacturer: 'Demo Pharmaceuticals',
     activeIngredientId: 'ING_CETIRIZINE',
     dosageForm: 'Tablet',
-    schedule: ['22:00'],
+    regulatorySchedule: [],
   },
   {
     id: 'med-demofen-400',
@@ -121,7 +134,7 @@ export const SEED_MEDICATIONS: Medication[] = [
     manufacturer: 'Demo Pharmaceuticals',
     activeIngredientId: 'ING_IBUPROFEN',
     dosageForm: 'Tablet',
-    schedule: [],
+    regulatorySchedule: [],
   },
 ];
 
@@ -132,8 +145,8 @@ export const SEED_PACKS: MedicationPack[] = [
     gtin: DEMO_GTIN_SCENARIO_A,
     batchEncoded: 'A12345',
     batchPrinted: 'A12345',
-    expiryEncoded: '05/2028',
-    expiryPrinted: '05/2028',
+    expiryEncoded: monthsFromNow(18),
+    expiryPrinted: monthsFromNow(18),
     serial: 'SN-00012345',
     addedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
     verificationId: 'vr-scenario-a',
@@ -141,21 +154,21 @@ export const SEED_PACKS: MedicationPack[] = [
   {
     id: 'pack-b',
     medicationId: 'med-democetriz-10',
-    gtin: '09312345000035', // Valid GTIN-14
+    gtin: '09312345000036', // Valid GTIN-14 (wsum=54, cd=6)
     batchEncoded: 'C55001',
     batchPrinted: 'C55001',
-    expiryEncoded: '03/2027',
-    expiryPrinted: '03/2027',
+    expiryEncoded: monthsFromNow(2),  // expiring soon (~45 days)
+    expiryPrinted: monthsFromNow(2),
     addedAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
   },
   {
     id: 'pack-c',
     medicationId: 'med-demofen-400',
-    gtin: '09312345000102', // Valid GTIN-14
+    gtin: '09312345000104', // Valid GTIN-14 (wsum=46, cd=4)
     batchEncoded: 'D10023',
     batchPrinted: 'D10023',
-    expiryEncoded: '12/2026',
-    expiryPrinted: '12/2026',
+    expiryEncoded: monthsFromNow(14),
+    expiryPrinted: monthsFromNow(14),
     addedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
   },
 ];

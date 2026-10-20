@@ -717,8 +717,8 @@ Verified valid demo GTINs used in this project:
 | GTIN | Format | Check digit | Use |
 |---|---|---|---|
 | `09312345678907` | GTIN-14 | 7 | Scenarios A, B, D |
-| `09312345000035` | GTIN-14 | 5 | Cabinet seed (Cetirizine) |
-| `09312345000102` | GTIN-14 | 2 | Cabinet seed (Ibuprofen) |
+| `09312345000036` | GTIN-14 | 6 | Cabinet seed (Cetirizine) ← corrected from 09312345000035 |
+| `09312345000104` | GTIN-14 | 4 | Cabinet seed (Ibuprofen) ← corrected from 09312345000102 |
 | `9780201379624`  | GTIN-13 | 4 | Test only |
 | `96385074`       | GTIN-8  | 4 | Test only |
 | `012345678905`   | GTIN-12 | 5 | Test only |
@@ -726,5 +726,342 @@ Verified valid demo GTINs used in this project:
 
 ---
 
-*Last updated: 2026-10-20 08:50 IST*
+---
+
+## [v0.1.3] — 2026-10-20 18:15 IST  |  commit: (session 4 — CR implementation)
+
+### Summary
+Multi-phase change request implementation based on CR review. Major correctness
+fixes to seed GTINs, type system rewrite, evidence engine rescope (two-tier
+assessment), structured date parsing, alignment-based string diffing, copy
+centralisation, OCR confusion detection, cabinet seeding lifecycle, and UI
+consistency fixes.
+
+---
+
+### Phase 1: Correctness Fixes
+
+#### 1.1 — Seed GTIN fixes  (`data/demo-scenarios.ts`, `lib/gtin.test.ts`)
+
+**Root cause**: Two seed pack GTINs failed the project's own GS1 check digit
+algorithm. Found by running `validateGTIN` against every GTIN in the data layer.
+
+| Old (WRONG) | Correct | Reason |
+|---|---|---|
+| `09312345000035` | `09312345000036` | payload wsum=54, so cd=6 not 5 |
+| `09312345000102` | `09312345000104` | payload wsum=46, so cd=4 not 2 |
+
+`demo-scenarios.ts`:
+- Fixed both seed pack GTINs.
+- Added `monthsFromNow(n)` and `monthsAgo(n)` helper functions at top.
+- All expiry dates now computed relative to current date — no more hard-coded
+  year values that will expire and break the demo.
+- Scenario A expiry: `monthsFromNow(18)` (in-date)
+- Scenario B expiry: `monthsFromNow(18)` (in-date; conflict is on batch, not expiry)
+- Scenario D expiry: `monthsAgo(9)` (expired, ~9 months ago)
+- Seed pack-a: `monthsFromNow(18)`, pack-b: `monthsFromNow(2)` (~expiring soon),
+  pack-c: `monthsFromNow(14)` (in-date)
+- Fixed `schedule: ['22:00']` → `regulatorySchedule: []` on DemoCetriz seed
+  medication (was using the old field name, TS now caught this).
+
+`lib/gtin.test.ts`:
+- Added data-integrity section at bottom: iterates every GTIN found in
+  `ALL_SCENARIOS` and `SEED_PACKS`, calls `validateGTIN`, fails with the
+  offending GTIN if invalid.
+- Test count increased from 10 → 16.
+- All 16 pass.
+
+#### 1.2 — Safety copy centralisation  (`lib/copy.ts`, `lib/copy-lint.ts`)
+
+`lib/copy.ts` — CREATED. Single source of truth for all user-facing safety strings.
+Components import from this file; no safety strings inline in JSX.
+
+Exported constants:
+- `LIMITATIONS` — array of 5 limitation statements (shown in LimitationsBox)
+- `PASSPORT_DISCLAIMER` — passport footer (replaces inline "authenticity
+  certificate" wording — that phrase was removed as it uses "authenticity")
+- `CONFLICT_EXTRA` — extra message shown in conflict banner
+- `DEMO_NOTICE` — prototype/localStorage warning
+- `SCHEDULE_DISCLAIMER` — schedule origin disclaimer
+- `ASSESSMENT_LABELS` — canonical human-readable labels for all assessment types
+- `SCOPE_CHECKED` — what the check covers (shown in AssessmentBanner)
+- `SCOPE_NOT_CHECKED` — what the check does NOT cover (shown in AssessmentBanner)
+
+`lib/copy-lint.ts` — UPDATED. Forbidden terms list extended:
+```
+genuine, authentic, authenticity, counterfeit, fake, spurious,
+real medicine, safe to use, guaranteed, 100% verified, approved,
+legitimate, certified, trusted
+```
+
+#### 1.3+1.4 — Type system rewrite  (`types/index.ts`)
+
+Major additions to the type system to support two-tier assessment, evidence
+claim provenance, and provider status tracking.
+
+New types:
+- `ClaimSourceKind = 'PACK_CODE' | 'PACK_PRINT' | 'COMPUTED' | 'EXTERNAL_RECORD'`
+- `ClaimStatus` — extended: added `'format_valid'` (for COMPUTED claims like GTIN
+  check digit), renamed `'verified'` → `'matches'` (UI text only — "Verified"
+  was misleading; code checks were never a verification of authenticity)
+- `EvidenceClaim` — extended: added `id`, `sourceKind`, `lineage`, `simulated`,
+  `retrievedAt`, optional `cropRef`
+- `ConsistencyAssessment = 'NO_INCONSISTENCY_FOUND' | 'INCONSISTENCY_DETECTED' | 'INSUFFICIENT_EVIDENCE'`
+- `ShelfLifeAssessment = 'IN_DATE' | 'EXPIRING_SOON' | 'EXPIRED' | 'UNKNOWN'`
+- `DiffOp` — union type for alignment-based diffs: `equal | sub | ins | del`
+- `ProviderStatus = 'NOT_QUERIED' | 'UNAVAILABLE' | 'NOT_FOUND' | 'FOUND'`
+- `ScheduleSource = 'DEMO' | 'SCAN' | 'MANUAL'`
+- `ConsistencyAssessment`, `ShelfLifeAssessment` added to `VerificationResult`
+- `allSimulated: boolean` added to `VerificationResult`
+- `MedicationSchedule` now requires `source: ScheduleSource` and
+  `confirmedByUser: boolean`
+- `Medication.schedule` renamed to `regulatorySchedule`
+- `MedicationPack` extended with optional `quantity`, `notes`, `openedAt`,
+  `inUseExpiryDays`
+- `CodePrintResult` — `batchDiff`/`expiryDiff` type changed from `CharDiff[]`
+  to `DiffOp[]`; added `batchDiffCount`, `expiryDiffCount`, `batchKind`,
+  `expiryKind` (of type `ComparisonKind`)
+
+Old `AssessmentType` retained for backward compatibility during transition.
+
+#### 1.5 — Cabinet seeding lifecycle fix  (`store/cabinet-store.ts`, `store/history-store.ts`)
+
+**Problem**: Every page load called `getCabinetEntries()` which fell back to seed
+data if localStorage was empty. This caused repeated seeding after `resetCabinet()`
+was called, making the reset ineffective.
+
+`store/cabinet-store.ts`:
+- Added `SEEDED_KEY = 'mediband_cabinet_seeded_v1'` localStorage flag.
+- Added `initCabinet()` — seeds ONLY if not yet seeded; marks flag after seeding.
+- `getMedications()` and `getPacks()` now return `[]` fallback (not seed data).
+- `resetCabinet()` re-seeds and sets the seeded flag.
+
+`store/history-store.ts`:
+- Same pattern: `HISTORY_SEEDED_KEY`, `initHistory()`, `resetHistory()`.
+- `getEvents()` returns `[]` fallback.
+- `MedicationSchedule` objects in DEFAULT_SCHEDULES updated with required
+  `source: 'DEMO'` and `confirmedByUser: false` fields.
+
+`app/cabinet/page.tsx` — UPDATED: calls `initCabinet()` inside `reload()` which
+is called in `useEffect`. Safe — never called during render.
+
+`app/history/page.tsx` — UPDATED: calls `initHistory()` in `useEffect`.
+
+`app/mediband/page.tsx` — UPDATED: calls `initHistory()` in `useEffect`.
+
+---
+
+### Phase 2: Evidence Logic
+
+#### 2.1 — Alignment-based character diff  (`lib/diff.ts`, `lib/diff.test.ts`)
+
+`lib/diff.ts` — CREATED. Levenshtein backtrack diff for string comparison.
+
+Replaces the old index-by-index `charDiff` function in `code-print-compare.ts`.
+The old approach compared character by character at the same position — this
+gave wrong results when a batch number had an extra/missing character.
+
+Example: encoded `A12345`, printed `A012345` (extra leading 0):
+- Old: 5 substitutions (`1≠0`, `2≠1`, `3≠2`, `4≠3`, `5≠4`)
+- New (alignment-based): 1 insertion (`0` inserted)
+
+This matters because OCR often introduces a leading zero or drops a character;
+alignment-based diff correctly identifies this as a single insertion, not a
+cascade of substitutions.
+
+Exports: `diffChars(a, b): DiffOp[]`, `countDifferences(ops): number`
+
+`lib/diff.test.ts` — CREATED. 10 unit tests covering: identity, insertions,
+deletions, substitutions, empty strings, OCR common pair (O/0).
+Result: **10/10 pass**.
+
+#### 2.2 — Structured expiry date parsing  (`lib/dates.ts`, `lib/dates.test.ts`)
+
+`lib/dates.ts` — CREATED. Parses expiry date strings into `{ year, month, day? }`.
+
+Supported formats:
+| Format | Example | Notes |
+|---|---|---|
+| MM/YYYY | 08/2027 | Standard UK pharmaceutical |
+| MM-YYYY | 08-2027 | — |
+| MM/YY | 08/27 | → 20YY |
+| MM-YY | 08-27 | → 20YY |
+| YYYY-MM | 2027-08 | ISO partial |
+| MMM YYYY | AUG 2027 | Case-insensitive |
+| MMM-YY | AUG-27 | → 20YY |
+| YYMMDD | 270800 | GS1 AI 17; DD=00 → last day of month |
+
+Exports: `parseExpiry()`, `expiriesEqual()`, `isExpiryPast()`,
+`daysUntilExpiryParsed()`. All accept optional `now: Date` for injectable clock.
+
+`lib/dates.test.ts` — CREATED. 22 unit tests covering all formats, cross-format
+equality, past/future detection, injectable clock, null returns.
+Result: **22/22 pass**.
+
+#### 2.3+2.4 — OCR confusion classification  (`lib/code-print-compare.ts`)
+
+`lib/code-print-compare.ts` — REWRITTEN. New `classifyComparison()` function:
+
+```
+ComparisonKind:
+  MATCH           — exact match after normalisation
+  FORMAT_VARIATION — case-only difference
+  LIKELY_OCR_CONFUSION — all differences are known OCR confusion pairs
+  CONFLICT        — genuine mismatch
+  MISSING         — one value absent
+  BOTH_MISSING    — both absent
+```
+
+OCR confusion pairs (bidirectional): O/0, I/1, I/L, 1/L, B/8, S/5, Z/2, G/6.
+
+MISSING is NEVER treated as MATCH. `expiriesEqual()` used for structured
+expiry comparison. `diffChars()` used for batch comparison.
+
+`CodePrintResult` now includes `batchKind`/`expiryKind` (the `ComparisonKind`)
+and `batchDiffCount`/`expiryDiffCount` (count of non-equal DiffOps).
+
+#### 2.5 — ProviderStatus enum + mock-recall  (`providers/mock-recall.ts`, `lib/verification-engine.ts`)
+
+`providers/mock-recall.ts` — CREATED. [SIMULATED PROVIDER] mock recall database.
+Always returns `recalled: false` for demo GTINs. Clearly labelled simulated.
+
+`lib/verification-engine.ts` — REWRITTEN. Now integrates `mockRecallProvider`.
+Uses `ProviderStatus` enum for all provider results. For Scenario C (no GTIN)
+sets `status: 'NOT_QUERIED'`. Sets `providerId`, `scope`, `retrievedAt`,
+`simulated` on all provider results. Returns full new `VerificationResult`
+shape including `consistencyAssessment`, `shelfLifeAssessment`, `allSimulated`.
+
+#### Evidence Engine Rescope  (`lib/evidence-engine.ts`)
+
+`lib/evidence-engine.ts` — REWRITTEN. Key changes:
+
+1. **GTIN check digit is `COMPUTED/format_valid`** — NEVER counted as an
+   independent evidence signal. A valid check digit only proves the string is
+   self-consistent.
+
+2. **Independence rule**: independent signals = distinct `lineage` values among
+   claims where `status === 'matches'`, excluding `sourceKind === 'COMPUTED'`
+   and `simulated === true`.
+
+3. **Two-tier assessment**:
+   - `ConsistencyAssessment`: `NO_INCONSISTENCY_FOUND` requires ≥2 distinct
+     non-simulated lineages, at least one being `EXTERNAL_RECORD`.
+     Since all providers are simulated in MVP, `allSimulated` is always `true`
+     → consistency will be `INSUFFICIENT_EVIDENCE` for most scenarios (correct).
+   - `ShelfLifeAssessment`: `EXPIRED` if expiry is past, `EXPIRING_SOON` if
+     within 90 days, `IN_DATE` otherwise, `UNKNOWN` if no parseable expiry.
+
+4. **Injectable clock**: `EvidenceEngineInput.now?: Date` threaded through to
+   `isExpiryPast()` and `daysUntilExpiryParsed()`.
+
+5. **LIMITATIONS imported from `lib/copy.ts`** — not inlined.
+
+6. **All claims now have**: `id` (UUID), `sourceKind`, `lineage`, `simulated`,
+   `retrievedAt` (ISO timestamp).
+
+7. **Legacy `assessment` field** computed from new assessments for backward
+   compatibility: INCONSISTENCY_DETECTED → CONFLICT_DETECTED, EXPIRED shelf life
+   → EXPIRED, NO_INCONSISTENCY_FOUND → STRONG_EVIDENCE, else INSUFFICIENT_EVIDENCE.
+
+Exports added: `getConsistencyLabel()`, `getShelfLifeLabel()`.
+Legacy exports retained: `getAssessmentLabel()`, `getAssessmentDescription()`.
+
+---
+
+### UI Components Updated
+
+`components/evidence/AssessmentBanner.tsx` — REWRITTEN.
+- Props changed from `{ assessment: AssessmentType }` to
+  `{ consistencyAssessment, shelfLifeAssessment, allSimulated }`.
+- Shows primary line (consistency result) + secondary line (shelf life — always
+  visible).
+- Shows `DEMO DATA: simulated sources` chip when `allSimulated`.
+- Shows scope block (what was checked / not checked) from `lib/copy.ts`.
+- `CONFLICT_EXTRA` from `lib/copy.ts` shown when inconsistency detected.
+
+`components/evidence/EvidenceLedger.tsx` — REWRITTEN.
+- Uses new `ClaimStatus` — checks `'matches'` not `'verified'`.
+- Handles all 5 statuses: `matches`, `conflict`, `missing`, `unverifiable`,
+  `format_valid`.
+- `ProviderStatus` enum: NOT_QUERIED (grey), UNAVAILABLE (grey), NOT_FOUND
+  (grey/amber), FOUND (green).
+
+`components/evidence/CodePrintComparison.tsx` — REWRITTEN.
+- Renders from `DiffOp[]` (alignment-based).
+- Handles `ins`/`del`/`sub`/`equal` ops with appropriate highlighting.
+- Shows OCR confusion and FORMAT_VARIATION labels from `ComparisonKind`.
+
+`components/passport/MedicinePassportModal.tsx` — REWRITTEN.
+- Uses `PASSPORT_DISCLAIMER` from `lib/copy.ts`.
+- Shows both `consistencyLabel` and `shelfLabel`.
+- Checks `claim.status === 'matches'` (not `'verified'`).
+- Shows `allSimulated` chip.
+
+`app/scan/result/page.tsx` — UPDATED.
+- `AssessmentBanner` now receives `consistencyAssessment`, `shelfLifeAssessment`,
+  `allSimulated` props (instead of old `assessment`).
+
+---
+
+### Phase 3 (partial): Frontend Quality
+
+#### 3.8 — Label simulated scan  (`app/scan/page.tsx`)
+
+`ScanProgress` component: Added `<span className="demo-tag">Simulated processing
+— no camera used</span>` below the spinner title.
+
+#### 4.4 — Footer notice + useEffect audit  (`app/layout.tsx`)
+
+`app/layout.tsx` — Added footer notice before `</div>` closing the app shell:
+```
+Prototype. Data stays in this browser (localStorage), unencrypted.
+Do not enter real health information.
+```
+
+All localStorage reads confirmed to be inside `useEffect` (no SSR reads).
+
+---
+
+### Tests
+
+Total tests across all suites: **48/48 pass**.
+
+```
+lib/gtin.test.ts   — 16/16 pass
+lib/diff.test.ts   — 10/10 pass
+lib/dates.test.ts  — 22/22 pass
+```
+
+TypeScript: `npx tsc --noEmit` — **0 errors**.
+
+---
+
+### GTIN Reference Table Update
+
+Corrected seed GTINs:
+
+| GTIN | Format | Check digit | Use |
+|---|---|---|---|
+| `09312345678907` | GTIN-14 | 7 | Scenarios A, B, D (unchanged) |
+| `09312345000036` | GTIN-14 | 6 | Cabinet seed (DemoCetriz) ← **corrected from 35** |
+| `09312345000104` | GTIN-14 | 4 | Cabinet seed (DemoFen) ← **corrected from 02** |
+
+---
+
+### Remaining Incomplete Items (carried to v0.1.4)
+
+- Phase 3.1 — Cabinet quantity/notes/openedAt UI
+- Phase 3.2 — `store/evidence-store.ts` (evidence snapshot persistence)
+- Phase 3.3 — `activeIngredients: string[]` (ingredient sets, synonym map)
+- Phase 3.4 — Adherence safeguards (re-dose confirm, undo)
+- Phase 3.5 — `regulatorySchedule` rename in remaining UI references
+- Phase 3.6 — `lib/gs1-parser.ts` (element string + Digital Link parser)
+- Phase 3.7 — Real decode path + manual entry in LiveScanner
+- Phase 4.1 — Replace README
+- Phase 4.2 — Restructure CHANGELOG into Keep a Changelog format, `docs/` folder
+- Phase 4.3 — Vitest setup, remove ts-node, CI workflow (`.github/workflows/ci.yml`)
+
+---
+
+*Last updated: 2026-10-20 18:15 IST*
 *Next update: on every code change or commit*

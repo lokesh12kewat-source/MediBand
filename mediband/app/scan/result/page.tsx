@@ -90,7 +90,11 @@ export default function ScanResultPage() {
       </div>
 
       {/* Assessment Banner */}
-      <AssessmentBanner assessment={result.assessment} />
+      <AssessmentBanner
+        consistencyAssessment={result.consistencyAssessment}
+        shelfLifeAssessment={result.shelfLifeAssessment}
+        allSimulated={result.allSimulated}
+      />
 
       {/* What We Found */}
       <div className="card" style={{ marginBottom: '1rem' }}>

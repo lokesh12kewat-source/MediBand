@@ -153,6 +153,9 @@ function ScanProgress({ currentStep }: { currentStep: number }) {
           <div style={{ width: 20, height: 20, border: '2.5px solid var(--orange)', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
         </div>
         <div style={{ fontWeight: 600, fontSize: '0.95rem' }}>Processing scan…</div>
+        <div style={{ marginTop: '0.375rem' }}>
+          <span className="demo-tag">Simulated processing — no camera used</span>
+        </div>
       </div>
       <div className="step-list">
         {STEPS.map((step, i) => (

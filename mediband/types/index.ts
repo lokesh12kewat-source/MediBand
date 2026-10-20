@@ -1,4 +1,4 @@
-// ─── Core Medication Types ────────────────────────────────────────────────────
+// ─── Core Medication Types ─────────────────────────────────────────────────────
 
 export interface Medication {
   id: string;
@@ -6,9 +6,9 @@ export interface Medication {
   genericName: string;
   strength: string;
   manufacturer: string;
-  activeIngredientId: string; // normalized ID for duplicate detection
-  dosageForm?: string;        // e.g. "tablet", "capsule"
-  schedule?: string[];        // e.g. ["08:00", "20:00"]
+  activeIngredientId: string;  // normalized ID for duplicate detection
+  dosageForm?: string;         // e.g. "tablet", "capsule"
+  regulatorySchedule?: string[]; // regulatory schedule info (renamed from schedule)
 }
 
 export interface MedicationPack {
@@ -22,56 +22,134 @@ export interface MedicationPack {
   serial?: string;
   addedAt: string;         // ISO timestamp
   verificationId?: string;
+  quantity?: { remaining: number; unit: string };
+  notes?: string;
+  openedAt?: string;
+  inUseExpiryDays?: number;
 }
 
-// ─── Evidence Types ───────────────────────────────────────────────────────────
+// ─── Evidence Claim Types ──────────────────────────────────────────────────────
 
-export type ClaimStatus = 'verified' | 'conflict' | 'missing' | 'unverifiable';
+export type ClaimSourceKind =
+  | 'PACK_CODE'       // from machine-readable code (QR, DataMatrix, barcode)
+  | 'PACK_PRINT'      // from OCR of printed text
+  | 'COMPUTED'        // derived/calculated (e.g. GTIN check digit) — never counts as independent evidence
+  | 'EXTERNAL_RECORD'; // from a provider lookup
+
+export type ClaimStatus =
+  | 'matches'         // value confirmed from this source
+  | 'conflict'        // value disagrees with another source
+  | 'missing'         // source present but value absent
+  | 'unverifiable'    // cannot be checked with available data
+  | 'format_valid';   // structural check passed (e.g. check digit) — not evidence of identity
 
 export interface EvidenceClaim {
+  id: string;
   field: string;
   value: string;
   source: string;
+  sourceKind: ClaimSourceKind;
+  lineage: string;       // root of trust, e.g. 'pack-qr', 'pack-print', 'registry:demo'
   method: string;
   status: ClaimStatus;
+  simulated: boolean;
+  retrievedAt: string;   // ISO timestamp
+  cropRef?: string;
 }
 
+// ─── Assessment Types ──────────────────────────────────────────────────────────
+
+/** Consistency of code-vs-print and available records */
+export type ConsistencyAssessment =
+  | 'NO_INCONSISTENCY_FOUND'
+  | 'INCONSISTENCY_DETECTED'
+  | 'INSUFFICIENT_EVIDENCE';
+
+/** Shelf life based on expiry date */
+export type ShelfLifeAssessment =
+  | 'IN_DATE'
+  | 'EXPIRING_SOON'
+  | 'EXPIRED'
+  | 'UNKNOWN';
+
+/** Legacy combined assessment — kept for backward compat */
 export type AssessmentType =
   | 'STRONG_EVIDENCE'
   | 'CONFLICT_DETECTED'
   | 'INSUFFICIENT_EVIDENCE'
   | 'EXPIRED';
 
-export interface CharDiff {
-  index: number;
-  encoded: string;
-  printed: string;
-}
+// ─── Diff Types ────────────────────────────────────────────────────────────────
+
+/** Alignment-based diff op (replaces old CharDiff index-by-index approach) */
+export type DiffOp =
+  | { op: 'equal'; a: string; b: string }
+  | { op: 'sub';   a: string; b: string }
+  | { op: 'ins';   b: string }
+  | { op: 'del';   a: string };
+
+// ─── Code / Print Result ───────────────────────────────────────────────────────
+
+export type ComparisonKind =
+  | 'MATCH'
+  | 'CONFLICT'
+  | 'LIKELY_OCR_CONFUSION'
+  | 'FORMAT_VARIATION'
+  | 'MISSING'
+  | 'BOTH_MISSING';
 
 export interface CodePrintResult {
   batchMatch: boolean | null;
   expiryMatch: boolean | null;
+  batchKind?: ComparisonKind;
+  expiryKind?: ComparisonKind;
   encodedBatch: string;
   printedBatch: string;
   encodedExpiry: string;
   printedExpiry: string;
-  batchDiff?: CharDiff[];
-  expiryDiff?: CharDiff[];
+  batchDiff?: DiffOp[];
+  expiryDiff?: DiffOp[];
+  batchDiffCount?: number;
+  expiryDiffCount?: number;
 }
 
+// ─── Provider Types ────────────────────────────────────────────────────────────
+
+export type ProviderStatus =
+  | 'NOT_QUERIED'    // no query made (e.g. no GTIN to look up)
+  | 'UNAVAILABLE'    // provider could not be reached
+  | 'NOT_FOUND'      // queried but no record found
+  | 'FOUND';         // record found
+
 export interface ProviderResult {
+  providerId: string;
   providerName: string;
-  isSimulated: boolean;
+  label: string;       // 'DEMO DATA' | 'SIMULATED PROVIDER'
+  simulated: boolean;
+  status: ProviderStatus;
+  retrievedAt: string;
+  sourceVersion?: string;
+  scope: string;       // what this provider can and cannot tell you
+  record?: unknown;
+  error?: string;
+  // legacy fields — kept for backward compat
   found: boolean;
+  isSimulated: boolean;
   data?: Record<string, string>;
-  label: string; // e.g. "DEMO DATA", "SIMULATED PROVIDER"
 }
+
+// ─── Verification / Evidence Report ───────────────────────────────────────────
 
 export interface VerificationResult {
   id: string;
   packId: string;
   medicationId: string;
   timestamp: string;
+  // New separate assessments
+  consistencyAssessment: ConsistencyAssessment;
+  shelfLifeAssessment: ShelfLifeAssessment;
+  allSimulated: boolean;        // true if ALL matching external claims are simulated
+  // Legacy combined assessment (derived from the two above)
   assessment: AssessmentType;
   claims: EvidenceClaim[];
   codePrint: CodePrintResult;
@@ -80,7 +158,7 @@ export interface VerificationResult {
   scenarioId?: string;
 }
 
-// ─── GTIN Types ───────────────────────────────────────────────────────────────
+// ─── GTIN Types ────────────────────────────────────────────────────────────────
 
 export interface GTINResult {
   raw: string;
@@ -92,7 +170,7 @@ export interface GTINResult {
   error?: string;
 }
 
-// ─── Medicine Cabinet Types ───────────────────────────────────────────────────
+// ─── Medicine Cabinet Types ────────────────────────────────────────────────────
 
 export type CabinetStatus = 'in-date' | 'expiring-soon' | 'expired' | 'needs-review';
 
@@ -106,7 +184,7 @@ export interface CabinetEntry {
   verificationId?: string;
 }
 
-// ─── Medication Events ────────────────────────────────────────────────────────
+// ─── Medication Events ─────────────────────────────────────────────────────────
 
 export type EventType = 'TAKEN' | 'SKIPPED' | 'MISSED';
 export type EventSource = 'USER' | 'SIMULATOR';
@@ -120,20 +198,25 @@ export interface MedicationEvent {
   eventType: EventType;
   timestamp: string;
   source: EventSource;
+  scheduledFor?: string;  // ISO — for computing late/missed
 }
 
-// ─── Schedule ─────────────────────────────────────────────────────────────────
+// ─── Schedule ──────────────────────────────────────────────────────────────────
+
+export type ScheduleSource = 'LABEL' | 'PRESCRIPTION' | 'USER_ENTERED' | 'DEMO';
 
 export interface MedicationSchedule {
   id: string;
   medicationId: string;
   medicationName: string;
   strength: string;
-  times: string[]; // ["08:00", "20:00"]
+  times: string[];         // ["08:00", "20:00"]
   active: boolean;
+  source: ScheduleSource;
+  confirmedByUser: boolean;
 }
 
-// ─── Provider Interfaces ──────────────────────────────────────────────────────
+// ─── Provider Interfaces ───────────────────────────────────────────────────────
 
 export interface ProductRecord {
   gtin: string;
@@ -175,7 +258,7 @@ export interface RecallProvider {
   check(gtin: string, batch: string): Promise<RecallResult>;
 }
 
-// ─── Demo Scenarios ───────────────────────────────────────────────────────────
+// ─── Demo Scenarios ────────────────────────────────────────────────────────────
 
 export type ScenarioId = 'A' | 'B' | 'C' | 'D';
 
@@ -188,7 +271,7 @@ export interface DemoScenario {
   expectedAssessment: AssessmentType;
 }
 
-// ─── Reconciliation ───────────────────────────────────────────────────────────
+// ─── Reconciliation ────────────────────────────────────────────────────────────
 
 export type ReconciliationStatus =
   | 'same-product'

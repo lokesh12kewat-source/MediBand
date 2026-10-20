@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { getCabinetEntries, removeFromCabinet } from '@/store/cabinet-store';
+import { getCabinetEntries, removeFromCabinet, initCabinet } from '@/store/cabinet-store';
 import { findDuplicateIngredients } from '@/lib/ingredient-normalizer';
 import { CabinetEntry, CabinetStatus } from '@/types';
 
@@ -25,6 +25,7 @@ export default function CabinetPage() {
   const [entries, setEntries] = useState<CabinetEntry[]>([]);
 
   function reload() {
+    initCabinet();
     setEntries(getCabinetEntries());
   }
 

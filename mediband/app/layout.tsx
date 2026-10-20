@@ -23,6 +23,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main className="app-main" id="main-content">
             {children}
           </main>
+          <footer style={{ textAlign: 'center', padding: '0.875rem 1rem', fontSize: '0.72rem', color: 'var(--ink-faint)', borderTop: '1px solid var(--border)', marginLeft: 'var(--nav-width, 0)' }}>
+            Prototype. Data stays in this browser (localStorage), unencrypted. Do not enter real health information.
+          </footer>
         </div>
         <DemoDrawer />
       </body>

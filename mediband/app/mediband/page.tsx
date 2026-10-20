@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { getSchedules, recordEvent, getEvents } from '@/store/history-store';
+import { getSchedules, recordEvent, getEvents, initHistory } from '@/store/history-store';
 import { MedicationSchedule, MedicationEvent } from '@/types';
 
 function getTime(): string {
@@ -28,6 +28,7 @@ export default function MediBandPage() {
   }, []);
 
   useEffect(() => {
+    initHistory();
     setSchedules(getSchedules().filter(s => s.active));
     setRecentEvents(getEvents().slice(0, 3));
   }, []);

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getEvents } from '@/store/history-store';
+import { getEvents, initHistory } from '@/store/history-store';
 import { MedicationEvent } from '@/types';
 
 function groupByDate(events: MedicationEvent[]): { date: string; events: MedicationEvent[] }[] {
@@ -23,6 +23,7 @@ export default function HistoryPage() {
   const [groups, setGroups] = useState<{ date: string; events: MedicationEvent[] }[]>([]);
 
   useEffect(() => {
+    initHistory();
     const events = getEvents();
     setGroups(groupByDate(events));
   }, []);
