@@ -27,7 +27,7 @@
 
 ---
 
-## [v0.1.6] — 2026-10-20 19:45 IST  |  commit: (pending)
+## [v0.1.6] — 2026-10-20 19:45 IST  |  commit: 333b3ec
 
 ### Summary
 Fixed layout spacing, navbar alignment, and hero grid collapse: replaced fragile
