@@ -28,42 +28,32 @@ export default function NavShell() {
   };
 
   return (
-    <nav className="app-nav" aria-label="Main navigation">
-      <div className="w-full max-w-7xl mx-auto flex items-center justify-between gap-4">
+    <header className="navbar" aria-label="Main navigation">
+      <div className="navbar-inner">
         {/* Brand / Logo */}
-        <Link href="/" className="flex items-center gap-3 text-decoration-none group">
-          <div
-            className="w-9 h-9 rounded-xl flex items-center justify-center shadow-sm"
-            style={{ background: 'linear-gradient(135deg, #0d9488, #14b8a6)' }}
-          >
-            <ShieldCheck size={20} className="text-white" />
+        <Link href="/" className="navbar-brand">
+          <div className="navbar-logo-icon">
+            <ShieldCheck size={20} color="#ffffff" />
           </div>
           <div>
-            <div
-              className="font-black text-gray-800 text-base tracking-tight leading-none"
-              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-            >
-              Medi<span className="text-teal-600">Band</span>
+            <div className="navbar-title">
+              Medi<span className="navbar-title-teal">Band</span>
             </div>
-            <p className="text-[9px] text-gray-400 font-semibold tracking-wider uppercase mt-1 leading-none">
+            <div className="navbar-subtitle">
               Evidence-Backed Medication Intelligence
-            </p>
+            </div>
           </div>
         </Link>
 
-        {/* Center Nav Links (Pill Container) */}
-        <div className="hidden md:flex items-center bg-gray-100/90 rounded-2xl p-1 gap-1 border border-gray-200/50">
+        {/* Center Nav Links (Pills matching Vidyut AI) */}
+        <nav className="navbar-menu" aria-label="Sections">
           {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
             const active = isActive(href);
             return (
               <Link
                 key={href}
                 href={href}
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 ${
-                  active
-                    ? 'bg-white text-teal-600 shadow-sm'
-                    : 'text-gray-500 hover:text-gray-800'
-                }`}
+                className={`navbar-link${active ? ' active' : ''}`}
                 aria-current={active ? 'page' : undefined}
               >
                 <Icon size={15} />
@@ -71,20 +61,20 @@ export default function NavShell() {
               </Link>
             );
           })}
-        </div>
+        </nav>
 
         {/* Right Status Badge */}
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 rounded-full px-3 py-1.5">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 pulse-dot block" />
-            <span className="text-xs font-bold text-emerald-700">Live Engine</span>
+        <div className="navbar-status">
+          <div className="navbar-badge">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 pulse-dot" style={{ display: 'inline-block', width: 7, height: 7, borderRadius: '50%', background: '#10b981' }} />
+            <span>Live Engine</span>
           </div>
-          <div className="hidden lg:block text-right">
-            <p className="text-xs font-bold text-gray-700 leading-none">Local Mode</p>
-            <p className="text-[10px] text-gray-400 mt-1 leading-none">Simulated Providers</p>
+          <div className="navbar-subtext">
+            <div className="navbar-subtext-main">Local Mode</div>
+            <div className="navbar-subtext-sub">Simulated Providers</div>
           </div>
         </div>
       </div>
-    </nav>
+    </header>
   );
 }

@@ -18,7 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700;800;900&display=swap"
           rel="stylesheet"
         />
       </head>
@@ -28,19 +28,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main className="app-main" id="main-content">
             {children}
           </main>
-          <footer
-            style={{
-              textAlign: 'center',
-              padding: '1.25rem 1rem',
-              fontSize: '0.75rem',
-              color: '#64748b',
-              borderTop: '1px solid #e2e8f0',
-              background: '#ffffff',
-            }}
-          >
-            <span className="font-bold text-teal-600">MediBand</span> · Evidence-Backed Medication
-            Intelligence · Prototype mode. Data stored locally (localStorage), unencrypted. Do not
-            enter real clinical health records.
+          <footer className="app-footer">
+            <span style={{ fontWeight: 800, color: '#0d9488' }}>MediBand</span> · Evidence-Backed
+            Medication Intelligence · Prototype mode. Data stored locally (localStorage),
+            unencrypted. Do not enter real clinical health records.
           </footer>
         </div>
         <DemoDrawer />

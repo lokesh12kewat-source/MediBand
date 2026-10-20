@@ -15,25 +15,15 @@ import {
   ArrowRight,
   TrendingUp,
   Activity,
-  ShieldCheck,
   AlertCircle,
 } from 'lucide-react';
-
-function LiveBadge() {
-  return (
-    <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-600 bg-emerald-50 border border-emerald-200 rounded-full px-3 py-1 shadow-sm">
-      <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full pulse-dot" />
-      LIVE ENGINE
-    </span>
-  );
-}
 
 function KpiCard({
   label,
   value,
   unit,
   sub,
-  subColor = 'text-gray-400',
+  subColor = '#94a3b8',
   icon: Icon,
   accent = '#14b8a6',
 }: {
@@ -42,28 +32,27 @@ function KpiCard({
   unit?: string;
   sub?: React.ReactNode;
   subColor?: string;
-  icon?: React.ComponentType<{ size?: number; style?: React.CSSProperties; className?: string }>;
+  icon?: React.ComponentType<{ size?: number; color?: string; style?: React.CSSProperties }>;
   accent?: string;
 }) {
   return (
     <div className="kpi-card" style={{ borderTop: `3px solid ${accent}` }}>
-      <div className="flex items-center justify-between mb-2">
-        <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">{label}</p>
+      <div className="kpi-header">
+        <span className="kpi-label">{label}</span>
         {Icon && (
-          <div
-            className="w-8 h-8 rounded-lg flex items-center justify-center"
-            style={{ background: `${accent}18` }}
-          >
-            <Icon size={16} style={{ color: accent }} />
+          <div className="kpi-icon-wrap" style={{ background: `${accent}18` }}>
+            <Icon size={16} color={accent} />
           </div>
         )}
       </div>
-      <p className="text-2xl md:text-3xl font-extrabold text-gray-800 leading-none">
+      <div className="kpi-value">
         {value ?? '—'}
-        {unit && <span className="text-sm font-normal text-gray-400 ml-1">{unit}</span>}
-      </p>
+        {unit && <span className="kpi-unit">{unit}</span>}
+      </div>
       {sub && (
-        <p className={`text-xs mt-2 font-medium flex items-center gap-1 ${subColor}`}>{sub}</p>
+        <div className="kpi-sub" style={{ color: subColor }}>
+          {sub}
+        </div>
       )}
     </div>
   );
@@ -108,48 +97,43 @@ export default function DashboardPage() {
   const needsReview = entries.filter(e => e.status === 'needs-review').length;
 
   return (
-    <div>
+    <div style={{ width: '100%' }}>
       {/* ── Atmospheric Hero Section (Delhi Grid Intelligence style) ── */}
-      <div className="hero-section">
+      <section className="hero-section">
         <div className="hero-bg" />
         <div className="hero-overlay" />
         <div className="hero-content">
           {/* Top Label */}
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <LiveBadge />
-            <span className="text-white/70 text-xs tracking-widest uppercase font-semibold">
-              Evidence & Adherence Intelligence
-            </span>
+          <div className="hero-badge-wrap">
+            <div className="hero-live-badge">
+              <span
+                style={{
+                  display: 'inline-block',
+                  width: 7,
+                  height: 7,
+                  borderRadius: '50%',
+                  background: '#10b981',
+                }}
+              />
+              <span>LIVE ENGINE</span>
+            </div>
+            <span className="hero-label">Evidence & Adherence Intelligence</span>
           </div>
 
           {/* Headline */}
-          <h1
-            className="text-4xl md:text-6xl font-black text-white mb-3 leading-tight"
-            style={{
-              fontFamily: "'Space Grotesk', sans-serif",
-              textShadow: '0 2px 24px rgba(0,0,0,0.4)',
-            }}
-          >
+          <h1 className="hero-title">
             Personal Medicine
             <br />
-            <span
-              style={{
-                background: 'linear-gradient(135deg, #34d399, #14b8a6)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}
-            >
-              Evidence Intelligence
-            </span>
+            <span className="hero-title-gradient">Evidence Intelligence</span>
           </h1>
 
-          <p className="text-white/75 text-base max-w-xl mx-auto mb-8 font-normal leading-relaxed">
+          <p className="hero-description">
             Real-time code-print verification, duplicate ingredient detection & smart adherence
             monitoring for your medicine cabinet.
           </p>
 
-          {/* Quick CTAs inside Hero */}
-          <div className="flex items-center justify-center gap-3 mb-10 flex-wrap">
+          {/* Quick Action CTAs */}
+          <div className="hero-actions">
             <Link
               href="/scan"
               className="btn btn-primary"
@@ -182,8 +166,8 @@ export default function DashboardPage() {
             </Link>
           </div>
 
-          {/* ── 4 KPI Cards Row (Floating across bottom of hero) ── */}
-          <div className="max-w-6xl mx-auto flex gap-3.5 justify-center flex-wrap px-4">
+          {/* ── 4 Floating KPI Cards Row ── */}
+          <div className="kpi-grid">
             <KpiCard
               label="Cabinet Medicines"
               value={entries.length}
@@ -193,7 +177,7 @@ export default function DashboardPage() {
                   <TrendingUp size={12} /> Stored in Cabinet
                 </>
               }
-              subColor="text-teal-600"
+              subColor="#0d9488"
               icon={Package}
               accent="#14b8a6"
             />
@@ -207,7 +191,7 @@ export default function DashboardPage() {
                   <CheckCircle2 size={12} /> Shelf Life Valid
                 </>
               }
-              subColor="text-emerald-600"
+              subColor="#059669"
               icon={CheckCircle2}
               accent="#10b981"
             />
@@ -223,9 +207,7 @@ export default function DashboardPage() {
                   ? `${expired} Expired`
                   : 'All In Date & Clear'
               }
-              subColor={
-                expiringSoon > 0 || expired > 0 ? 'text-amber-600' : 'text-emerald-600'
-              }
+              subColor={expiringSoon > 0 || expired > 0 ? '#d97706' : '#059669'}
               icon={AlertTriangle}
               accent="#f59e0b"
             />
@@ -234,104 +216,159 @@ export default function DashboardPage() {
               label="Next Schedule"
               value={nextDue ? formatTime(nextDue.time) : 'All Set'}
               sub={nextDue ? nextDue.name : 'No pending doses'}
-              subColor="text-sky-600"
+              subColor="#0284c7"
               icon={Clock}
               accent="#60a5fa"
             />
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* ── Body Page Content ── */}
-      <div className="page-content" style={{ marginTop: '-20px' }}>
+      {/* ── Dashboard Content Body ── */}
+      <div className="dashboard-body">
         {/* Duplicate Ingredient Warning */}
         <DuplicateWarning entries={entries} />
 
         {/* Next Medication Scheduled Card */}
         {nextDue && (
           <div
-            className="card mb-4"
-            style={{ borderLeft: '4px solid var(--teal)', background: '#ffffff' }}
+            className="card"
+            style={{
+              borderLeft: '4px solid var(--teal)',
+              background: '#ffffff',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '1rem',
+              flexWrap: 'wrap',
+            }}
           >
-            <div className="flex items-center justify-between flex-wrap gap-3">
-              <div className="flex items-center gap-3">
-                <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center"
-                  style={{ background: 'rgba(20, 184, 166, 0.12)' }}
-                >
-                  <Activity size={20} className="text-teal-600" />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+              <div
+                style={{
+                  width: 44,
+                  height: 44,
+                  borderRadius: 12,
+                  background: 'rgba(20, 184, 166, 0.12)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                }}
+              >
+                <Activity size={22} color="#0d9488" />
+              </div>
+              <div>
+                <div className="card-title" style={{ color: 'var(--teal)', marginBottom: 2 }}>
+                  Upcoming Scheduled Dose
                 </div>
-                <div>
-                  <div className="card-title mb-0" style={{ color: 'var(--teal)' }}>
-                    Upcoming Scheduled Dose
-                  </div>
-                  <div className="font-bold text-gray-900 text-lg">{nextDue.name}</div>
-                  <div className="text-xs text-gray-500 mt-0.5">
-                    Due at {formatTime(nextDue.time)} today
-                  </div>
+                <div style={{ fontWeight: 800, fontSize: '1.15rem', color: '#1e293b' }}>
+                  {nextDue.name}
+                </div>
+                <div style={{ fontSize: '0.8rem', color: '#64748b', marginTop: 2 }}>
+                  Due at {formatTime(nextDue.time)} today
                 </div>
               </div>
-              <Link
-                href="/mediband"
-                className="btn btn-primary btn-sm"
-                id="dashboard-open-mediband"
-              >
-                Open Smart Band
-                <ArrowRight size={14} />
-              </Link>
             </div>
+            <Link
+              href="/mediband"
+              className="btn btn-primary btn-sm"
+              id="dashboard-open-mediband"
+              style={{ gap: 6 }}
+            >
+              Open Smart Band
+              <ArrowRight size={14} />
+            </Link>
           </div>
         )}
 
         {/* Quick Action Banner */}
         <div
-          className="card mb-4"
+          className="card"
           style={{
             background: 'linear-gradient(135deg, #f0fdfa 0%, #e6fffa 100%)',
             border: '1px solid #99f6e4',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '1rem',
+            flexWrap: 'wrap',
           }}
         >
-          <div className="flex items-center justify-between flex-wrap gap-4">
-            <div>
-              <span className="demo-tag mb-1">Evidence Workflow</span>
-              <h3 className="font-bold text-gray-900 mt-1">Have a new medicine pack?</h3>
-              <p className="text-xs text-gray-600 mt-0.5">
-                Scan or enter GS1 DataMatrix / Barcode to run code-print consistency and reference
-                registry checks.
-              </p>
-            </div>
-            <Link href="/scan" className="btn btn-primary btn-sm">
-              <ScanLine size={15} />
-              Start Evidence Check
-            </Link>
+          <div>
+            <span className="demo-tag" style={{ marginBottom: 6 }}>
+              Evidence Workflow
+            </span>
+            <h3 style={{ fontWeight: 800, color: '#134e4a', margin: '4px 0 2px' }}>
+              Have a new medicine pack?
+            </h3>
+            <p style={{ fontSize: '0.82rem', color: '#0f766e', margin: 0 }}>
+              Scan or enter GS1 DataMatrix / Barcode to run code-print consistency and reference
+              registry checks.
+            </p>
           </div>
+          <Link href="/scan" className="btn btn-primary btn-sm" style={{ gap: 6 }}>
+            <ScanLine size={15} />
+            Start Evidence Check
+          </Link>
         </div>
 
         {/* Recent Activity Card */}
         {recentEvents.length > 0 && (
           <div className="card">
-            <div className="flex items-center justify-between mb-3">
-              <div className="card-title mb-0">Recent Activity</div>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                marginBottom: '1rem',
+              }}
+            >
+              <div className="card-title" style={{ margin: 0 }}>
+                Recent Activity
+              </div>
               <Link
                 href="/history"
-                className="text-xs text-teal-600 font-semibold hover:underline flex items-center gap-1"
+                style={{
+                  fontSize: '0.8rem',
+                  color: '#0d9488',
+                  fontWeight: 700,
+                  textDecoration: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 4,
+                }}
               >
                 Full History <ArrowRight size={12} />
               </Link>
             </div>
-            <div className="flex flex-col gap-2">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {recentEvents.map(event => (
                 <div
                   key={event.id}
-                  className="flex items-center justify-between py-2 border-b border-gray-100 last:border-b-0"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '8px 0',
+                    borderBottom: '1px solid #f1f5f9',
+                  }}
                 >
-                  <div className="flex items-center gap-2.5">
-                    <span className="w-2 h-2 rounded-full bg-teal-500" />
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <span
+                      style={{
+                        width: 8,
+                        height: 8,
+                        borderRadius: '50%',
+                        background: '#14b8a6',
+                        display: 'inline-block',
+                      }}
+                    />
                     <div>
-                      <div className="text-sm font-semibold text-gray-800">
+                      <div style={{ fontSize: '0.9rem', fontWeight: 600, color: '#1e293b' }}>
                         {event.medicationName}
                       </div>
-                      <div className="text-xs text-gray-400">
+                      <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>
                         {formatEventTime(event.timestamp)}
                       </div>
                     </div>
@@ -367,34 +404,38 @@ function DuplicateWarning({ entries }: { entries: CabinetEntry[] }) {
 
   return (
     <div
-      className="card mb-4"
+      className="card"
       style={{
         borderLeft: '4px solid var(--status-insufficient)',
         background: '#fffbeb',
         borderColor: '#fde68a',
+        display: 'flex',
+        alignItems: 'flex-start',
+        gap: 12,
       }}
     >
-      <div className="flex items-start gap-3">
-        <AlertCircle size={20} className="text-amber-600 flex-shrink-0 mt-0.5" />
-        <div>
-          <div
-            className="card-title mb-1"
-            style={{ color: 'var(--status-insufficient)', letterSpacing: '0.05em' }}
-          >
-            ⚠ Duplicate Active Ingredient Warning
-          </div>
-          {duplicates.map(([id, names]) => (
-            <div key={id} className="mt-1">
-              <p className="text-xs text-amber-900 font-medium">
-                <strong>{names.join(', ')}</strong> share the same active ingredient.
-              </p>
-              <p className="text-xs text-amber-700 mt-0.5">
-                Always check with a pharmacist or clinician before taking multiple medicines
-                together.
-              </p>
-            </div>
-          ))}
+      <AlertCircle size={22} color="#d97706" style={{ flexShrink: 0, marginTop: 2 }} />
+      <div>
+        <div
+          className="card-title"
+          style={{
+            color: 'var(--status-insufficient)',
+            letterSpacing: '0.05em',
+            marginBottom: 4,
+          }}
+        >
+          ⚠ Duplicate Active Ingredient Warning
         </div>
+        {duplicates.map(([id, names]) => (
+          <div key={id} style={{ marginTop: 4 }}>
+            <p style={{ fontSize: '0.85rem', color: '#78350f', fontWeight: 600, margin: 0 }}>
+              <strong>{names.join(', ')}</strong> share the same active ingredient.
+            </p>
+            <p style={{ fontSize: '0.78rem', color: '#92400e', margin: '2px 0 0' }}>
+              Always check with a pharmacist or clinician before taking multiple medicines together.
+            </p>
+          </div>
+        ))}
       </div>
     </div>
   );

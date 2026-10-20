@@ -27,6 +27,53 @@
 
 ---
 
+## [v0.1.6] — 2026-10-20 19:45 IST  |  commit: (pending)
+
+### Summary
+Fixed layout spacing, navbar alignment, and hero grid collapse: replaced fragile
+dynamic utility classes with dedicated robust CSS rules (.navbar-inner, .navbar-menu,
+.kpi-grid, .hero-content, .dashboard-body), enforced `.app-shell` `flex-direction: column !important`
+to prevent row-collapse, and restarted Next.js dev server.
+
+---
+
+### Files Changed
+
+#### `app/globals.css`
+- Added explicit layout rules for `.app-shell`: `display: flex !important`, `flex-direction: column !important`,
+  `width: 100%`, `overflow-x: hidden`. Prevents browser from defaulting to horizontal row layout.
+- Added `.navbar`, `.navbar-inner`, `.navbar-brand`, `.navbar-logo-icon`, `.navbar-title`,
+  `.navbar-menu`, `.navbar-link`, `.navbar-status`, `.navbar-badge` dedicated classes.
+- Added `.hero-section`, `.hero-content`, `.hero-title`, `.hero-description`, `.hero-actions`.
+- Added `.kpi-grid`: 4-column responsive grid (`repeat(4, 1fr)` on desktop, 2 on tablet, 1 on mobile)
+  with explicit 16px gaps and 1200px max width.
+- Added `.dashboard-body`: centered content flow with `max-width: 1200px` and responsive padding.
+- Added `.app-footer` with `margin-top: auto`.
+
+#### `components/layout/NavShell.tsx`
+- Refactored to use dedicated CSS classes instead of Tailwind utility classes.
+- Prevents items from squishing or overlapping; brand, menu, and status badge now
+  have independent flex positioning across full screen width.
+
+#### `app/page.tsx`
+- Refactored hero section and KPI card row to use `.hero-section`, `.hero-content`,
+  and `.kpi-grid` styles.
+- Updated content body with `.dashboard-body` to ensure cards take full structured width.
+- Maintained all medical safety copy, limitations, and duplicate ingredient warnings.
+
+#### `app/layout.tsx`
+- Attached `.app-footer` class to ensure footer always stays at the bottom of the page.
+
+---
+
+### Verification
+- `npx tsc --noEmit`                → 0 errors
+- `npx vitest run`                  → 63/63 tests passing
+- `npm run build` (Turbopack)       → Code 0, all 7 routes prerendered
+- `GET http://localhost:3000`       → Verified `flex-direction: column !important`, `kpi-grid`, and `navbar-menu` present in active CSS
+
+---
+
 ## [v0.1.5] — 2026-10-20 19:35 IST  |  commit: 771c407
 
 ### Summary
