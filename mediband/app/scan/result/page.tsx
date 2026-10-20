@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { getScenario } from '@/data/demo-scenarios';
 import { runVerification } from '@/lib/verification-engine';
@@ -50,7 +50,7 @@ function buildCustomScenario(data: Record<string, string>): DemoScenario {
   };
 }
 
-export default function ScanResultPage() {
+function ScanResultContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [scenario, setScenario] = useState<DemoScenario | null>(null);
@@ -131,7 +131,7 @@ export default function ScanResultPage() {
     return (
       <div className="page-content" style={{ display: 'flex', justifyContent: 'center', paddingTop: '4rem' }}>
         <div style={{ textAlign: 'center' }}>
-          <div style={{ width: 40, height: 40, border: '3px solid var(--orange)', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 1rem' }} />
+          <div style={{ width: 40, height: 40, border: '3px solid var(--teal)', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 1rem' }} />
           <div style={{ color: 'var(--ink-muted)', fontSize: '0.875rem' }}>Processing evidence…</div>
           <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
         </div>
@@ -247,5 +247,22 @@ function MissingTag() {
     <span style={{ fontSize: '0.75rem', color: 'var(--status-insufficient)', fontWeight: 600 }}>
       — Insufficient evidence
     </span>
+  );
+}
+
+export default function ScanResultPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="page-content" style={{ display: 'flex', justifyContent: 'center', paddingTop: '4rem' }}>
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ width: 40, height: 40, border: '3px solid var(--teal)', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 1rem' }} />
+            <div style={{ color: 'var(--ink-muted)', fontSize: '0.875rem' }}>Loading result…</div>
+          </div>
+        </div>
+      }
+    >
+      <ScanResultContent />
+    </Suspense>
   );
 }

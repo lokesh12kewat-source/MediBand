@@ -27,7 +27,120 @@
 
 ---
 
-## [v0.1.4] — 2026-10-20 18:30 IST  |  commit: (pending)
+## [v0.1.5] — 2026-10-20 19:35 IST  |  commit: (pending)
+
+### Summary
+UI Redesign replicating the Delhi Grid Intelligence (Vidyut AI) design language:
+switched from orange sidebar layout to a clean white sticky top navbar with pill
+tabs and pulse-dot status badge, full-bleed atmospheric dark teal India Gate hero
+section with Space Grotesk typography and gradient headline, 4 floating KPI cards
+with colored top accents and icon badges, clean white section cards with soft
+shadows, and complete migration of all color tokens to teal/emerald (#0d9488 / #14b8a6).
+
+---
+
+### Files Changed
+
+#### `app/globals.css`
+- **Design Tokens**: Replaced orange theme (`#FF6115`) with Teal / Emerald palette:
+  `--teal: #0d9488`, `--teal-accent: #14b8a6`, `--teal-light: #2dd4bf`,
+  `--teal-pale: #f0fdfa`, `--teal-glow: rgba(20, 184, 166, 0.25)`.
+  Legacy `--orange*` variables mapped to teal tokens for backward compatibility.
+  `--porcelain` background updated to slate `#f0f4f8`.
+- **Fonts**: Added Google Font import for `Space Grotesk` (weights 400, 500, 600, 700)
+  alongside `Inter` (300 through 900).
+- **Layout Restructure**:
+  Removed sidebar layout (`--nav-width: 0px`, `.app-main` `margin-left: 0`).
+  Implemented sticky top navbar:
+  `.app-nav`: `height: 64px`, `background: rgba(255, 255, 255, 0.95)`,
+  `backdrop-filter: blur(20px)`, `box-shadow: 0 1px 12px rgba(0, 0, 0, 0.06)`.
+- **Hero Classes**: Added `.hero-section`, `.hero-bg` (using `/hero_bg.jpg`),
+  `.hero-overlay` (135deg gradient from `rgba(2, 25, 50, 0.88)` to `rgba(240, 244, 248, 0.98)`
+  seamlessly blending into the page background), and `.hero-content`.
+- **KPI Card Classes**: Added `.kpi-card` with frosted glassmorphic background
+  (`rgba(255, 255, 255, 0.95)` with 24px blur, 20px rounded corners, 8px/32px shadow,
+  and hover elevation translateY -5px).
+- **Cards & Buttons**:
+  Updated `.card` to 20px border radius with soft shadows (`0 2px 20px rgba(0,0,0,0.05)`).
+  Updated `.btn-primary` with vibrant teal gradient (`linear-gradient(135deg, #0d9488, #14b8a6)`)
+  and teal glow shadow.
+- **Animations**: Added `@keyframes pulseDot` for status indicators and updated
+  `scan-line` / `scan-corner` animations to teal.
+
+#### `public/hero_bg.jpg`
+Added the high-resolution India Gate atmospheric background image from the
+reference project (`delhi-grid-intelligence`) to power the hero section.
+
+#### `components/layout/NavShell.tsx`
+Rewritten from vertical sidebar to sticky horizontal top navbar:
+- **Left**: ShieldCheck teal gradient icon container (`linear-gradient(135deg, #0d9488, #14b8a6)`),
+  "Medi" in dark slate, "Band" in teal, uppercase subtitle "EVIDENCE-BACKED MEDICATION INTELLIGENCE".
+- **Center**: Pill-shaped container (`bg-gray-100/90 rounded-2xl p-1`) holding navigation links
+  (Dashboard, Scan, Cabinet, History, MediBand) with Lucide icons.
+  Active route gets pure white pill with soft shadow and teal text.
+- **Right**: Live status pill with green pulsing dot (`pulse-dot`) + "Live Engine" text,
+  and "Local Mode / Simulated Providers" descriptor.
+
+#### `app/page.tsx` (Dashboard)
+Full visual overhaul:
+- **Atmospheric Hero**: Displays India Gate background with dark teal overlay.
+  Includes LiveBadge pill, uppercase section label, massive Space Grotesk headline:
+  "Personal Medicine" (crisp white) + "Evidence Intelligence" (emerald/teal gradient text),
+  subtitle, and quick pill CTA buttons ("Scan Medicine Pack", "View Cabinet").
+- **4 Floating KPI Cards Row**:
+  1. *Cabinet Medicines*: total packs count, Package icon, `#14b8a6` accent.
+  2. *In Date*: verified shelf life count, CheckCircle2 icon, `#10b981` accent.
+  3. *Attention Needed*: expiring / expired / review count, AlertTriangle icon, `#f59e0b` accent.
+  4. *Next Schedule*: next dose time, Clock icon, `#60a5fa` accent.
+- **Content Area**:
+  - Duplicate ingredient warning banner with amber styling.
+  - Upcoming scheduled dose card with teal accent bar and direct "Open Smart Band" action.
+  - Evidence workflow promo card with gradient background.
+  - Recent activity feed with clean status badges and link to full history.
+
+#### `app/layout.tsx`
+- Added Google Fonts `Space Grotesk` link in `<head>`.
+- Updated metadata title to "MediBand — Evidence-Backed Medication Intelligence".
+- Redesigned footer with clean white background, top border, and teal MediBand branding.
+
+#### `app/scan/page.tsx` & `app/scan/result/page.tsx`
+- Replaced all legacy orange accents with teal and teal-pale.
+- Wrapped dynamic URL query hook `useSearchParams()` components in Next.js `<Suspense>`
+  boundaries to ensure clean static page generation and production build optimization.
+
+#### `app/mediband/page.tsx`
+- Replaced all orange tags, confirm alerts, and link accents with teal tokens.
+- Deferred `new Date()` clock initialization to `useEffect` to avoid dynamic prerendering
+  mismatches during static site generation.
+
+#### `app/cabinet/page.tsx`
+- Updated inline quantity, notes, and Medicine Passport action button colors to teal.
+
+#### `package.json` & `package-lock.json`
+- Added `lucide-react` dependency for dashboard icons.
+- Bumped version to `0.1.5`.
+
+---
+
+### Logic & Decisions
+- **Color harmony**: Selected `#0d9488` and `#14b8a6` as the primary teal tones, matching the
+  Vidyut AI palette from the user's reference screenshot.
+- **Bottom blend gradient**: The hero overlay's bottom stop is `rgba(240, 244, 248, 0.98)` which
+  matches the exact `#f0f4f8` page background color, creating a seamless transition from the
+  dark atmospheric header into the content cards below.
+- **Next.js 16 Static Prerendering Compliance**: Wrapped client components reading search parameters
+  in `<Suspense>` boundaries and ensured client time reads happen after hydration in `useEffect`.
+
+---
+
+### Tests & Verification
+- `npx tsc --noEmit`                → 0 errors
+- `npx vitest run`                  → 63/63 tests passed across 5 test suites
+- `npm run build` (Turbopack)       → Successfully compiled & generated all 7 static routes (code 0)
+
+---
+
+## [v0.1.4] — 2026-10-20 18:30 IST  |  commit: fe1fd8b
 
 ### Summary
 Evidence snapshot store, combo-aware ingredient duplicate detection, adherence

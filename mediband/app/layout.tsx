@@ -4,9 +4,11 @@ import NavShell from '@/components/layout/NavShell';
 import DemoDrawer from '@/components/layout/DemoDrawer';
 
 export const metadata: Metadata = {
-  title: 'MediBand — Evidence-Backed Medication Management',
-  description: 'MediBand identifies medicines and shows you the evidence. Not just an answer — the reasoning behind it.',
-  keywords: 'medication management, medicine identification, evidence-based, medication adherence',
+  title: 'MediBand — Evidence-Backed Medication Intelligence',
+  description:
+    'MediBand identifies medicines and shows you the evidence. Real-time code-print verification & adherence intelligence.',
+  keywords:
+    'medication management, medicine identification, evidence-based, medication adherence, GS1 DataMatrix',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -15,7 +17,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
       </head>
       <body>
         <div className="app-shell">
@@ -23,8 +28,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main className="app-main" id="main-content">
             {children}
           </main>
-          <footer style={{ textAlign: 'center', padding: '0.875rem 1rem', fontSize: '0.72rem', color: 'var(--ink-faint)', borderTop: '1px solid var(--border)', marginLeft: 'var(--nav-width, 0)' }}>
-            Prototype. Data stays in this browser (localStorage), unencrypted. Do not enter real health information.
+          <footer
+            style={{
+              textAlign: 'center',
+              padding: '1.25rem 1rem',
+              fontSize: '0.75rem',
+              color: '#64748b',
+              borderTop: '1px solid #e2e8f0',
+              background: '#ffffff',
+            }}
+          >
+            <span className="font-bold text-teal-600">MediBand</span> · Evidence-Backed Medication
+            Intelligence · Prototype mode. Data stored locally (localStorage), unencrypted. Do not
+            enter real clinical health records.
           </footer>
         </div>
         <DemoDrawer />

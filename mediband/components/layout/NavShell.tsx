@@ -2,69 +2,21 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import {
+  LayoutDashboard,
+  ScanLine,
+  Archive,
+  History,
+  Activity,
+  ShieldCheck,
+} from 'lucide-react';
 
 const NAV_ITEMS = [
-  {
-    href: '/',
-    label: 'Dashboard',
-    icon: (
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="1" y="1" width="6" height="6" rx="1.5"/>
-        <rect x="9" y="1" width="6" height="6" rx="1.5"/>
-        <rect x="1" y="9" width="6" height="6" rx="1.5"/>
-        <rect x="9" y="9" width="6" height="6" rx="1.5"/>
-      </svg>
-    ),
-  },
-  {
-    href: '/scan',
-    label: 'Scan',
-    icon: (
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M1 4V2.5A1.5 1.5 0 012.5 1H4"/>
-        <path d="M12 1h1.5A1.5 1.5 0 0115 2.5V4"/>
-        <path d="M15 12v1.5A1.5 1.5 0 0113.5 15H12"/>
-        <path d="M4 15H2.5A1.5 1.5 0 011 13.5V12"/>
-        <line x1="1" y1="8" x2="15" y2="8"/>
-      </svg>
-    ),
-  },
-  {
-    href: '/cabinet',
-    label: 'Cabinet',
-    icon: (
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="1" y="2" width="14" height="12" rx="2"/>
-        <line x1="8" y1="2" x2="8" y2="14"/>
-        <line x1="3.5" y1="7.5" x2="5.5" y2="7.5"/>
-        <line x1="10.5" y1="7.5" x2="12.5" y2="7.5"/>
-      </svg>
-    ),
-  },
-  {
-    href: '/history',
-    label: 'History',
-    icon: (
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="8" cy="8" r="7"/>
-        <polyline points="8,4.5 8,8 10.5,10"/>
-      </svg>
-    ),
-  },
-  {
-    href: '/mediband',
-    label: 'MediBand',
-    icon: (
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="2" y="4" width="12" height="8" rx="3"/>
-        <line x1="5.5" y1="4" x2="4" y2="1.5"/>
-        <line x1="10.5" y1="4" x2="12" y2="1.5"/>
-        <line x1="5.5" y1="12" x2="4" y2="14.5"/>
-        <line x1="10.5" y1="12" x2="12" y2="14.5"/>
-        <circle cx="8" cy="8" r="1.5" fill="currentColor" stroke="none"/>
-      </svg>
-    ),
-  },
+  { href: '/', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/scan', label: 'Scan', icon: ScanLine },
+  { href: '/cabinet', label: 'Cabinet', icon: Archive },
+  { href: '/history', label: 'History', icon: History },
+  { href: '/mediband', label: 'MediBand', icon: Activity },
 ];
 
 export default function NavShell() {
@@ -77,31 +29,61 @@ export default function NavShell() {
 
   return (
     <nav className="app-nav" aria-label="Main navigation">
-      <div className="nav-brand">
-        <div className="nav-brand-name">
-          Medi<span className="nav-brand-accent">Band</span>
-        </div>
-        <div style={{ fontSize: '0.7rem', color: 'var(--ink-faint)', marginTop: '2px' }}>
-          Evidence-backed medication management
-        </div>
-      </div>
-
-      <div className="nav-links">
-        {NAV_ITEMS.map(item => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={`nav-link${isActive(item.href) ? ' active' : ''}`}
-            aria-current={isActive(item.href) ? 'page' : undefined}
+      <div className="w-full max-w-7xl mx-auto flex items-center justify-between gap-4">
+        {/* Brand / Logo */}
+        <Link href="/" className="flex items-center gap-3 text-decoration-none group">
+          <div
+            className="w-9 h-9 rounded-xl flex items-center justify-center shadow-sm"
+            style={{ background: 'linear-gradient(135deg, #0d9488, #14b8a6)' }}
           >
-            {item.icon}
-            <span>{item.label}</span>
-          </Link>
-        ))}
-      </div>
+            <ShieldCheck size={20} className="text-white" />
+          </div>
+          <div>
+            <div
+              className="font-black text-gray-800 text-base tracking-tight leading-none"
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+            >
+              Medi<span className="text-teal-600">Band</span>
+            </div>
+            <p className="text-[9px] text-gray-400 font-semibold tracking-wider uppercase mt-1 leading-none">
+              Evidence-Backed Medication Intelligence
+            </p>
+          </div>
+        </Link>
 
-      <div className="nav-footer">
-        MVP · Demo Environment
+        {/* Center Nav Links (Pill Container) */}
+        <div className="hidden md:flex items-center bg-gray-100/90 rounded-2xl p-1 gap-1 border border-gray-200/50">
+          {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
+            const active = isActive(href);
+            return (
+              <Link
+                key={href}
+                href={href}
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                  active
+                    ? 'bg-white text-teal-600 shadow-sm'
+                    : 'text-gray-500 hover:text-gray-800'
+                }`}
+                aria-current={active ? 'page' : undefined}
+              >
+                <Icon size={15} />
+                <span>{label}</span>
+              </Link>
+            );
+          })}
+        </div>
+
+        {/* Right Status Badge */}
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 rounded-full px-3 py-1.5">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 pulse-dot block" />
+            <span className="text-xs font-bold text-emerald-700">Live Engine</span>
+          </div>
+          <div className="hidden lg:block text-right">
+            <p className="text-xs font-bold text-gray-700 leading-none">Local Mode</p>
+            <p className="text-[10px] text-gray-400 mt-1 leading-none">Simulated Providers</p>
+          </div>
+        </div>
       </div>
     </nav>
   );

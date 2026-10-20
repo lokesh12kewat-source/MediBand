@@ -298,7 +298,7 @@ function MedicineCard({
               <span>
                 <strong>Qty:</strong> {pack.quantity ? `${pack.quantity.remaining} ${pack.quantity.unit}` : 'Unset'}
               </span>
-              <button onClick={() => setEditingQty(true)} style={{ background: 'none', border: 'none', color: 'var(--orange)', cursor: 'pointer', fontSize: '0.7rem' }}>
+              <button onClick={() => setEditingQty(true)} style={{ background: 'none', border: 'none', color: 'var(--teal)', cursor: 'pointer', fontSize: '0.7rem' }}>
                 Edit
               </button>
             </div>
@@ -324,7 +324,7 @@ function MedicineCard({
               <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '120px' }}>
                 <strong>Note:</strong> {pack.notes || 'None'}
               </span>
-              <button onClick={() => setEditingNotes(true)} style={{ background: 'none', border: 'none', color: 'var(--orange)', cursor: 'pointer', fontSize: '0.7rem' }}>
+              <button onClick={() => setEditingNotes(true)} style={{ background: 'none', border: 'none', color: 'var(--teal)', cursor: 'pointer', fontSize: '0.7rem' }}>
                 {pack.notes ? 'Edit' : '+ Add'}
               </button>
             </div>
@@ -337,7 +337,7 @@ function MedicineCard({
         <button
           onClick={onOpenPassport}
           className="btn btn-ghost btn-sm"
-          style={{ fontSize: '0.75rem', color: 'var(--orange)' }}
+          style={{ fontSize: '0.75rem', color: 'var(--teal)' }}
           id={`passport-${entry.packId}`}
         >
           Medicine Passport
