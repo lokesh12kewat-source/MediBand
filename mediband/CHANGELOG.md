@@ -27,6 +27,40 @@
 
 ---
 
+## [v0.2.7] — 2026-10-31 00:25 IST  |  commit: 129a5ce
+
+### Summary
+Rebuilt the entire landing page and hero UI in the clean Light Theme to match the reference mockup, featuring a two-column hero with live CTAs alongside the 3D Medicine Box, MediBand Scanner Wristband, Indian flag ribbons, and India Gate visual, 4 light-theme KPI cards with chevron buttons, a 4-pillar capability bar, and updated sticky navbar.
+
+---
+
+### Files Changed
+
+#### `app/page.tsx`
+- Redesigned the hero into a two-column responsive layout:
+  - Left column: `LIVE ENGINE` badge, bold `Personal Medicine \n Evidence Intelligence` (dark slate + MediBand orange), description, and the dual CTA pill buttons (`Scan Medicine Pack →` and `View Cabinet`).
+  - Right column: 3D Medicine Box, MediBand Smart Scanner Watch with scanning laser beam, "Verified Source" badge, Indian flag ribbons, and India Gate.
+- Updated the 4 KPI cards to light-theme cards with rounded icon boxes (`#FFF0E8`, `#ECFDF5`, `#FEF3C7`, `#E0F2FE`), bold statistics, colored status badges, and circular chevron `>` buttons.
+- Added the 4-Pillar Capability Bar below the KPI cards: Instant Verification, Duplicate Detection, Adherence Monitoring, and Trusted Sources.
+
+#### `app/globals.css`
+- Added comprehensive styling for `.hero-section-light`, `.hero-container`, `.hero-main-row`, `.kpi-grid-light`, `.kpi-card-light`, and `.hero-feature-bar`.
+- Updated `.navbar-link.active` with solid `#FF6115` orange background, white text, and glowing drop shadow.
+
+#### `components/layout/NavShell.tsx`
+- Added user profile avatar circle to the right status section and standardized navbar spacing.
+
+#### `public/hero_3d_artwork.png`
+- Extracted and alpha-faded the 3D Medicine Box, MediBand Smart Scanner Wristband, Indian flag ribbon, and India Gate artwork asset.
+
+---
+
+### Tests
+- `npx tsc --noEmit`: 0 TypeScript compiler errors.
+- `npx vitest run`: 88 / 88 unit tests passed across all 11 test suites.
+
+---
+
 ## [v0.2.6] — 2026-10-31 00:15 IST  |  commit: 5db617c
 
 ### Summary
