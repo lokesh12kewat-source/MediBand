@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import WorldMapBackground from '@/components/layout/WorldMapBackground';
 import { getCabinetEntries, initCabinet } from '@/store/cabinet-store';
 import { getEvents, getNextDueSchedule, initHistory } from '@/store/history-store';
 import { CabinetEntry, MedicationEvent } from '@/types';
@@ -100,7 +101,7 @@ export default function DashboardPage() {
     <div style={{ width: '100%' }}>
       {/* ── Atmospheric Hero Section (Global World Map with MediBand Orange) ── */}
       <section className="hero-section">
-        <div className="hero-bg" />
+        <WorldMapBackground />
         <div className="hero-overlay" />
         <div className="hero-content">
           {/* Top Label */}
