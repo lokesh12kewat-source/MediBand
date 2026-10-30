@@ -27,6 +27,60 @@
 
 ---
 
+## [v0.2.0] — 2026-10-30 22:35 IST  |  commit: pending
+
+### Summary
+Completed Task B (Loose Pill Classifier) training on NVIDIA GeForce RTX 4050 GPU achieving 81.87% Top-1 and 95.91% Top-3 accuracy on 513 held-out raw test captures. Integrated end-to-end AI vision inference pipeline into Next.js (`/api/ml/predict`) and live camera viewfinder (`PredictionCard`), with auto-association to Indian medicine metadata, confidence bars, and clinical evidence disclaimers.
+
+---
+
+### Files Changed
+
+#### `ml/prepare_pharmaia_dataset.py`
+- Built zero-leakage data partitioning script for PharmAIA tablet dataset across 26 alphabet classes:
+  - 13,722 training samples (1,527 raw + 12,195 augmented)
+  - 513 validation samples (strictly raw captures)
+  - 513 test samples (strictly held-out raw captures, zero data leakage)
+
+#### `ml/train_pharmaia_gpu.py`
+- Implemented Task B GPU training pipeline on NVIDIA GeForce RTX 4050 GPU (CUDA 12.4 + cuDNN 9.1 + AMP FP16).
+- MobileNetV3-Small backbone with two-phase fine-tuning (4 warm-up epochs + 10 fine-tuning epochs with Cosine Annealing decay).
+- Evaluates on 513 held-out test images and exports `mediband_loose_pill_model.onnx` (6.83 MB).
+
+#### `ml/infer.py`
+- Created unified inference engine supporting both Task A (Packaging, 53 classes) and Task B (Loose Pills, 26 classes).
+- Features dynamic GPU/CPU device dispatch, pre-warmed model caching, and softmax Top-3 extraction with a 50% confidence safety threshold.
+
+#### `app/api/ml/predict/route.ts`
+- Next.js server route accepting base64 image data and recognition mode (`packaging` | `loose_pill`).
+- Dispatches execution to the GPU inference engine and returns confidence scores, Top-3 candidates, and execution latency.
+
+#### `components/ml/PredictionCard.tsx`
+- New interactive UI component displaying:
+  - GPU hardware badge with live inference latency.
+  - Primary predicted medicine with dynamic confidence progress bar.
+  - Top-3 candidate breakdown.
+  - "Auto-Select in Metadata" one-click association button.
+  - Mandatory clinical safety disclosure notice.
+
+#### `components/camera/CameraCapture.tsx`
+- Integrated `PredictionCard` into the post-capture workflow.
+- Auto-triggers inference upon photo capture or file upload, and updates prediction when toggling between Packaging and Loose Pill modes.
+
+#### `generate_presentation_pdf.py` & `MediBand_Presentation_Content.pdf`
+- Updated 5-slide PDF presentation with comprehensive benchmarks for both Task A and Task B models.
+
+---
+
+### Tests
+- **Hardware Verified**: NVIDIA GeForce RTX 4050 Laptop GPU (AMP FP16, Peak Util 99%).
+- **Task B Benchmark (513 Raw Unboxed Tablets)**:
+  - Top-1 Accuracy: **81.87%** (Target $\ge 55\%$: PASSED)
+  - Top-3 Accuracy: **95.91%** (Target $\ge 80\%$: PASSED)
+- **Unit Tests**: 76/76 unit tests passed in `vitest`.
+
+---
+
 ## [v0.1.9] — 2026-10-30 21:35 IST  |  commit: 4a4df73
 
 ### Summary

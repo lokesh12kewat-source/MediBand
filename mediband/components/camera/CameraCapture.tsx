@@ -22,6 +22,7 @@ import {
 import { analyzeCanvas } from '@/lib/image-quality';
 import { createDatasetRecord } from '@/lib/dataset-manager';
 import { INDIAN_MEDICINES } from '@/data/indian-medicines';
+import { PredictionCard, MLPredictionResult } from '@/components/ml/PredictionCard';
 
 interface CameraCaptureProps {
   onCaptureComplete?: (record: DatasetImageRecord) => void;
@@ -61,15 +62,51 @@ export default function CameraCapture({
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [saveSuccess, setSaveSuccess] = useState<string | null>(null);
 
+  // AI Inference Prediction State
+  const [prediction, setPrediction] = useState<MLPredictionResult | null>(null);
+  const [predicting, setPredicting] = useState<boolean>(false);
+
   // DOM Refs
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Trigger GPU/Model Inference
+  const triggerInference = useCallback(async (dataUrl: string, mode: RecognitionType) => {
+    setPredicting(true);
+    setPrediction(null);
+    try {
+      const res = await fetch('/api/ml/predict', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ dataUrl, recognitionType: mode }),
+      });
+      if (res.ok) {
+        const data: MLPredictionResult = await res.json();
+        setPrediction(data);
+        if (data.prediction) {
+          const found = INDIAN_MEDICINES.find(
+            m => m.brand_name.toLowerCase() === data.prediction!.toLowerCase()
+          );
+          if (found) {
+            setSelectedMedicineId(found.medicine_id);
+          }
+        }
+      }
+    } catch (err) {
+      console.warn('AI Vision prediction error:', err);
+    } finally {
+      setPredicting(false);
+    }
+  }, []);
+
   // Update default view option when mode changes
   const handleModeChange = (mode: RecognitionType) => {
     setRecognitionType(mode);
     setImageView(mode === 'packaging' ? 'strip_front' : 'top');
+    if (capturedDataUrl) {
+      triggerInference(capturedDataUrl, mode);
+    }
   };
 
   // Safe stream track cleanup
@@ -200,6 +237,7 @@ export default function CameraCapture({
     // Stop camera stream once captured
     stopStream();
     setCameraState('captured');
+    triggerInference(dataUrl, recognitionType);
   }
 
   // Handle file upload fallback
@@ -229,6 +267,7 @@ export default function CameraCapture({
         }
         setCapturedDataUrl(dataUrl);
         setCameraState('captured');
+        triggerInference(dataUrl, recognitionType);
       };
       img.src = dataUrl;
     };
@@ -241,6 +280,7 @@ export default function CameraCapture({
     setQuality(null);
     setSaveSuccess(null);
     setErrorMessage(null);
+    setPrediction(null);
     startCamera();
   }
 
@@ -605,6 +645,25 @@ export default function CameraCapture({
           </button>
         </div>
       </div>
+
+      {/* AI Vision Neural Prediction Card */}
+      {cameraState === 'captured' && (
+        <PredictionCard
+          result={prediction}
+          loading={predicting}
+          onApplyMedicine={medName => {
+            const found = INDIAN_MEDICINES.find(
+              m => m.brand_name.toLowerCase() === medName.toLowerCase()
+            );
+            if (found) {
+              setSelectedMedicineId(found.medicine_id);
+            } else {
+              setNotes(prev => (prev ? `${prev} | Match: ${medName}` : `Match: ${medName}`));
+            }
+          }}
+          onRetake={retakePhoto}
+        />
+      )}
 
       {/* ── Image Quality Inspection & Warnings ── */}
       {cameraState === 'captured' && quality && (

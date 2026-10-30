@@ -1,0 +1,13 @@
+{
+  "task": "Task B - Loose Pill Classification",
+  "device": "NVIDIA GeForce RTX 4050 Laptop GPU",
+  "cuda_version": "12.4",
+  "classes": 26,
+  "test_samples": 513,
+  "test_top1_accuracy": 0.8187134502923976,
+  "test_top3_accuracy": 0.9590643274853801,
+  "target_top1_met": true,
+  "target_top3_met": true,
+  "onnx_model_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\public\\models\\mediband_loose_pill_model.onnx",
+  "timestamp": "2026-10-30 22:28:38"
+}
