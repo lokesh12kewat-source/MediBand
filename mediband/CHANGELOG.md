@@ -27,7 +27,7 @@
 
 ---
 
-## [v0.2.7] — 2026-10-31 00:25 IST  |  commit: 129a5ce
+## [v0.2.7] — 2026-10-31 00:25 IST  |  commit: 129a5ce, e04fcd3
 
 ### Summary
 Rebuilt the entire landing page and hero UI in the clean Light Theme to match the reference mockup, featuring a two-column hero with live CTAs alongside the 3D Medicine Box, MediBand Scanner Wristband, Indian flag ribbons, and India Gate visual, 4 light-theme KPI cards with chevron buttons, a 4-pillar capability bar, and updated sticky navbar.
