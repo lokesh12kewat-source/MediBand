@@ -27,7 +27,7 @@
 
 ---
 
-## [v0.1.8] — 2026-10-30 18:25 IST  |  commit: PENDING
+## [v0.1.8] — 2026-10-30 18:25 IST  |  commit: f9adada
 
 ### Summary
 Implemented the camera integration and dataset collection foundation for MediBand Indian medicines, featuring browser-native `getUserMedia` with rear-camera preference, distinct Packaging vs Loose Pill recognition modes, real-time image quality evaluation (resolution, blur, darkness, glare), structured `MediBand_Dataset/` storage, Indian medicines metadata schema, and CSV dataset export.
