@@ -27,7 +27,7 @@
 
 ---
 
-## [v0.1.9] — 2026-10-30 21:35 IST  |  commit: pending
+## [v0.1.9] — 2026-10-30 21:35 IST  |  commit: 4a4df73
 
 ### Summary
 Trained Task A (Medicine Packaging Classifier) on NVIDIA GeForce RTX 4050 GPU using PyTorch 2.6 with CUDA 12.4 and AMP FP16 acceleration. Achieved 98.03% Top-1 accuracy and 99.51% Top-3 accuracy on 407 strictly held-out raw test images across 53 Indian medicine brands, and exported the trained model to ONNX for in-browser deployment.
