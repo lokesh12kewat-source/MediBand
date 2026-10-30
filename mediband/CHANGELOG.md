@@ -27,7 +27,7 @@
 
 ---
 
-## [v0.2.0] — 2026-10-30 22:35 IST  |  commit: pending
+## [v0.2.0] — 2026-10-30 22:35 IST  |  commit: e359059
 
 ### Summary
 Completed Task B (Loose Pill Classifier) training on NVIDIA GeForce RTX 4050 GPU achieving 81.87% Top-1 and 95.91% Top-3 accuracy on 513 held-out raw test captures. Integrated end-to-end AI vision inference pipeline into Next.js (`/api/ml/predict`) and live camera viewfinder (`PredictionCard`), with auto-association to Indian medicine metadata, confidence bars, and clinical evidence disclaimers.
