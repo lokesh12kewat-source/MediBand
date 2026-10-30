@@ -27,6 +27,54 @@
 
 ---
 
+## [v0.2.3] — 2026-10-30 23:40 IST  |  commit: c0e15d8
+
+### Summary
+Integrated client-side WebAssembly Optical Character Recognition (`tesseract.js`) with specialized metallic foil image preprocessing, automatic 180° inverted packaging detection, and multi-modal decision fusion (`lib/ocr-engine.ts`) to eliminate false visual pattern matches on generic silver blister packs (e.g. accurately identifying Metronidazole 400 mg instead of Udapa-Trio).
+
+---
+
+### Files Changed
+
+#### `lib/ocr-engine.ts`
+- Implemented metallic foil image preprocessing pipeline:
+  - Grayscale conversion and dynamic contrast enhancement ($2.0\times$ contrast factor) to separate faint printed ink from reflective aluminum foil.
+  - Multi-orientation scanning ($0^\circ$ and $180^\circ$) to automatically recognize upside-down blister strips.
+- Implemented comprehensive pharmaceutical entity extraction:
+  - Active salt / generic identification (`Metronidazole`, `Paracetamol`, `Ciprofloxacin`, etc.).
+  - Dosage strength extraction (`400 mg`, `650 mg`, etc.).
+  - Batch number (`MZT125054`) and Expiry/Mfg date extraction (`01/2028`, `02/2025`).
+  - Manufacturer identification (`Vivek Pharmaceuticals Pvt. Ltd.`).
+  - Regulatory notice detection (`UP GOVT. SUPPLY`, `NOT FOR SALE`, `SCHEDULE H PRESCRIPTION`).
+- Implemented Multi-Modal Arbiter (`resolveMedicineIdentity`):
+  - When ML Vision predicts a packaging pattern with low confidence (e.g. Udapa-Trio 52% on silver foil) but OCR explicitly reads the drug name, OCR overrides the visual guess and flags the discrepancy.
+  - Pre-fills batch number and expiry dates directly from printed foil text into user cabinet workflows.
+
+#### `lib/ocr-engine.vitest.ts`
+- Added 4 unit tests verifying:
+  - Exact entity extraction from user's Metronidazole blister foil image (Drug, Strength, Batch, Expiry, Mfg, Manufacturer, Tenders).
+  - Branded commercial medicine parsing with hyphen/space normalization.
+  - Multi-Modal Arbiter discrepancy resolution (OCR override vs. Vision mimic).
+  - Multi-Modal consensus handling.
+
+#### `components/ml/PredictionCard.tsx`
+- Integrated OCR results and Decision Fusion into UI:
+  - Prominent "Foil Text Verification (OCR Override)" badge and explanation banner.
+  - Automatic prefilling of Batch Number and Expiry Date from OCR into "Add to My Cabinet".
+  - Expandable "Extracted Printed Text from Foil (OCR)" inspector with detected fields and raw OCR text output.
+
+#### `components/camera/CameraCapture.tsx`
+- Integrated dual Vision + OCR capture pipeline: automatically triggers both ML inference and OCR text extraction on capture or upload, and passes data to `PredictionCard`.
+
+---
+
+### Tests
+- **Vitest**: 11/11 test suites passed, 88/88 tests passing (100% pass rate).
+- **TypeScript**: 0 errors (`tsc --noEmit`).
+- **Production Build**: Clean compilation of all routes via `next build`.
+
+---
+
 ## [v0.2.2] — 2026-10-30 23:05 IST  |  commit: 3a94cf4
 
 ### Summary
