@@ -27,7 +27,7 @@
 
 ---
 
-## [v0.1.7] — 2026-10-20 20:10 IST  |  commit: PENDING
+## [v0.1.7] — 2026-10-20 20:10 IST  |  commit: 1bf101c
 
 ### Summary
 Restored MediBand's signature warm orange brand palette (`#FF6115`, `#FF8247`, `#FFF0E8`, `#FAF9F5`) across all design tokens, navbar branding, hero headline and CTAs, scanner progress indicators, cabinet links, and smart band controls, while preserving the modern top-navbar and 4-KPI-card layout inspired by Vidyut AI.
