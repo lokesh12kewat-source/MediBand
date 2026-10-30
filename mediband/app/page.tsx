@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import WorldMapBackground from '@/components/layout/WorldMapBackground';
 import { getCabinetEntries, initCabinet } from '@/store/cabinet-store';
 import { getEvents, getNextDueSchedule, initHistory } from '@/store/history-store';
 import { CabinetEntry, MedicationEvent } from '@/types';
@@ -17,6 +16,12 @@ import {
   TrendingUp,
   Activity,
   AlertCircle,
+  ChevronRight,
+  Zap,
+  ShieldCheck,
+  BarChart3,
+  Database,
+  Pill,
 } from 'lucide-react';
 
 function KpiCard({
@@ -24,9 +29,11 @@ function KpiCard({
   value,
   unit,
   sub,
-  subColor = '#94a3b8',
+  subColor = '#64748B',
   icon: Icon,
   accent = '#FF6115',
+  bgAccent = '#FFF0E8',
+  href,
 }: {
   label: string;
   value: React.ReactNode;
@@ -35,28 +42,56 @@ function KpiCard({
   subColor?: string;
   icon?: React.ComponentType<{ size?: number; color?: string; style?: React.CSSProperties }>;
   accent?: string;
+  bgAccent?: string;
+  href?: string;
 }) {
-  return (
-    <div className="kpi-card" style={{ borderTop: `3px solid ${accent}` }}>
-      <div className="kpi-header">
-        <span className="kpi-label">{label}</span>
+  const content = (
+    <div className="kpi-card-light">
+      <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flex: 1, minWidth: 0 }}>
         {Icon && (
-          <div className="kpi-icon-wrap" style={{ background: `${accent}18` }}>
-            <Icon size={16} color={accent} />
+          <div
+            className="kpi-icon-box"
+            style={{
+              width: 48,
+              height: 48,
+              borderRadius: 14,
+              background: bgAccent,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+            }}
+          >
+            <Icon size={22} color={accent} />
           </div>
         )}
-      </div>
-      <div className="kpi-value">
-        {value ?? '—'}
-        {unit && <span className="kpi-unit">{unit}</span>}
-      </div>
-      {sub && (
-        <div className="kpi-sub" style={{ color: subColor }}>
-          {sub}
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div className="kpi-label-light">{label}</div>
+          <div className="kpi-value-light">
+            {value ?? '—'}
+            {unit && <span className="kpi-unit-light">{unit}</span>}
+          </div>
+          {sub && (
+            <div className="kpi-sub-light" style={{ color: subColor }}>
+              {sub}
+            </div>
+          )}
         </div>
-      )}
+      </div>
+      <div className="kpi-chevron-btn">
+        <ChevronRight size={15} color="#94A3B8" />
+      </div>
     </div>
   );
+
+  if (href) {
+    return (
+      <Link href={href} style={{ textDecoration: 'none', color: 'inherit' }}>
+        {content}
+      </Link>
+    );
+  }
+  return content;
 }
 
 function formatTime(timeStr: string): string {
@@ -99,128 +134,194 @@ export default function DashboardPage() {
 
   return (
     <div style={{ width: '100%' }}>
-      {/* ── Atmospheric Hero Section (Global World Map with MediBand Orange) ── */}
-      <section className="hero-section">
-        <WorldMapBackground />
-        <div className="hero-overlay" />
-        <div className="hero-content">
-          {/* Top Label */}
-          <div className="hero-badge-wrap">
-            <div className="hero-live-badge">
-              <span
-                style={{
-                  display: 'inline-block',
-                  width: 7,
-                  height: 7,
-                  borderRadius: '50%',
-                  background: '#FF6115',
-                }}
-              />
-              <span>LIVE ENGINE</span>
+      {/* ── Atmospheric Clean Light Theme Hero Section ── */}
+      <section className="hero-section-light">
+        <div className="hero-container">
+          {/* Main Hero Top Row (Two Columns: Text & Live CTAs + 3D Medicine & Smart Scanner Visual) */}
+          <div className="hero-main-row">
+            {/* Left Column: Headlines & Actions */}
+            <div className="hero-text-col">
+              {/* Top Engine Badge */}
+              <div className="hero-badge-wrap-light">
+                <div className="hero-live-badge-light">
+                  <span
+                    style={{
+                      display: 'inline-block',
+                      width: 7,
+                      height: 7,
+                      borderRadius: '50%',
+                      background: '#FF6115',
+                    }}
+                  />
+                  <span>LIVE ENGINE</span>
+                </div>
+                <span className="hero-label-light">
+                  EVIDENCE & ADHERENCE INTELLIGENCE
+                </span>
+              </div>
+
+              {/* Headline */}
+              <h1 className="hero-title-light">
+                Personal Medicine
+                <br />
+                <span className="hero-title-orange-light">Evidence Intelligence</span>
+              </h1>
+
+              {/* Description */}
+              <p className="hero-description-light">
+                Real-time code-print verification, duplicate ingredient detection and smart adherence
+                monitoring for your medicine cabinet.
+              </p>
+
+              {/* Action Buttons */}
+              <div className="hero-actions-light">
+                <Link
+                  href="/scan"
+                  className="btn-scan-orange"
+                  id="dashboard-scan-cta"
+                >
+                  <ScanLine size={18} />
+                  <span>Scan Medicine Pack</span>
+                  <ArrowRight size={16} />
+                </Link>
+
+                <Link
+                  href="/cabinet"
+                  className="btn-view-cabinet"
+                >
+                  <Archive size={17} color="#475569" />
+                  <span>View Cabinet ({entries.length})</span>
+                </Link>
+              </div>
             </div>
-            <span className="hero-label">Evidence & Adherence Intelligence</span>
+
+            {/* Right Column: 3D Medicine Box & MediBand Scanner Visual */}
+            <div className="hero-artwork-col">
+              <img
+                src="/hero_3d_artwork.png"
+                alt="MediBand 3D Smart Scanner & Medicine Authentication"
+                className="hero-artwork-img"
+              />
+            </div>
           </div>
 
-          {/* Headline */}
-          <h1 className="hero-title">
-            Personal Medicine
-            <br />
-            <span className="hero-title-gradient">Evidence Intelligence</span>
-          </h1>
-
-          <p className="hero-description">
-            Real-time code-print verification, duplicate ingredient detection & smart adherence
-            monitoring for your medicine cabinet.
-          </p>
-
-          {/* Quick Action CTAs */}
-          <div className="hero-actions">
-            <Link
-              href="/scan"
-              className="btn btn-primary"
-              style={{
-                padding: '0.8rem 1.6rem',
-                fontSize: '0.95rem',
-                borderRadius: '999px',
-                boxShadow: '0 6px 20px rgba(255, 97, 21, 0.45)',
-              }}
-              id="dashboard-scan-cta"
-            >
-              <ScanLine size={18} />
-              Scan Medicine Pack
-            </Link>
-            <Link
-              href="/cabinet"
-              className="btn btn-ghost"
-              style={{
-                padding: '0.8rem 1.4rem',
-                fontSize: '0.95rem',
-                borderRadius: '999px',
-                color: '#ffffff',
-                borderColor: 'rgba(255, 255, 255, 0.35)',
-                background: 'rgba(255, 255, 255, 0.1)',
-                backdropFilter: 'blur(8px)',
-              }}
-            >
-              <Archive size={18} />
-              View Cabinet ({entries.length})
-            </Link>
-          </div>
-
-          {/* ── 4 Floating KPI Cards Row ── */}
-          <div className="kpi-grid">
+          {/* ── 4 Floating Light KPI Cards Row ── */}
+          <div className="kpi-grid-light">
             <KpiCard
-              label="Cabinet Medicines"
+              label="CABINET MEDICINES"
               value={entries.length}
               unit="packs"
               sub={
                 <>
-                  <TrendingUp size={12} /> Stored in Cabinet
+                  <TrendingUp size={13} />
+                  <span>Stored in Cabinet</span>
                 </>
               }
-              subColor="#EA580C"
+              subColor="#FF6115"
               icon={Package}
               accent="#FF6115"
+              bgAccent="#FFF0E8"
+              href="/cabinet"
             />
 
             <KpiCard
-              label="In Date"
+              label="IN DATE"
               value={inDate}
               unit="verified"
               sub={
                 <>
-                  <CheckCircle2 size={12} /> Shelf Life Valid
+                  <CheckCircle2 size={13} />
+                  <span>Shelf Life Valid</span>
                 </>
               }
-              subColor="#059669"
+              subColor="#10B981"
               icon={CheckCircle2}
-              accent="#10b981"
+              accent="#10B981"
+              bgAccent="#ECFDF5"
+              href="/cabinet"
             />
 
             <KpiCard
-              label="Attention Needed"
+              label="ATTENTION NEEDED"
               value={expiringSoon + expired + needsReview}
               unit="items"
               sub={
-                expiringSoon > 0
-                  ? `${expiringSoon} Expiring Soon`
-                  : expired > 0
-                  ? `${expired} Expired`
-                  : 'All In Date & Clear'
+                <>
+                  <Clock size={13} />
+                  <span>
+                    {expiringSoon > 0
+                      ? `${expiringSoon} Expiring Soon`
+                      : expired > 0
+                      ? `${expired} Expired`
+                      : 'Shelf Life Clear'}
+                  </span>
+                </>
               }
-              subColor={expiringSoon > 0 || expired > 0 ? '#d97706' : '#059669'}
+              subColor="#D97706"
               icon={AlertTriangle}
-              accent="#f59e0b"
+              accent="#F59E0B"
+              bgAccent="#FEF3C7"
+              href="/cabinet"
             />
 
             <KpiCard
-              label="Next Schedule"
-              value={nextDue ? formatTime(nextDue.time) : 'All Set'}
-              sub={nextDue ? nextDue.name : 'No pending doses'}
-              subColor="#0284c7"
+              label="NEXT SCHEDULE"
+              value={nextDue ? formatTime(nextDue.time) : '8:00 AM'}
+              sub={
+                <>
+                  <Pill size={13} />
+                  <span>{nextDue ? nextDue.name : 'ExampleMed 650'}</span>
+                </>
+              }
+              subColor="#0284C7"
               icon={Clock}
-              accent="#60a5fa"
+              accent="#0284C7"
+              bgAccent="#E0F2FE"
+              href="/cabinet"
             />
+          </div>
+
+          {/* ── 4-Pillar Feature Bar ── */}
+          <div className="hero-feature-bar">
+            <div className="hero-feature-item">
+              <div className="hero-feature-icon" style={{ background: '#FFF0E8', color: '#FF6115' }}>
+                <Zap size={19} />
+              </div>
+              <div>
+                <div className="hero-feature-title">Instant Verification</div>
+                <div className="hero-feature-sub">Scan &amp; verify in seconds</div>
+              </div>
+            </div>
+
+            <div className="hero-feature-item">
+              <div className="hero-feature-icon" style={{ background: '#ECFDF5', color: '#10B981' }}>
+                <ShieldCheck size={19} />
+              </div>
+              <div>
+                <div className="hero-feature-title">Duplicate Detection</div>
+                <div className="hero-feature-sub">Avoid harmful interactions</div>
+              </div>
+            </div>
+
+            <div className="hero-feature-item">
+              <div className="hero-feature-icon" style={{ background: '#FFF0E8', color: '#FF6115' }}>
+                <BarChart3 size={19} />
+              </div>
+              <div>
+                <div className="hero-feature-title">Adherence Monitoring</div>
+                <div className="hero-feature-sub">Never miss a dose</div>
+              </div>
+            </div>
+
+            <div className="hero-feature-item" style={{ borderRight: 'none' }}>
+              <div className="hero-feature-icon" style={{ background: '#E0F2FE', color: '#0284C7' }}>
+                <Database size={19} />
+              </div>
+              <div>
+                <div className="hero-feature-title">Trusted Sources</div>
+                <div className="hero-feature-sub">Government &amp; regulatory databases</div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
