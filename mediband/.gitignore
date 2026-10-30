@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# ML datasets, models and caches
+*.zip
+__dataset_inspect/
+ml/.cache/
+ml/saved_models/
+ml/data_splits/*.csv
+

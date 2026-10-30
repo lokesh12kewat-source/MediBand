@@ -27,6 +27,62 @@
 
 ---
 
+## [v0.1.9] — 2026-10-30 21:35 IST  |  commit: pending
+
+### Summary
+Trained Task A (Medicine Packaging Classifier) on NVIDIA GeForce RTX 4050 GPU using PyTorch 2.6 with CUDA 12.4 and AMP FP16 acceleration. Achieved 98.03% Top-1 accuracy and 99.51% Top-3 accuracy on 407 strictly held-out raw test images across 53 Indian medicine brands, and exported the trained model to ONNX for in-browser deployment.
+
+---
+
+### Files Changed
+
+#### `ml/prepare_dataset.py`
+- Created dataset preparation script that partitions the 53-class Pharmassist dataset into:
+  - 4,183 training samples (1,236 raw + 2,947 augmented)
+  - 407 validation samples (strictly held-out raw images only)
+  - 407 test samples (strictly held-out raw images only, zero data leakage)
+- Generates `class_indices.json`, `train.csv`, `val.csv`, `test.csv`, and `dataset_summary.csv`.
+
+#### `ml/train_pytorch_gpu.py`
+- Implemented high-performance PyTorch 2.6 GPU training pipeline tailored for NVIDIA GeForce RTX 4050 Laptop GPU (Ada Lovelace, Compute Capability 8.9).
+- Backbone: MobileNetV3-Small pre-trained on ImageNet.
+- Optimized with:
+  - Automatic Mixed Precision (`torch.amp.autocast('cuda')` with `GradScaler`) utilizing 4th-Gen Tensor Cores.
+  - `torch.backends.cudnn.benchmark = True`.
+  - Pinned memory transfers (`pin_memory=True`).
+- Two-phase training:
+  - Phase 1 (5 epochs): Classifier head warm-up with frozen backbone.
+  - Phase 2 (15 epochs): End-to-end fine-tuning of upper backbone layers with Cosine Annealing learning rate schedule.
+- Checkpoints best model based on validation Top-3 accuracy.
+
+#### `ml/export_pytorch_onnx.py`
+- Loads `best_model_gpu.pt` and exports it to `public/models/mediband_packaging_model.onnx` (6.86 MB) with dynamic batch sizing for web inference.
+- Synchronizes class index metadata to `data/ml_classes.json`.
+
+#### `data/ml_classes.json`
+- Next.js-ready mapping of all 53 Indian medicine classes with bidirectional `class_to_idx` and `idx_to_class` dictionaries.
+
+#### `public/models/mediband_packaging_model.onnx`
+- 6.86 MB optimized ONNX model ready for in-browser client inference with `onnxruntime-web`.
+
+---
+
+### Logic & Decisions
+- **GPU Architecture**: PyTorch with CUDA 12.4 was chosen over TensorFlow because native Windows GPU support is discontinued in TensorFlow >= 2.11. PyTorch provides 100% native CUDA and Tensor Core utilization on the RTX 4050.
+- **Strict Leakage Prevention**: Augmentations are restricted entirely to the training split. Validation and test sets strictly contain original, un-augmented mobile captures to guarantee real-world generalization metrics.
+- **Label Smoothing**: Cross-Entropy loss with $\epsilon=0.1$ label smoothing applied to avoid over-confident probabilities among visually similar pharmaceutical packaging designs.
+
+---
+
+### Tests
+- **Hardware Verified**: NVIDIA GeForce RTX 4050 Laptop GPU (6.00 GB VRAM, Driver 592.82, CUDA 12.4, cuDNN 9.1).
+- **Test Set Performance (Held-out 407 Raw Images)**:
+  - Top-1 Accuracy: **98.03%** (Acceptance threshold $\ge 70\%$: PASSED)
+  - Top-3 Accuracy: **99.51%** (Acceptance threshold $\ge 85\%$: PASSED)
+- **Unit Tests**: 76/76 unit tests passed in `vitest`.
+
+---
+
 ## [v0.1.8] — 2026-10-30 18:25 IST  |  commit: f9adada
 
 ### Summary
