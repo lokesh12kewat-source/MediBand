@@ -27,6 +27,29 @@
 
 ---
 
+## [v0.2.6] — 2026-10-31 00:15 IST  |  commit: 5db617c
+
+### Summary
+Updated the hero world map background to a clean, minimal continental silhouette directly matching the user's uploaded reference image, removing all flight arrows, arcs, city labels, radar circles, and HUD badges, and styling the silhouette in MediBand deep-slate & porcelain theme.
+
+---
+
+### Files Changed
+
+#### `components/layout/WorldMapBackground.tsx` & `public/world_map.svg`
+- Replaced the previous flight arcs, radar pulses, hub nodes, and telemetry labels with a clean, vector-traced continental silhouette (47 closed polygon rings, 1,763 vertices).
+- Continental landmasses rendered in deep porcelain/slate gradient (`#334766` to `#223049`) with crisp `#526E96` boundary stroke (`1.6px`) and subtle coastline glow.
+- Base ocean canvas rendered in deep midnight navy (`#141E33` to `#070C16`).
+- Zero arrows, zero flight paths, zero radar rings, zero city labels.
+
+---
+
+### Tests
+- `npx tsc --noEmit`: 0 TypeScript compiler errors.
+- `npx vitest run`: 88 / 88 unit tests passed across all 11 test suites.
+
+---
+
 ## [v0.2.5] — 2026-10-31 00:05 IST  |  commit: b7bf71e
 
 ### Summary
