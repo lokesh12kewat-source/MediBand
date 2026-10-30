@@ -27,6 +27,41 @@
 
 ---
 
+## [v0.2.4] — 2026-10-30 23:50 IST  |  commit: 3cc8b6f
+
+### Summary
+Replaced the India Gate hero background with an ultra-crisp vector World Map ([`public/world_map.svg`](file:///c:/Users/OMEN/OneDrive/Desktop/SO_in_HH/mediband/public/world_map.svg)) on the dashboard landing page, featuring global pharmaceutical supply chain flight arcs, coordinate graticules, and glowing pulse nodes centered on international bio-hubs.
+
+---
+
+### Files Changed
+
+#### `public/world_map.svg`
+- Created high-fidelity vector World Map SVG (2000×1000):
+  - Digital dot-matrix oceanic background (`#141E33` to `#050810`).
+  - Latitude/longitude graticule coordinate lines.
+  - Detailed continental landmasses with subtle tech borders.
+  - Global pharmaceutical supply chain connection arcs radiating between India, Geneva (WHO), London, Frankfurt, New York, Tokyo, Singapore, and Sydney.
+  - Glowing pulse nodes with MediBand Neon Orange (`#FF6115`) radar rings on Indian pharmaceutical centers (Delhi, Mumbai, Hyderabad).
+
+#### `public/hero_bg.jpg`
+- Permanently deleted the legacy India Gate photograph.
+
+#### `app/globals.css`
+- Updated `.hero-bg` to load `/world_map.svg` with `background-size: cover; background-position: center;`.
+- Replaced the previous dark gradient overlay on `.hero-overlay` with a cinematic radial vignette (`rgba(15, 23, 42, 0.45)` to `0.92)` ensuring the World Map and global arcs remain clearly visible while keeping hero text legible.
+
+#### `app/page.tsx`
+- Updated section comments and structure to reflect the global intelligence dashboard theme.
+
+---
+
+### Tests
+- **Vitest**: 11/11 test suites passed, 88/88 tests passing.
+- **TypeScript**: 0 errors (`tsc --noEmit`).
+
+---
+
 ## [v0.2.3] — 2026-10-30 23:40 IST  |  commit: c0e15d8
 
 ### Summary
