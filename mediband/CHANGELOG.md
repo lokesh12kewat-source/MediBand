@@ -27,6 +27,46 @@
 
 ---
 
+## [v0.2.1] — 2026-10-30 22:50 IST  |  commit: edc1247
+
+### Summary
+Expanded Indian medicine metadata repository across all 53 ML brand classes (55 total medications), integrated active ingredient overlap conflict detection (preventing accidental duplicate therapy e.g. Paracetamol toxicity), added seamless one-click cabinet ingestion and adherence dose logging to `PredictionCard`, and introduced headless storage fallbacks passing 80/80 unit tests across 9 suites.
+
+---
+
+### Files Changed
+
+#### `data/indian-medicines.ts` & `data/indian-medicines.json`
+- Expanded dataset to cover all 53 packaging recognition classes (55 products total) with standard schema: `medicine_id`, `brand_name`, `generic_name`, `strength`, `dosage_form`, `manufacturer`, `product_identifier`, and `reference_status`.
+- Maintained helper search functions `getMedicineById` and `searchMedicines`.
+
+#### `components/ml/PredictionCard.tsx`
+- Added real-time active ingredient conflict analysis via `lib/ingredient-normalizer.ts`:
+  - Scans user cabinet against candidate medicine's generic composition.
+  - Warns against duplicate active therapy (e.g. Paracetamol in Dolo-650 vs. Calpol 500).
+- Implemented "Add to My Cabinet" modal enabling direct onboarding of verified captures with batch number, expiry date, initial quantity, and schedule.
+- Implemented one-click "Log Dose Taken" action writing directly to `store/history-store.ts`.
+- Retained strict clinical safety disclaimers and probabilistic match reporting.
+
+#### `store/cabinet-store.ts` & `store/history-store.ts`
+- Added in-memory fallback storage mechanism (`memoryStore`) when running outside browser environment (Node.js runtime / Vitest / SSR).
+- Exported `clearCabinetStore` and `clearHistoryStore` to guarantee zero state leakage across test cases.
+
+#### `lib/prediction-safety.vitest.ts`
+- Added comprehensive unit test suite covering:
+  - Active ingredient overlap detection (Dolo-650 + Calpol 500).
+  - Absence of false conflicts between distinct active compounds (Shelcal 500 + Dolo-650).
+  - End-to-end vision-predicted medication ingestion into user cabinet.
+  - Adherence dose logging from prediction cards.
+
+---
+
+### Tests
+- **Vitest**: 9/9 test suites passed, 80/80 tests passing (including 4 new clinical safety and cabinet integration tests).
+- **Execution Time**: 753ms across entire suite.
+
+---
+
 ## [v0.2.0] — 2026-10-30 22:35 IST  |  commit: e359059
 
 ### Summary
