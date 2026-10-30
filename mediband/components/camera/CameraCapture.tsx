@@ -23,6 +23,7 @@ import { analyzeCanvas } from '@/lib/image-quality';
 import { createDatasetRecord } from '@/lib/dataset-manager';
 import { INDIAN_MEDICINES } from '@/data/indian-medicines';
 import { PredictionCard, MLPredictionResult } from '@/components/ml/PredictionCard';
+import { runClientInference } from '@/lib/onnx-client';
 
 interface CameraCaptureProps {
   onCaptureComplete?: (record: DatasetImageRecord) => void;
@@ -65,40 +66,85 @@ export default function CameraCapture({
   // AI Inference Prediction State
   const [prediction, setPrediction] = useState<MLPredictionResult | null>(null);
   const [predicting, setPredicting] = useState<boolean>(false);
+  const [inferenceEngine, setInferenceEngine] = useState<'server' | 'client'>('server');
 
   // DOM Refs
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Trigger GPU/Model Inference
-  const triggerInference = useCallback(async (dataUrl: string, mode: RecognitionType) => {
-    setPredicting(true);
-    setPrediction(null);
-    try {
-      const res = await fetch('/api/ml/predict', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ dataUrl, recognitionType: mode }),
-      });
-      if (res.ok) {
-        const data: MLPredictionResult = await res.json();
-        setPrediction(data);
-        if (data.prediction) {
-          const found = INDIAN_MEDICINES.find(
-            m => m.brand_name.toLowerCase() === data.prediction!.toLowerCase()
-          );
-          if (found) {
-            setSelectedMedicineId(found.medicine_id);
+  // Trigger GPU/Model Inference (with client-side WASM fallback)
+  const triggerInference = useCallback(
+    async (
+      dataUrl: string,
+      mode: RecognitionType,
+      targetEngine?: 'server' | 'client'
+    ) => {
+      const activeEngine = targetEngine ?? inferenceEngine;
+      setPredicting(true);
+      setPrediction(null);
+
+      // If user chosen Client-Side WASM engine directly
+      if (activeEngine === 'client') {
+        try {
+          const clientData = await runClientInference(dataUrl, mode);
+          setPrediction(clientData);
+          if (clientData.prediction) {
+            const found = INDIAN_MEDICINES.find(
+              m => m.brand_name.toLowerCase() === clientData.prediction!.toLowerCase()
+            );
+            if (found) setSelectedMedicineId(found.medicine_id);
           }
+        } catch (err) {
+          console.warn('Client-side ONNX inference error:', err);
+        } finally {
+          setPredicting(false);
         }
+        return;
       }
-    } catch (err) {
-      console.warn('AI Vision prediction error:', err);
-    } finally {
-      setPredicting(false);
-    }
-  }, []);
+
+      // Default: Server GPU route with automatic fallback to Client WASM
+      try {
+        const res = await fetch('/api/ml/predict', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ dataUrl, recognitionType: mode }),
+        });
+
+        if (res.ok) {
+          const data: MLPredictionResult = await res.json();
+          setPrediction(data);
+          if (data.prediction) {
+            const found = INDIAN_MEDICINES.find(
+              m => m.brand_name.toLowerCase() === data.prediction!.toLowerCase()
+            );
+            if (found) {
+              setSelectedMedicineId(found.medicine_id);
+            }
+          }
+        } else {
+          throw new Error(`Server returned ${res.status}`);
+        }
+      } catch (err) {
+        console.warn('Server inference error, falling back to client-side ONNX:', err);
+        try {
+          const fallbackData = await runClientInference(dataUrl, mode);
+          setPrediction(fallbackData);
+          if (fallbackData.prediction) {
+            const found = INDIAN_MEDICINES.find(
+              m => m.brand_name.toLowerCase() === fallbackData.prediction!.toLowerCase()
+            );
+            if (found) setSelectedMedicineId(found.medicine_id);
+          }
+        } catch (clientErr) {
+          console.error('Client-side inference fallback also failed:', clientErr);
+        }
+      } finally {
+        setPredicting(false);
+      }
+    },
+    [inferenceEngine]
+  );
 
   // Update default view option when mode changes
   const handleModeChange = (mode: RecognitionType) => {
@@ -349,61 +395,124 @@ export default function CameraCapture({
             </p>
           </div>
 
-          {/* Recognition Category Switcher */}
-          <div
-            style={{
-              display: 'inline-flex',
-              background: '#F1F0EA',
-              padding: '3px',
-              borderRadius: '999px',
-              border: '1px solid #E2E0D8',
-            }}
-            role="group"
-            aria-label="Recognition Category"
-          >
-            <button
-              type="button"
-              onClick={() => handleModeChange('packaging')}
+          {/* Recognition Category & Inference Engine Controls */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+            {/* Category Switcher */}
+            <div
               style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '6px 14px',
-                fontSize: '0.8rem',
-                fontWeight: recognitionType === 'packaging' ? 700 : 500,
-                color: recognitionType === 'packaging' ? '#FFFFFF' : '#4A5568',
-                background: recognitionType === 'packaging' ? 'var(--orange)' : 'transparent',
-                border: 'none',
+                display: 'inline-flex',
+                background: '#F1F0EA',
+                padding: '3px',
                 borderRadius: '999px',
-                cursor: 'pointer',
-                transition: 'all 0.15s ease',
+                border: '1px solid #E2E0D8',
               }}
+              role="group"
+              aria-label="Recognition Category"
             >
-              <Package size={14} />
-              Scan Packaging
-            </button>
+              <button
+                type="button"
+                onClick={() => handleModeChange('packaging')}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '6px 14px',
+                  fontSize: '0.8rem',
+                  fontWeight: recognitionType === 'packaging' ? 700 : 500,
+                  color: recognitionType === 'packaging' ? '#FFFFFF' : '#4A5568',
+                  background: recognitionType === 'packaging' ? 'var(--orange)' : 'transparent',
+                  border: 'none',
+                  borderRadius: '999px',
+                  cursor: 'pointer',
+                  transition: 'all 0.15s ease',
+                }}
+              >
+                <Package size={14} />
+                Scan Packaging
+              </button>
 
-            <button
-              type="button"
-              onClick={() => handleModeChange('loose_pill')}
+              <button
+                type="button"
+                onClick={() => handleModeChange('loose_pill')}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '6px 14px',
+                  fontSize: '0.8rem',
+                  fontWeight: recognitionType === 'loose_pill' ? 700 : 500,
+                  color: recognitionType === 'loose_pill' ? '#FFFFFF' : '#4A5568',
+                  background: recognitionType === 'loose_pill' ? 'var(--orange)' : 'transparent',
+                  border: 'none',
+                  borderRadius: '999px',
+                  cursor: 'pointer',
+                  transition: 'all 0.15s ease',
+                }}
+              >
+                <CircleDot size={14} />
+                Scan Loose Pill
+              </button>
+            </div>
+
+            {/* Inference Engine Switcher */}
+            <div
               style={{
-                display: 'flex',
+                display: 'inline-flex',
                 alignItems: 'center',
-                gap: '6px',
-                padding: '6px 14px',
-                fontSize: '0.8rem',
-                fontWeight: recognitionType === 'loose_pill' ? 700 : 500,
-                color: recognitionType === 'loose_pill' ? '#FFFFFF' : '#4A5568',
-                background: recognitionType === 'loose_pill' ? 'var(--orange)' : 'transparent',
-                border: 'none',
+                background: '#F8F9FA',
+                padding: '3px',
                 borderRadius: '999px',
-                cursor: 'pointer',
-                transition: 'all 0.15s ease',
+                border: '1px solid #E5E7EB',
+                gap: '2px',
               }}
+              role="group"
+              aria-label="Inference Engine"
             >
-              <CircleDot size={14} />
-              Scan Loose Pill
-            </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setInferenceEngine('server');
+                  if (capturedDataUrl) triggerInference(capturedDataUrl, recognitionType, 'server');
+                }}
+                style={{
+                  padding: '5px 10px',
+                  fontSize: '0.725rem',
+                  fontWeight: inferenceEngine === 'server' ? 700 : 500,
+                  color: inferenceEngine === 'server' ? '#FF6115' : '#6B7280',
+                  background: inferenceEngine === 'server' ? '#FFFFFF' : 'transparent',
+                  border: 'none',
+                  borderRadius: '999px',
+                  cursor: 'pointer',
+                  boxShadow: inferenceEngine === 'server' ? '0 1px 2px rgba(0,0,0,0.06)' : 'none',
+                  transition: 'all 0.15s ease',
+                }}
+                title="Runs inference on NVIDIA GeForce RTX 4050 GPU via server route"
+              >
+                ⚡ RTX 4050 GPU
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setInferenceEngine('client');
+                  if (capturedDataUrl) triggerInference(capturedDataUrl, recognitionType, 'client');
+                }}
+                style={{
+                  padding: '5px 10px',
+                  fontSize: '0.725rem',
+                  fontWeight: inferenceEngine === 'client' ? 700 : 500,
+                  color: inferenceEngine === 'client' ? '#2563EB' : '#6B7280',
+                  background: inferenceEngine === 'client' ? '#FFFFFF' : 'transparent',
+                  border: 'none',
+                  borderRadius: '999px',
+                  cursor: 'pointer',
+                  boxShadow: inferenceEngine === 'client' ? '0 1px 2px rgba(0,0,0,0.06)' : 'none',
+                  transition: 'all 0.15s ease',
+                }}
+                title="Runs inference directly inside user browser via WebAssembly (ONNX Runtime)"
+              >
+                🌐 In-Browser WASM
+              </button>
+            </div>
           </div>
         </div>
 

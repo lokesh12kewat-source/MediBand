@@ -257,8 +257,15 @@ export function PredictionCard({
             fontWeight: 600,
           }}
         >
-          <Cpu size={12} color="#10B981" />
-          <span>RTX 4050 GPU ({result.inferenceMs} ms)</span>
+          <Cpu size={12} color={result.device?.includes('WebAssembly') ? '#2563EB' : '#10B981'} />
+          <span>
+            {result.device?.includes('WebAssembly')
+              ? 'Browser WASM'
+              : result.device?.includes('cuda') || result.device?.includes('RTX')
+              ? 'RTX 4050 GPU'
+              : result.device || 'AI Engine'}{' '}
+            ({result.inferenceMs} ms)
+          </span>
         </div>
       </div>
 
