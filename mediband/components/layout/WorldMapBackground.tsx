@@ -2,6 +2,12 @@
 
 import React from 'react';
 
+/**
+ * Clean World Map Silhouette Background
+ * Exact match to user-provided world map silhouette.
+ * Pure silhouette with zero arrows, flight arcs, radar pulses, or text badges.
+ * Styled in MediBand deep-slate & porcelain theme.
+ */
 export default function WorldMapBackground() {
   return (
     <div
@@ -18,7 +24,7 @@ export default function WorldMapBackground() {
       }}
     >
       <svg
-        viewBox="0 0 2000 1000"
+        viewBox="0 0 2000 1200"
         preserveAspectRatio="xMidYMid slice"
         style={{
           width: '100%',
@@ -28,521 +34,42 @@ export default function WorldMapBackground() {
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
-          {/* Deep Navy/Slate Ocean Gradient */}
-          <radialGradient id="mapOceanGrad" cx="50%" cy="40%" r="75%">
-            <stop offset="0%" stopColor="#111B2E" />
-            <stop offset="50%" stopColor="#0B1220" />
-            <stop offset="85%" stopColor="#070C16" />
-            <stop offset="100%" stopColor="#040810" />
+          {/* Deep Navy / Slate Ocean Gradient */}
+          <radialGradient id="cleanMapOcean" cx="50%" cy="45%" r="70%">
+            <stop offset="0%" stopColor="#141E33" />
+            <stop offset="50%" stopColor="#0E1626" />
+            <stop offset="100%" stopColor="#070C16" />
           </radialGradient>
 
-          {/* Continent Land Gradient */}
-          <linearGradient id="landGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#1E2E4A" />
-            <stop offset="100%" stopColor="#142036" />
+          {/* Continent Land Gradient (MediBand Theme Porcelain/Slate Tone) */}
+          <linearGradient id="cleanMapLand" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#334766" />
+            <stop offset="100%" stopColor="#223049" />
           </linearGradient>
 
-          {/* India Highlight Gradient */}
-          <linearGradient id="indiaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#FF6115" stopOpacity="0.35" />
-            <stop offset="100%" stopColor="#FF8A48" stopOpacity="0.18" />
-          </linearGradient>
-
-          {/* Supply Chain Arc Gradient */}
-          <linearGradient id="mapArcGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#FF6115" stopOpacity="0.95" />
-            <stop offset="50%" stopColor="#FFA066" stopOpacity="0.8" />
-            <stop offset="100%" stopColor="#38BDF8" stopOpacity="0.9" />
-          </linearGradient>
-
-          {/* Arc Glow Filter */}
-          <filter id="mapLineGlow" x="-30%" y="-30%" width="160%" height="160%">
-            <feGaussianBlur stdDeviation="3.5" result="blur" />
+          {/* Subtle Outer Glow on Coastlines */}
+          <filter id="cleanMapGlow" x="-10%" y="-10%" width="120%" height="120%">
+            <feGaussianBlur stdDeviation="2" result="blur" />
             <feMerge>
               <feMergeNode in="blur" />
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
-
-          {/* Hub Glow Filter */}
-          <filter id="mapHubGlow" x="-60%" y="-60%" width="220%" height="220%">
-            <feGaussianBlur stdDeviation="5" result="blur" />
-            <feMerge>
-              <feMergeNode in="blur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-
-          {/* Continent Outer Glow Filter */}
-          <filter id="mapCoastGlow" x="-10%" y="-10%" width="120%" height="120%">
-            <feGaussianBlur stdDeviation="2.5" result="blur" />
-            <feMerge>
-              <feMergeNode in="blur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-
-          {/* Dot Grid Pattern for Nautical Cartography */}
-          <pattern id="mapDotGrid" width="30" height="30" patternUnits="userSpaceOnUse">
-            <circle cx="15" cy="15" r="1.2" fill="#38BDF8" opacity="0.25" />
-          </pattern>
         </defs>
 
         {/* 1. Base Ocean Canvas */}
-        <rect width="2000" height="1000" fill="url(#mapOceanGrad)" />
+        <rect width="2000" height="1200" fill="url(#cleanMapOcean)" />
 
-        {/* 2. Nautical Dot Grid */}
-        <rect width="2000" height="1000" fill="url(#mapDotGrid)" />
-
-        {/* 3. Global Coordinate Graticules (Latitude & Longitude) */}
-        <g stroke="#38BDF8" strokeWidth="1" strokeDasharray="4,8" opacity="0.22">
-          {/* Latitudes */}
-          <line x1="50" y1="200" x2="1950" y2="200" />
-          <line x1="50" y1="350" x2="1950" y2="350" />
-          <line x1="50" y1="500" x2="1950" y2="500" stroke="#38BDF8" strokeWidth="1.8" strokeDasharray="8,6" opacity="0.45" /> {/* Equator */}
-          <line x1="50" y1="650" x2="1950" y2="650" />
-          <line x1="50" y1="800" x2="1950" y2="800" />
-
-          {/* Longitudes */}
-          <line x1="250" y1="50" x2="250" y2="950" />
-          <line x1="500" y1="50" x2="500" y2="950" />
-          <line x1="750" y1="50" x2="750" y2="950" />
-          <line x1="1000" y1="50" x2="1000" y2="950" stroke="#38BDF8" strokeWidth="1.8" strokeDasharray="8,6" opacity="0.45" /> {/* Prime Meridian */}
-          <line x1="1250" y1="50" x2="1250" y2="950" />
-          <line x1="1500" y1="50" x2="1500" y2="950" />
-          <line x1="1750" y1="50" x2="1750" y2="950" />
-        </g>
-
-        {/* 4. High-Contrast Continents & Landmasses with Electric Cyan Borders */}
-        <g filter="url(#mapCoastGlow)">
-          {/* North America */}
-          <polygon
-            points="160,209 175,183 225,183 300,192 350,187 425,192 525,178 600,174 590,209 675,241 725,268 700,294 670,303 645,312 625,330 600,357 595,388 575,370 550,366 515,384 515,411 560,429 585,455 615,464 595,464 575,446 540,429 500,420 475,397 450,393 425,366 400,348 380,330 380,285 350,259 320,236 275,232 225,241 175,232 160,209"
-            fill="url(#landGrad)"
-            stroke="#60A5FA"
-            strokeWidth="2"
-            opacity="0.95"
-          />
-
-          {/* Greenland */}
-          <polygon
-            points="775,232 825,209 875,187 900,156 850,129 775,129 725,142 700,165 750,209 775,232"
-            fill="url(#landGrad)"
-            stroke="#60A5FA"
-            strokeWidth="1.8"
-            opacity="0.95"
-          />
-
-          {/* South America */}
-          <polygon
-            points="615,464 640,451 690,455 750,500 825,522 825,545 810,581 790,603 750,634 725,657 675,701 660,741 630,733 625,701 640,670 645,634 620,581 600,522 600,491 615,464"
-            fill="url(#landGrad)"
-            stroke="#60A5FA"
-            strokeWidth="2"
-            opacity="0.95"
-          />
-
-          {/* Europe */}
-          <polygon
-            points="955,339 955,308 995,303 980,285 1010,272 1040,259 1040,241 1075,250 1100,232 1140,209 1125,183 1160,187 1200,201 1250,196 1300,196 1300,277 1250,285 1200,299 1175,294 1150,294 1140,317 1115,330 1080,321 1060,303 1015,312 985,339 955,339"
-            fill="url(#landGrad)"
-            stroke="#60A5FA"
-            strokeWidth="2"
-            opacity="0.95"
-          />
-
-          {/* British Isles */}
-          <polygon
-            points="975,277 995,272 1005,263 1000,241 985,241 975,254 975,277"
-            fill="url(#landGrad)"
-            stroke="#60A5FA"
-            strokeWidth="1.8"
-            opacity="0.95"
-          />
-
-          {/* Africa */}
-          <polygon
-            points="970,339 1050,335 1125,357 1170,361 1175,379 1215,446 1255,446 1240,478 1200,522 1175,567 1160,625 1140,652 1090,652 1060,589 1045,522 1040,482 1010,473 960,482 925,446 915,433 915,406 935,375 970,339"
-            fill="url(#landGrad)"
-            stroke="#60A5FA"
-            strokeWidth="2"
-            opacity="0.95"
-          />
-
-          {/* Madagascar */}
-          <polygon
-            points="1220,554 1250,567 1240,612 1220,612 1220,554"
-            fill="url(#landGrad)"
-            stroke="#60A5FA"
-            strokeWidth="1.8"
-            opacity="0.95"
-          />
-
-          {/* Asia / Eurasia */}
-          <polygon
-            points="1300,196 1350,174 1425,165 1525,151 1650,178 1800,187 1900,205 1850,232 1775,254 1710,277 1675,299 1650,330 1610,330 1600,357 1590,393 1540,402 1525,455 1500,491 1490,455 1450,402 1400,429 1400,464 1385,464 1360,411 1340,393 1310,388 1280,384 1270,393 1250,433 1215,446 1175,379 1175,344 1200,321 1250,285 1300,277 1300,196"
-            fill="url(#landGrad)"
-            stroke="#60A5FA"
-            strokeWidth="2"
-            opacity="0.95"
-          />
-
-          {/* Japan */}
-          <polygon
-            points="1650,357 1675,344 1700,321 1725,303 1710,299 1690,330 1650,357"
-            fill="url(#landGrad)"
-            stroke="#60A5FA"
-            strokeWidth="1.8"
-            opacity="0.95"
-          />
-
-          {/* Southeast Asia / Indonesia */}
-          <polygon
-            points="1475,478 1525,522 1575,536 1600,536 1575,509 1525,500 1475,478"
-            fill="url(#landGrad)"
-            stroke="#60A5FA"
-            strokeWidth="1.8"
-            opacity="0.95"
-          />
-          <polygon
-            points="1550,513 1590,478 1575,469 1545,491 1550,513"
-            fill="url(#landGrad)"
-            stroke="#60A5FA"
-            strokeWidth="1.8"
-            opacity="0.95"
-          />
-
-          {/* Australia */}
-          <polygon
-            points="1570,598 1600,567 1675,554 1710,545 1730,581 1765,625 1750,661 1690,657 1650,643 1575,652 1570,625 1570,598"
-            fill="url(#landGrad)"
-            stroke="#60A5FA"
-            strokeWidth="2"
-            opacity="0.95"
-          />
-
-          {/* New Zealand */}
-          <polygon
-            points="1840,706 1870,683 1890,665 1875,657 1860,679 1840,706"
-            fill="url(#landGrad)"
-            stroke="#60A5FA"
-            strokeWidth="1.8"
-            opacity="0.95"
-          />
-        </g>
-
-        {/* 5. Special MediBand Highlight: Indian Subcontinent (Neon Orange) */}
-        <g id="indiaHighlight">
-          {/* India Continental Boundary */}
-          <polygon
-            points="1340,393 1360,411 1370,433 1385,464 1400,464 1400,442 1425,420 1445,402 1460,406 1440,379 1400,366 1370,357 1360,375 1340,393"
-            fill="url(#indiaGrad)"
-            stroke="#FF6115"
-            strokeWidth="2.8"
-            filter="drop-shadow(0 0 14px rgba(255, 97, 21, 0.75))"
-          />
-          {/* Sri Lanka */}
-          <circle
-            cx="1405"
-            cy="484"
-            r="7"
-            fill="#FF6115"
-            fillOpacity="0.4"
-            stroke="#FF6115"
-            strokeWidth="1.8"
-          />
-
-          {/* Animated/Glowing Radar Pulse Rings from Delhi (1386, 372) */}
-          <circle
-            cx="1386"
-            cy="372"
-            r="45"
-            fill="none"
-            stroke="#FF6115"
-            strokeWidth="1.5"
-            strokeDasharray="4,4"
-            opacity="0.6"
-          />
-          <circle
-            cx="1386"
-            cy="372"
-            r="85"
-            fill="none"
-            stroke="#FF6115"
-            strokeWidth="1.2"
-            strokeDasharray="6,6"
-            opacity="0.4"
-          />
-          <circle
-            cx="1386"
-            cy="372"
-            r="135"
-            fill="none"
-            stroke="#FF6115"
-            strokeWidth="1"
-            strokeDasharray="8,8"
-            opacity="0.25"
-          />
-        </g>
-
-        {/* 6. International Supply Chain & Verification Flight Arcs */}
-        <g filter="url(#mapLineGlow)">
-          {/* India (Delhi) -> Geneva (WHO HQ) */}
-          <path
-            d="M 1386 372 Q 1208 220 1030 293"
-            fill="none"
-            stroke="url(#mapArcGrad)"
-            strokeWidth="2.4"
-            strokeDasharray="8,5"
-            strokeLinecap="round"
-          />
-          {/* India (Delhi) -> London (MHRA) */}
-          <path
-            d="M 1386 372 Q 1192 195 1000 270"
-            fill="none"
-            stroke="url(#mapArcGrad)"
-            strokeWidth="2.4"
-            strokeDasharray="8,5"
-            strokeLinecap="round"
-          />
-          {/* India (Delhi) -> Frankfurt (Pharma Logistics) */}
-          <path
-            d="M 1386 372 Q 1215 210 1044 276"
-            fill="none"
-            stroke="url(#mapArcGrad)"
-            strokeWidth="2.2"
-            strokeDasharray="8,5"
-            strokeLinecap="round"
-          />
-          {/* India (Delhi) -> New York / FDA */}
-          <path
-            d="M 1386 372 Q 1000 160 630 318"
-            fill="none"
-            stroke="url(#mapArcGrad)"
-            strokeWidth="2.6"
-            strokeDasharray="9,6"
-            strokeLinecap="round"
-          />
-          {/* India (Delhi) -> Tokyo (PMDA) */}
-          <path
-            d="M 1386 372 Q 1542 275 1698 340"
-            fill="none"
-            stroke="url(#mapArcGrad)"
-            strokeWidth="2.4"
-            strokeDasharray="8,5"
-            strokeLinecap="round"
-          />
-          {/* India (Delhi) -> Singapore (BioMed Hub) */}
-          <path
-            d="M 1386 372 Q 1452 345 1519 494"
-            fill="none"
-            stroke="url(#mapArcGrad)"
-            strokeWidth="2.2"
-            strokeDasharray="8,5"
-            strokeLinecap="round"
-          />
-          {/* India (Delhi) -> Sydney (TGA) */}
-          <path
-            d="M 1386 372 Q 1571 300 1756 651"
-            fill="none"
-            stroke="url(#mapArcGrad)"
-            strokeWidth="2.4"
-            strokeDasharray="8,5"
-            strokeLinecap="round"
-          />
-          {/* India (Delhi) -> Nairobi (Health Supply Corridor) */}
-          <path
-            d="M 1386 372 Q 1285 330 1184 506"
-            fill="none"
-            stroke="url(#mapArcGrad)"
-            strokeWidth="2.2"
-            strokeDasharray="8,5"
-            strokeLinecap="round"
-          />
-          {/* India (Delhi) -> São Paulo (ANVISA) */}
-          <path
-            d="M 1386 372 Q 1070 380 767 605"
-            fill="none"
-            stroke="url(#mapArcGrad)"
-            strokeWidth="2"
-            strokeDasharray="7,6"
-            strokeLinecap="round"
-          />
-          {/* Trans-Atlantic link: London -> New York */}
-          <path
-            d="M 1000 270 Q 815 205 630 318"
-            fill="none"
-            stroke="#38BDF8"
-            strokeWidth="1.8"
-            strokeDasharray="6,6"
-            strokeLinecap="round"
-            opacity="0.75"
-          />
-        </g>
-
-        {/* 7. Strategic Pharmaceutical Hubs & Pulsing Radar Markers */}
-        <g filter="url(#mapHubGlow)">
-          {/* ── INDIAN NODES (NEON ORANGE) ── */}
-          {/* Delhi HQ */}
-          <circle cx="1386" cy="372" r="18" fill="none" stroke="#FF6115" strokeWidth="1.8" opacity="0.6" />
-          <circle cx="1386" cy="372" r="10" fill="none" stroke="#FF6115" strokeWidth="2.2" opacity="0.9" />
-          <circle cx="1386" cy="372" r="6" fill="#FF6115" />
-          <circle cx="1386" cy="372" r="2.8" fill="#FFFFFF" />
-          <g transform="translate(1398, 368)">
-            <rect x="-4" y="-12" width="128" height="20" rx="4" fill="#0B132B" fillOpacity="0.85" stroke="#FF6115" strokeWidth="1" />
-            <text x="4" y="2" fill="#FF9E66" fontFamily="system-ui, -apple-system, sans-serif" fontSize="11" fontWeight="700">
-              Delhi (HQ Node)
-            </text>
-          </g>
-
-          {/* Mumbai Hub */}
-          <circle cx="1364" cy="415" r="14" fill="none" stroke="#FF6115" strokeWidth="1.5" opacity="0.5" />
-          <circle cx="1364" cy="415" r="8" fill="none" stroke="#FF6115" strokeWidth="2" opacity="0.8" />
-          <circle cx="1364" cy="415" r="5" fill="#FF6115" />
-          <circle cx="1364" cy="415" r="2.2" fill="#FFFFFF" />
-          <g transform="translate(1376, 411)">
-            <rect x="-4" y="-11" width="112" height="18" rx="4" fill="#0B132B" fillOpacity="0.85" stroke="#FF6115" strokeWidth="0.8" />
-            <text x="4" y="2" fill="#FFA066" fontFamily="system-ui, -apple-system, sans-serif" fontSize="10" fontWeight="700">
-              Mumbai Logistics
-            </text>
-          </g>
-
-          {/* Hyderabad Pharma City */}
-          <circle cx="1392" cy="422" r="14" fill="none" stroke="#FF6115" strokeWidth="1.5" opacity="0.5" />
-          <circle cx="1392" cy="422" r="8" fill="none" stroke="#FF6115" strokeWidth="2" opacity="0.8" />
-          <circle cx="1392" cy="422" r="5" fill="#FF6115" />
-          <circle cx="1392" cy="422" r="2.2" fill="#FFFFFF" />
-          <g transform="translate(1404, 425)">
-            <rect x="-4" y="-11" width="144" height="18" rx="4" fill="#0B132B" fillOpacity="0.85" stroke="#FF6115" strokeWidth="0.8" />
-            <text x="4" y="2" fill="#FFA066" fontFamily="system-ui, -apple-system, sans-serif" fontSize="10" fontWeight="700">
-              Hyderabad Pharma City
-            </text>
-          </g>
-
-          {/* ── INTERNATIONAL NODES (ELECTRIC CYAN / SKY BLUE) ── */}
-          {/* Geneva (WHO) */}
-          <circle cx="1030" cy="293" r="8" fill="none" stroke="#38BDF8" strokeWidth="1.8" opacity="0.7" />
-          <circle cx="1030" cy="293" r="4.5" fill="#38BDF8" />
-          <circle cx="1030" cy="293" r="2" fill="#FFFFFF" />
-          <g transform="translate(1040, 289)">
-            <rect x="-4" y="-10" width="94" height="16" rx="3" fill="#0B132B" fillOpacity="0.85" stroke="#38BDF8" strokeWidth="0.8" />
-            <text x="4" y="2" fill="#BAE6FD" fontFamily="system-ui, -apple-system, sans-serif" fontSize="9.5" fontWeight="600">
-              Geneva (WHO)
-            </text>
-          </g>
-
-          {/* London (MHRA) */}
-          <circle cx="1000" cy="270" r="8" fill="none" stroke="#38BDF8" strokeWidth="1.8" opacity="0.7" />
-          <circle cx="1000" cy="270" r="4.5" fill="#38BDF8" />
-          <circle cx="1000" cy="270" r="2" fill="#FFFFFF" />
-          <g transform="translate(920, 266)">
-            <rect x="-4" y="-10" width="76" height="16" rx="3" fill="#0B132B" fillOpacity="0.85" stroke="#38BDF8" strokeWidth="0.8" />
-            <text x="4" y="2" fill="#BAE6FD" fontFamily="system-ui, -apple-system, sans-serif" fontSize="9.5" fontWeight="600">
-              London MHRA
-            </text>
-          </g>
-
-          {/* Frankfurt */}
-          <circle cx="1044" cy="276" r="7" fill="none" stroke="#38BDF8" strokeWidth="1.5" opacity="0.7" />
-          <circle cx="1044" cy="276" r="4" fill="#38BDF8" />
-          <circle cx="1044" cy="276" r="1.8" fill="#FFFFFF" />
-          <g transform="translate(1054, 272)">
-            <rect x="-4" y="-10" width="102" height="16" rx="3" fill="#0B132B" fillOpacity="0.85" stroke="#38BDF8" strokeWidth="0.8" />
-            <text x="4" y="2" fill="#BAE6FD" fontFamily="system-ui, -apple-system, sans-serif" fontSize="9.5" fontWeight="600">
-              Frankfurt Hub
-            </text>
-          </g>
-
-          {/* New York / FDA */}
-          <circle cx="630" cy="318" r="9" fill="none" stroke="#38BDF8" strokeWidth="1.8" opacity="0.7" />
-          <circle cx="630" cy="318" r="5" fill="#38BDF8" />
-          <circle cx="630" cy="318" r="2.2" fill="#FFFFFF" />
-          <g transform="translate(530, 314)">
-            <rect x="-4" y="-10" width="96" height="16" rx="3" fill="#0B132B" fillOpacity="0.85" stroke="#38BDF8" strokeWidth="0.8" />
-            <text x="4" y="2" fill="#BAE6FD" fontFamily="system-ui, -apple-system, sans-serif" fontSize="9.5" fontWeight="600">
-              New York (FDA)
-            </text>
-          </g>
-
-          {/* Tokyo (PMDA) */}
-          <circle cx="1698" cy="340" r="8" fill="none" stroke="#38BDF8" strokeWidth="1.8" opacity="0.7" />
-          <circle cx="1698" cy="340" r="4.5" fill="#38BDF8" />
-          <circle cx="1698" cy="340" r="2" fill="#FFFFFF" />
-          <g transform="translate(1708, 336)">
-            <rect x="-4" y="-10" width="86" height="16" rx="3" fill="#0B132B" fillOpacity="0.85" stroke="#38BDF8" strokeWidth="0.8" />
-            <text x="4" y="2" fill="#BAE6FD" fontFamily="system-ui, -apple-system, sans-serif" fontSize="9.5" fontWeight="600">
-              Tokyo PMDA
-            </text>
-          </g>
-
-          {/* Singapore */}
-          <circle cx="1519" cy="494" r="8" fill="none" stroke="#38BDF8" strokeWidth="1.8" opacity="0.7" />
-          <circle cx="1519" cy="494" r="4.5" fill="#38BDF8" />
-          <circle cx="1519" cy="494" r="2" fill="#FFFFFF" />
-          <g transform="translate(1529, 490)">
-            <rect x="-4" y="-10" width="112" height="16" rx="3" fill="#0B132B" fillOpacity="0.85" stroke="#38BDF8" strokeWidth="0.8" />
-            <text x="4" y="2" fill="#BAE6FD" fontFamily="system-ui, -apple-system, sans-serif" fontSize="9.5" fontWeight="600">
-              Singapore BioMed
-            </text>
-          </g>
-
-          {/* Sydney */}
-          <circle cx="1756" cy="651" r="8" fill="none" stroke="#38BDF8" strokeWidth="1.8" opacity="0.7" />
-          <circle cx="1756" cy="651" r="4.5" fill="#38BDF8" />
-          <circle cx="1756" cy="651" r="2" fill="#FFFFFF" />
-          <g transform="translate(1766, 647)">
-            <rect x="-4" y="-10" width="78" height="16" rx="3" fill="#0B132B" fillOpacity="0.85" stroke="#38BDF8" strokeWidth="0.8" />
-            <text x="4" y="2" fill="#BAE6FD" fontFamily="system-ui, -apple-system, sans-serif" fontSize="9.5" fontWeight="600">
-              Sydney TGA
-            </text>
-          </g>
-
-          {/* Nairobi Corridor */}
-          <circle cx="1184" cy="506" r="7" fill="none" stroke="#38BDF8" strokeWidth="1.5" opacity="0.7" />
-          <circle cx="1184" cy="506" r="4" fill="#38BDF8" />
-          <circle cx="1184" cy="506" r="1.8" fill="#FFFFFF" />
-          <g transform="translate(1194, 502)">
-            <rect x="-4" y="-10" width="102" height="16" rx="3" fill="#0B132B" fillOpacity="0.85" stroke="#38BDF8" strokeWidth="0.8" />
-            <text x="4" y="2" fill="#BAE6FD" fontFamily="system-ui, -apple-system, sans-serif" fontSize="9.5" fontWeight="600">
-              Nairobi Health
-            </text>
-          </g>
-
-          {/* São Paulo */}
-          <circle cx="767" cy="605" r="7" fill="none" stroke="#38BDF8" strokeWidth="1.5" opacity="0.7" />
-          <circle cx="767" cy="605" r="4" fill="#38BDF8" />
-          <circle cx="767" cy="605" r="1.8" fill="#FFFFFF" />
-          <g transform="translate(777, 601)">
-            <rect x="-4" y="-10" width="106" height="16" rx="3" fill="#0B132B" fillOpacity="0.85" stroke="#38BDF8" strokeWidth="0.8" />
-            <text x="4" y="2" fill="#BAE6FD" fontFamily="system-ui, -apple-system, sans-serif" fontSize="9.5" fontWeight="600">
-              São Paulo ANVISA
-            </text>
-          </g>
-        </g>
-
-        {/* 8. HUD Matrix Telemetry Badges */}
-        <g opacity="0.85">
-          {/* Top-Right HUD Badge */}
-          <g transform="translate(1620, 45)">
-            <rect x="0" y="0" width="340" height="42" rx="6" fill="#0B132B" fillOpacity="0.88" stroke="#38BDF8" strokeWidth="1" />
-            <text x="14" y="18" fill="#38BDF8" fontFamily="monospace" fontSize="11" fontWeight="700" letterSpacing="1.2">
-              GLOBAL VERIFICATION MATRIX
-            </text>
-            <text x="14" y="32" fill="#94A3B8" fontFamily="monospace" fontSize="9.5">
-              GS1 COMPLIANT · 14 GLOBAL NODES ACTIVE
-            </text>
-          </g>
-
-          {/* Bottom-Left HUD Badge */}
-          <g transform="translate(50, 930)">
-            <text x="0" y="0" fill="#64748B" fontFamily="monospace" fontSize="11" letterSpacing="1.5">
-              COORDINATES: 28.6139° N, 77.2090° E · ACTIVE MONITORING PROTOCOL
-            </text>
-            <text x="0" y="18" fill="#FF6115" fontFamily="monospace" fontSize="10.5" fontWeight="700" letterSpacing="1">
-              DATA STREAM: SECURE (EVIDENCE-BACKED PROBABILISTIC MATCHING)
-            </text>
-          </g>
-        </g>
+        {/* 2. Clean Continental Silhouette (Zero arrows, zero hubs, zero flight lines) */}
+        <path
+          d="M 770.0 122.8 L 760.0 127.1 L 750.0 125.0 L 743.3 127.3 L 713.3 128.2 L 703.3 124.8 L 640.0 123.4 L 626.7 127.2 L 620.0 126.2 L 593.3 129.1 L 590.0 134.4 L 580.0 130.0 L 570.0 134.8 L 563.3 135.5 L 558.1 140.0 L 563.3 147.2 L 566.7 148.3 L 580.3 146.7 L 579.0 150.0 L 569.7 153.3 L 566.7 158.0 L 560.0 155.0 L 540.0 152.3 L 536.4 156.7 L 545.1 160.0 L 543.8 163.3 L 546.7 167.7 L 563.3 169.7 L 580.0 167.1 L 586.7 168.3 L 599.4 163.3 L 594.9 160.0 L 596.7 158.0 L 600.0 158.9 L 613.3 155.4 L 623.3 148.6 L 633.3 148.3 L 643.3 142.8 L 670.0 135.8 L 678.4 136.7 L 681.7 140.0 L 680.0 141.0 L 646.7 144.7 L 643.1 146.7 L 648.7 150.0 L 645.4 153.3 L 650.0 158.5 L 683.3 159.5 L 691.0 166.7 L 687.9 170.0 L 691.0 173.3 L 690.2 176.7 L 686.0 183.3 L 690.0 186.4 L 695.5 186.7 L 690.0 187.9 L 689.6 190.0 L 696.7 193.0 L 698.3 196.7 L 696.7 200.3 L 679.5 206.7 L 676.5 216.7 L 678.3 233.3 L 683.3 250.3 L 693.3 251.3 L 703.3 258.5 L 710.0 259.7 L 723.1 243.3 L 732.1 236.7 L 736.7 224.7 L 753.3 219.3 L 756.7 221.1 L 766.7 218.3 L 786.7 205.4 L 800.0 205.2 L 826.7 198.3 L 840.0 190.0 L 839.9 183.3 L 833.3 181.2 L 828.3 176.7 L 833.3 174.3 L 846.7 174.5 L 848.4 170.0 L 856.7 166.8 L 856.7 155.3 L 864.0 153.3 L 856.7 146.4 L 893.6 130.0 L 866.7 128.3 L 860.0 130.1 L 859.6 126.7 L 846.7 121.7 L 800.0 121.7 L 793.3 124.4 L 780.0 121.7 L 770.0 122.8 Z M 695.9 130.0 L 706.1 130.0 L 695.9 130.0 Z M 1383.3 153.1 L 1380.0 158.1 L 1370.0 159.5 L 1356.7 158.1 L 1350.0 161.4 L 1330.0 165.0 L 1328.0 166.7 L 1331.4 173.3 L 1310.0 175.0 L 1308.2 176.7 L 1312.2 180.0 L 1310.0 182.4 L 1303.3 182.5 L 1296.7 186.1 L 1293.3 186.5 L 1290.0 180.5 L 1286.7 179.1 L 1286.2 183.3 L 1280.0 189.1 L 1276.7 180.7 L 1263.3 178.3 L 1259.9 180.0 L 1259.2 186.7 L 1254.8 190.0 L 1260.0 200.0 L 1256.7 202.1 L 1230.0 198.2 L 1227.9 200.0 L 1228.5 203.3 L 1223.3 202.7 L 1203.3 207.9 L 1200.0 202.4 L 1173.3 211.3 L 1170.1 216.7 L 1166.7 217.4 L 1163.8 213.3 L 1165.5 210.0 L 1163.3 208.2 L 1150.0 205.6 L 1148.6 206.7 L 1155.8 220.0 L 1143.3 221.2 L 1136.7 226.1 L 1137.2 230.0 L 1133.3 231.5 L 1123.3 228.3 L 1121.1 230.0 L 1122.9 233.3 L 1120.0 234.5 L 1116.7 234.4 L 1112.4 230.0 L 1109.1 223.3 L 1110.0 221.4 L 1130.0 223.9 L 1140.0 222.1 L 1141.9 216.7 L 1133.3 208.2 L 1126.7 207.7 L 1113.3 202.2 L 1100.0 200.9 L 1096.7 198.3 L 1086.7 197.4 L 1083.3 192.4 L 1070.0 189.5 L 1053.3 191.6 L 1026.7 199.2 L 1013.3 206.1 L 1002.3 216.7 L 999.3 223.3 L 980.0 240.6 L 970.0 242.9 L 958.8 250.0 L 957.6 256.7 L 961.3 273.3 L 966.7 278.3 L 973.3 278.3 L 990.0 270.7 L 1002.1 296.7 L 1006.7 297.2 L 1018.7 290.0 L 1023.4 276.7 L 1035.1 266.7 L 1024.0 256.7 L 1027.4 246.7 L 1040.0 239.1 L 1045.2 233.3 L 1046.7 228.1 L 1053.3 225.4 L 1060.0 225.8 L 1061.4 230.0 L 1043.0 243.3 L 1046.1 260.0 L 1056.7 265.5 L 1080.0 261.0 L 1085.6 263.3 L 1076.7 267.2 L 1066.7 265.7 L 1060.0 268.0 L 1057.8 270.0 L 1057.9 273.3 L 1063.4 280.0 L 1062.5 283.3 L 1060.0 284.9 L 1053.3 279.6 L 1050.0 280.8 L 1045.9 286.7 L 1047.1 296.7 L 1040.0 301.7 L 1030.0 300.4 L 1010.0 306.8 L 1000.0 302.8 L 993.3 304.8 L 976.7 298.3 L 974.8 300.0 L 978.1 306.7 L 976.7 308.1 L 960.0 311.7 L 949.1 323.3 L 936.7 329.7 L 933.3 335.3 L 923.5 340.0 L 916.7 337.3 L 915.5 343.3 L 913.3 344.8 L 906.7 344.2 L 898.3 346.7 L 900.0 352.0 L 910.0 355.3 L 917.8 363.3 L 917.7 373.3 L 913.3 384.3 L 876.7 381.4 L 868.2 386.7 L 869.1 406.7 L 863.7 420.0 L 867.0 423.3 L 866.8 430.0 L 870.0 433.2 L 880.0 433.8 L 885.8 440.0 L 879.2 453.3 L 866.7 461.4 L 862.3 466.7 L 857.9 476.7 L 857.5 486.7 L 853.3 491.9 L 846.7 497.7 L 834.1 503.3 L 831.1 510.0 L 824.8 516.7 L 821.5 526.7 L 814.7 533.3 L 808.3 546.7 L 806.9 553.3 L 811.0 560.0 L 810.2 566.7 L 813.1 576.7 L 807.7 596.7 L 802.8 603.3 L 807.2 606.7 L 805.6 616.7 L 828.3 643.3 L 833.3 655.7 L 850.0 667.7 L 856.7 675.0 L 866.7 680.2 L 880.0 675.4 L 906.7 676.3 L 933.3 665.7 L 940.0 665.0 L 950.0 669.0 L 956.7 679.8 L 960.0 681.8 L 973.3 679.0 L 980.2 683.3 L 984.3 690.0 L 984.1 696.7 L 980.2 713.3 L 975.9 720.0 L 981.2 730.0 L 996.0 746.7 L 1007.5 776.7 L 1005.0 783.3 L 1010.8 796.7 L 1009.6 803.3 L 1002.7 813.3 L 997.9 830.0 L 997.2 850.0 L 1014.5 883.3 L 1014.6 896.7 L 1018.3 916.7 L 1037.3 953.3 L 1038.1 956.7 L 1034.9 963.3 L 1040.0 974.0 L 1046.7 976.2 L 1063.3 971.8 L 1086.7 971.2 L 1093.3 967.8 L 1113.3 949.6 L 1129.2 930.0 L 1134.2 916.7 L 1135.3 906.7 L 1151.8 896.7 L 1152.2 880.0 L 1149.6 863.3 L 1160.0 855.4 L 1166.9 846.7 L 1180.0 841.1 L 1184.2 836.7 L 1190.1 823.3 L 1189.0 793.3 L 1184.4 786.7 L 1181.8 776.7 L 1181.8 763.3 L 1178.3 756.7 L 1179.6 753.3 L 1184.3 746.7 L 1188.8 733.3 L 1194.0 730.0 L 1211.1 706.7 L 1226.7 694.0 L 1238.7 680.0 L 1261.9 633.3 L 1260.0 624.5 L 1256.7 621.7 L 1253.3 624.3 L 1233.3 628.2 L 1216.7 634.2 L 1210.1 630.0 L 1205.7 623.3 L 1210.0 618.5 L 1216.7 618.5 L 1223.3 613.1 L 1260.0 597.5 L 1265.1 593.3 L 1266.7 588.7 L 1283.3 583.3 L 1286.7 577.9 L 1290.8 576.7 L 1299.9 566.7 L 1299.1 563.3 L 1311.2 546.7 L 1311.8 543.3 L 1303.3 534.5 L 1293.3 531.1 L 1288.9 526.7 L 1286.7 513.4 L 1273.3 528.0 L 1260.0 529.6 L 1257.7 526.7 L 1258.3 520.0 L 1253.3 515.0 L 1250.0 517.9 L 1246.7 516.9 L 1245.9 510.0 L 1233.4 496.7 L 1232.3 490.0 L 1234.4 486.7 L 1240.0 485.3 L 1242.4 486.7 L 1253.3 501.7 L 1270.0 510.9 L 1276.7 511.9 L 1286.7 508.3 L 1296.7 519.9 L 1326.7 524.4 L 1336.7 522.0 L 1353.3 522.2 L 1360.1 533.3 L 1372.1 540.0 L 1372.8 546.7 L 1380.0 553.8 L 1386.7 555.7 L 1393.3 550.7 L 1397.5 563.3 L 1398.3 576.7 L 1411.2 603.3 L 1412.4 610.0 L 1423.4 630.0 L 1429.4 646.7 L 1436.7 652.4 L 1443.3 651.2 L 1449.0 643.3 L 1451.1 630.0 L 1449.8 623.3 L 1452.6 613.3 L 1449.6 596.7 L 1456.7 593.1 L 1463.1 586.7 L 1480.0 565.9 L 1490.0 560.0 L 1493.3 548.9 L 1500.0 551.2 L 1510.0 548.3 L 1516.7 541.9 L 1520.0 544.3 L 1530.0 563.1 L 1541.7 576.7 L 1542.2 590.0 L 1544.6 593.3 L 1550.0 595.0 L 1560.0 585.8 L 1564.6 590.0 L 1568.2 610.0 L 1573.9 616.7 L 1574.1 650.0 L 1586.7 664.1 L 1591.5 683.3 L 1595.7 690.0 L 1613.3 705.0 L 1616.2 700.0 L 1610.9 690.0 L 1608.5 673.3 L 1589.4 656.7 L 1586.8 646.7 L 1580.8 640.0 L 1583.9 613.3 L 1586.7 612.0 L 1590.0 617.0 L 1596.7 619.0 L 1606.7 632.1 L 1616.7 636.7 L 1616.7 646.9 L 1620.0 647.8 L 1641.8 630.0 L 1645.8 620.0 L 1644.5 600.0 L 1618.9 570.0 L 1619.1 563.3 L 1622.3 556.7 L 1630.0 551.1 L 1638.5 553.3 L 1639.3 560.0 L 1634.6 566.7 L 1634.9 570.0 L 1636.7 573.3 L 1643.3 575.1 L 1650.1 563.3 L 1645.1 556.7 L 1646.2 553.3 L 1673.3 541.9 L 1680.0 540.8 L 1696.5 526.7 L 1702.2 503.3 L 1707.5 496.7 L 1706.7 485.7 L 1699.0 483.3 L 1702.0 476.7 L 1700.8 473.3 L 1683.5 453.3 L 1675.0 446.7 L 1683.3 435.4 L 1690.4 433.3 L 1690.6 430.0 L 1673.3 425.7 L 1670.0 430.4 L 1666.7 430.2 L 1663.3 424.4 L 1656.7 423.0 L 1653.3 419.8 L 1660.0 415.8 L 1670.0 404.4 L 1673.3 405.3 L 1674.3 410.0 L 1671.5 413.3 L 1676.7 419.2 L 1686.7 411.8 L 1696.7 414.7 L 1698.2 423.3 L 1701.2 426.7 L 1703.3 428.3 L 1710.0 427.6 L 1713.4 430.0 L 1712.0 433.3 L 1717.6 440.0 L 1717.5 446.7 L 1720.0 451.4 L 1726.7 453.3 L 1733.3 450.1 L 1738.6 443.3 L 1737.4 440.0 L 1730.8 430.0 L 1712.1 413.3 L 1720.0 403.5 L 1717.9 396.7 L 1723.3 389.7 L 1726.7 388.6 L 1733.3 390.7 L 1743.6 383.3 L 1748.5 363.3 L 1749.9 346.7 L 1744.1 333.3 L 1738.6 326.7 L 1739.4 323.3 L 1746.7 327.4 L 1763.3 351.7 L 1765.3 350.0 L 1763.5 343.3 L 1769.0 340.0 L 1750.0 322.0 L 1744.5 313.3 L 1733.3 304.0 L 1730.9 306.7 L 1732.2 310.0 L 1730.0 311.7 L 1716.7 304.7 L 1700.0 304.5 L 1687.3 300.0 L 1693.9 290.0 L 1694.2 283.3 L 1699.3 270.0 L 1713.3 268.5 L 1730.0 271.2 L 1736.7 266.3 L 1743.3 267.6 L 1746.7 271.5 L 1760.0 271.7 L 1764.6 270.0 L 1758.7 263.3 L 1760.0 253.1 L 1773.3 252.4 L 1783.3 261.1 L 1786.1 260.0 L 1786.7 255.6 L 1793.3 251.9 L 1797.9 256.7 L 1792.3 266.7 L 1792.7 273.3 L 1786.3 280.0 L 1789.7 283.3 L 1791.0 290.0 L 1830.0 328.9 L 1833.3 329.2 L 1835.1 323.3 L 1832.2 316.7 L 1835.7 313.3 L 1835.8 310.0 L 1831.8 306.7 L 1837.1 303.3 L 1836.4 300.0 L 1828.6 293.3 L 1832.9 290.0 L 1823.4 283.3 L 1820.0 278.2 L 1812.7 276.7 L 1810.0 265.3 L 1813.3 265.2 L 1816.7 262.2 L 1820.0 264.5 L 1833.3 261.1 L 1840.0 264.0 L 1856.7 246.5 L 1866.7 248.3 L 1869.6 246.7 L 1847.4 233.3 L 1850.0 226.5 L 1863.3 226.7 L 1890.0 235.1 L 1894.3 233.3 L 1889.4 230.0 L 1890.0 222.3 L 1870.0 215.6 L 1856.7 214.6 L 1823.3 205.0 L 1790.0 198.3 L 1760.0 195.0 L 1755.3 196.7 L 1758.0 200.0 L 1756.7 200.6 L 1746.7 198.2 L 1740.0 200.3 L 1733.3 197.4 L 1713.3 199.6 L 1696.7 191.7 L 1663.3 191.5 L 1633.3 182.6 L 1593.3 179.1 L 1588.9 180.0 L 1586.8 186.7 L 1570.0 188.2 L 1563.3 185.7 L 1560.0 191.7 L 1550.0 188.2 L 1543.3 181.7 L 1530.0 174.8 L 1506.7 172.7 L 1503.3 177.2 L 1493.3 177.5 L 1483.3 174.8 L 1463.3 175.0 L 1444.3 170.0 L 1448.9 166.7 L 1449.0 163.3 L 1440.0 158.3 L 1406.7 154.4 L 1400.0 151.7 L 1383.3 153.1 Z M 453.3 156.6 L 442.3 160.0 L 438.4 163.3 L 453.3 168.4 L 466.7 165.4 L 483.3 165.0 L 492.3 160.0 L 483.3 154.7 L 470.0 161.1 L 460.0 155.9 L 453.3 156.6 Z M 513.3 156.3 L 504.5 160.0 L 506.0 163.3 L 523.3 165.4 L 530.9 156.7 L 526.7 154.3 L 513.3 156.3 Z M 1233.3 155.0 L 1226.7 158.1 L 1213.3 158.3 L 1193.3 164.3 L 1181.9 180.0 L 1180.4 186.7 L 1193.3 193.7 L 1210.0 195.0 L 1212.9 193.3 L 1198.8 183.3 L 1205.6 173.3 L 1216.7 165.5 L 1243.3 159.7 L 1245.5 156.7 L 1240.0 154.4 L 1233.3 155.0 Z M 568.3 160.0 L 573.3 158.1 L 581.7 160.0 L 568.3 160.0 Z M 400.0 168.1 L 383.3 178.1 L 375.2 180.0 L 376.5 183.3 L 383.3 187.4 L 403.3 182.4 L 402.3 186.7 L 404.8 190.0 L 399.5 193.3 L 396.7 199.0 L 393.3 199.6 L 380.0 194.8 L 373.3 194.5 L 366.7 197.0 L 363.3 194.7 L 356.7 195.9 L 353.3 191.1 L 346.7 193.2 L 343.3 191.5 L 336.7 192.7 L 306.7 200.8 L 280.0 192.2 L 253.3 190.1 L 233.3 185.0 L 196.7 191.5 L 183.3 197.8 L 163.3 201.4 L 161.0 203.3 L 164.4 213.3 L 160.7 216.7 L 157.8 216.7 L 156.7 213.3 L 126.4 220.0 L 127.7 226.7 L 130.0 228.3 L 146.7 226.9 L 146.7 231.2 L 130.0 235.8 L 123.3 235.0 L 100.0 247.0 L 94.8 256.7 L 103.1 260.0 L 96.5 266.7 L 100.0 267.5 L 106.7 265.0 L 113.3 266.6 L 113.3 271.0 L 60.5 290.0 L 63.3 292.1 L 86.7 287.4 L 130.0 270.4 L 156.7 255.8 L 159.9 256.7 L 155.4 260.0 L 156.7 264.1 L 190.0 252.4 L 200.0 257.9 L 216.7 259.6 L 223.3 269.0 L 233.3 268.3 L 236.1 270.0 L 234.0 280.0 L 231.3 283.3 L 233.5 290.0 L 231.1 296.7 L 232.7 303.3 L 227.6 316.7 L 230.0 320.9 L 237.2 323.3 L 241.2 333.3 L 236.7 337.7 L 230.0 335.6 L 226.4 340.0 L 220.0 356.1 L 205.8 373.3 L 200.6 386.7 L 195.5 393.3 L 193.7 406.7 L 196.4 433.3 L 206.7 438.8 L 211.7 446.7 L 211.7 466.7 L 219.2 480.0 L 213.3 483.3 L 214.1 486.7 L 226.9 496.7 L 226.7 505.9 L 236.7 517.7 L 238.7 516.7 L 240.1 513.3 L 235.3 503.3 L 228.7 476.7 L 222.6 463.3 L 226.7 455.6 L 231.5 460.0 L 232.8 473.3 L 244.6 493.3 L 244.9 500.0 L 261.5 520.0 L 263.1 530.0 L 259.4 536.7 L 263.3 544.3 L 273.3 552.3 L 303.3 567.7 L 313.3 569.9 L 326.7 567.2 L 340.0 581.0 L 363.3 588.5 L 376.7 603.6 L 417.3 613.3 L 419.0 623.3 L 424.7 636.7 L 424.8 653.3 L 401.5 690.0 L 401.7 696.7 L 407.3 703.3 L 406.7 706.7 L 398.2 716.7 L 398.1 723.3 L 413.6 736.7 L 429.9 773.3 L 438.3 786.7 L 446.7 794.4 L 466.7 805.5 L 478.3 816.7 L 481.7 836.7 L 478.3 856.7 L 483.3 874.3 L 481.1 886.7 L 481.7 903.3 L 487.9 930.0 L 483.7 953.3 L 490.6 963.3 L 492.9 980.0 L 500.0 983.9 L 502.4 996.7 L 508.1 1003.3 L 503.3 1011.0 L 498.1 1013.3 L 497.8 1016.7 L 510.8 1030.0 L 515.8 1043.3 L 528.7 1060.0 L 543.3 1068.0 L 546.7 1062.8 L 551.4 1066.7 L 546.7 1069.6 L 546.0 1073.3 L 576.7 1075.2 L 580.4 1073.3 L 560.8 1063.3 L 547.7 1046.7 L 551.7 1040.0 L 551.7 1033.3 L 557.1 1026.7 L 553.3 1020.5 L 546.7 1018.0 L 542.0 1013.3 L 542.3 1010.0 L 550.8 1003.3 L 549.4 996.7 L 555.7 990.0 L 555.4 986.7 L 546.7 984.1 L 545.2 980.0 L 546.7 977.2 L 553.3 978.6 L 558.9 976.7 L 557.7 966.7 L 560.0 963.9 L 573.3 961.7 L 581.8 956.7 L 585.0 946.7 L 574.3 933.3 L 576.7 931.2 L 583.3 933.8 L 593.3 933.6 L 597.8 930.0 L 605.9 913.3 L 611.7 906.7 L 616.3 893.3 L 621.8 886.7 L 620.1 870.0 L 626.3 860.0 L 630.0 856.4 L 636.7 855.1 L 646.7 848.9 L 656.7 847.9 L 663.8 840.0 L 670.0 823.4 L 672.3 810.0 L 674.2 796.7 L 672.3 790.0 L 673.3 778.5 L 678.6 773.3 L 682.7 763.3 L 695.2 746.7 L 697.3 736.7 L 694.5 723.3 L 690.0 718.9 L 680.5 716.7 L 663.3 702.8 L 653.3 703.4 L 643.3 699.8 L 636.7 700.3 L 632.9 693.3 L 620.1 686.7 L 610.0 687.9 L 606.7 683.7 L 593.3 684.0 L 600.9 673.3 L 595.2 656.7 L 590.8 650.0 L 580.0 641.5 L 553.8 636.7 L 541.4 623.3 L 533.3 619.2 L 526.7 604.8 L 513.3 605.0 L 506.7 609.7 L 496.7 605.7 L 490.0 607.5 L 476.7 595.8 L 473.3 594.9 L 466.7 601.2 L 465.4 600.0 L 468.5 593.3 L 463.3 591.1 L 453.3 601.3 L 443.3 599.2 L 436.7 602.6 L 430.0 598.3 L 413.3 604.5 L 402.9 596.7 L 393.3 571.3 L 380.0 566.4 L 370.0 568.9 L 362.1 566.7 L 377.3 533.3 L 378.3 530.0 L 376.7 527.7 L 356.7 529.2 L 352.8 540.0 L 346.7 547.6 L 330.0 551.5 L 318.9 546.7 L 312.1 530.0 L 311.7 523.3 L 315.9 503.3 L 320.5 496.7 L 323.8 483.3 L 350.0 468.8 L 353.3 470.7 L 360.0 470.3 L 366.7 475.0 L 373.3 476.3 L 376.7 466.1 L 393.3 465.4 L 400.0 469.6 L 406.7 468.3 L 412.3 473.3 L 410.4 486.7 L 416.7 498.9 L 420.0 502.4 L 423.3 500.2 L 427.5 486.7 L 424.5 466.7 L 425.4 460.0 L 433.3 449.8 L 463.3 432.2 L 468.8 426.7 L 470.0 415.6 L 488.4 396.7 L 493.3 388.8 L 513.3 384.4 L 515.2 376.7 L 520.0 370.8 L 543.3 359.6 L 550.6 360.0 L 544.4 366.7 L 544.4 370.0 L 546.7 371.7 L 553.3 366.6 L 576.5 356.7 L 573.3 353.3 L 566.7 354.2 L 560.8 350.0 L 560.6 340.0 L 568.5 333.3 L 563.3 329.3 L 553.3 331.2 L 550.5 330.0 L 556.7 325.0 L 566.7 322.5 L 580.0 322.3 L 586.7 325.0 L 613.3 315.4 L 614.6 316.7 L 592.7 340.0 L 596.7 341.9 L 610.0 342.1 L 613.3 345.8 L 620.0 342.7 L 620.4 346.7 L 623.3 348.5 L 630.7 340.0 L 628.5 330.0 L 617.7 323.3 L 627.0 303.3 L 621.0 296.7 L 621.0 293.3 L 606.2 280.0 L 608.8 276.7 L 608.3 263.3 L 603.3 253.5 L 583.3 267.3 L 580.0 265.4 L 577.3 260.0 L 580.0 249.4 L 576.7 249.3 L 566.7 241.0 L 546.7 240.4 L 542.3 243.3 L 540.0 249.0 L 525.8 266.7 L 530.7 273.3 L 527.6 280.0 L 516.7 287.9 L 503.3 292.8 L 500.0 303.3 L 501.1 306.7 L 490.0 315.0 L 485.5 310.0 L 485.0 303.3 L 492.3 290.0 L 490.0 287.2 L 476.7 287.0 L 456.7 274.9 L 450.0 275.2 L 448.8 273.3 L 450.9 266.7 L 446.1 263.3 L 453.8 253.3 L 493.3 232.2 L 506.7 229.0 L 516.7 221.6 L 517.4 223.3 L 507.7 233.3 L 513.3 236.3 L 526.7 232.0 L 533.3 234.3 L 538.0 233.3 L 539.6 230.0 L 526.7 219.4 L 550.0 211.1 L 553.0 203.3 L 558.9 200.0 L 558.1 196.7 L 566.7 193.8 L 573.3 195.0 L 576.7 192.3 L 580.0 193.6 L 582.6 196.7 L 582.4 200.0 L 586.7 200.1 L 593.6 206.7 L 592.4 210.0 L 580.0 215.9 L 576.7 221.5 L 563.3 221.5 L 553.9 226.7 L 556.7 229.3 L 573.3 228.3 L 583.3 238.5 L 600.0 245.0 L 602.6 243.3 L 602.0 240.0 L 597.9 236.7 L 600.0 234.6 L 610.0 239.4 L 615.9 233.3 L 615.5 226.7 L 610.8 220.0 L 613.3 216.2 L 616.7 217.2 L 623.3 225.0 L 641.5 213.3 L 620.9 200.0 L 627.1 196.7 L 627.5 193.3 L 623.3 189.2 L 613.3 184.0 L 606.7 184.1 L 600.0 178.0 L 586.7 179.6 L 583.3 177.8 L 580.0 171.7 L 556.7 171.0 L 543.3 176.0 L 532.4 186.7 L 533.3 190.9 L 541.8 193.3 L 541.3 196.7 L 523.3 209.7 L 521.9 206.7 L 526.7 200.1 L 518.8 196.7 L 516.7 181.9 L 510.0 182.1 L 509.3 176.7 L 513.3 173.4 L 510.0 171.0 L 496.7 171.5 L 490.0 176.0 L 486.7 175.0 L 484.4 176.7 L 484.2 180.0 L 490.0 184.0 L 493.3 185.8 L 500.0 184.6 L 501.9 186.7 L 495.9 193.3 L 500.1 196.7 L 495.7 203.3 L 490.0 204.8 L 480.0 202.2 L 476.7 205.7 L 470.0 207.5 L 456.7 207.2 L 446.7 203.4 L 445.3 200.0 L 460.0 200.9 L 473.3 194.8 L 474.4 193.3 L 467.0 186.7 L 471.9 176.7 L 470.0 174.7 L 463.3 174.4 L 456.7 180.2 L 453.3 174.8 L 446.7 176.7 L 440.0 175.7 L 430.0 168.3 L 400.0 168.1 Z M 1439.4 173.3 L 1436.7 177.1 L 1433.3 176.7 L 1439.4 173.3 Z M 556.0 176.7 L 558.3 176.7 L 556.7 180.5 L 555.0 180.0 L 556.0 176.7 Z M 820.9 186.7 L 823.3 185.6 L 828.2 190.0 L 823.3 191.7 L 813.5 190.0 L 820.9 186.7 Z M 1285.2 193.3 L 1286.7 191.9 L 1290.6 193.3 L 1292.7 200.0 L 1290.0 202.6 L 1285.2 193.3 Z M 402.1 200.0 L 406.7 198.8 L 410.0 204.3 L 426.7 203.0 L 427.7 206.7 L 426.7 209.3 L 420.0 203.4 L 413.3 206.9 L 400.0 207.7 L 398.4 206.7 L 403.5 203.3 L 402.1 200.0 Z M 1258.6 203.3 L 1260.0 200.0 L 1268.1 203.3 L 1266.7 206.0 L 1258.6 203.3 Z M 1299.0 203.3 L 1301.0 203.3 L 1303.4 210.0 L 1301.5 216.7 L 1296.7 220.2 L 1287.7 220.0 L 1293.3 217.7 L 1297.1 213.3 L 1295.2 206.7 L 1296.7 203.6 L 1299.0 203.3 Z M 596.0 213.3 L 600.0 213.0 L 600.0 216.6 L 596.7 216.9 L 596.0 213.3 Z M 863.3 220.0 L 840.0 221.7 L 830.0 224.8 L 820.0 220.5 L 813.3 223.0 L 812.7 226.7 L 820.0 238.8 L 840.0 241.0 L 863.3 232.7 L 866.3 230.0 L 863.4 220.0 Z M 1788.8 246.7 L 1790.7 246.7 L 1790.0 250.3 L 1788.8 246.7 Z M 913.3 273.2 L 903.3 274.4 L 894.8 286.7 L 898.7 290.0 L 900.2 300.0 L 903.3 302.5 L 906.7 301.0 L 910.5 306.7 L 910.0 310.3 L 903.3 310.9 L 901.4 313.3 L 904.4 316.7 L 898.8 323.3 L 904.0 326.7 L 895.2 333.3 L 896.7 335.1 L 910.0 331.7 L 930.0 330.3 L 935.2 326.7 L 934.6 323.3 L 938.5 316.7 L 932.5 313.3 L 929.2 306.7 L 915.0 290.0 L 919.9 283.3 L 917.9 280.0 L 912.4 280.0 L 913.3 273.2 Z M 886.7 295.6 L 880.0 302.3 L 871.4 306.7 L 871.4 310.0 L 874.5 313.3 L 868.1 320.0 L 870.0 324.6 L 876.7 325.0 L 893.9 316.7 L 895.3 306.7 L 899.3 303.3 L 893.3 297.0 L 886.7 295.6 Z M 543.2 333.3 L 546.8 333.3 L 543.2 333.3 Z M 1766.7 350.9 L 1764.4 353.3 L 1769.5 363.3 L 1776.7 362.2 L 1778.7 360.0 L 1766.7 350.9 Z M 1224.1 360.0 L 1230.0 357.8 L 1240.3 360.0 L 1241.0 366.7 L 1233.3 370.2 L 1227.8 376.7 L 1242.4 390.0 L 1243.3 396.4 L 1248.3 403.3 L 1249.0 410.0 L 1257.9 423.3 L 1259.1 430.0 L 1256.7 433.3 L 1243.3 434.4 L 1228.9 426.7 L 1228.5 413.3 L 1230.0 409.9 L 1233.8 410.0 L 1235.1 406.7 L 1230.0 404.3 L 1215.3 390.0 L 1212.9 380.0 L 1208.8 376.7 L 1209.0 373.3 L 1224.1 360.0 Z M 1108.3 363.3 L 1110.0 361.1 L 1123.3 366.0 L 1121.7 370.0 L 1126.7 376.6 L 1146.7 371.6 L 1176.0 390.0 L 1178.3 396.7 L 1173.3 401.4 L 1160.0 402.4 L 1150.0 400.1 L 1140.0 394.5 L 1126.7 394.9 L 1113.3 401.5 L 1103.3 400.9 L 1096.7 405.5 L 1093.8 403.3 L 1101.5 400.0 L 1095.7 396.7 L 1093.4 390.0 L 1097.7 383.3 L 1098.7 376.7 L 1108.3 363.3 Z M 1136.0 363.3 L 1140.0 360.6 L 1150.0 360.4 L 1151.3 363.3 L 1150.7 366.7 L 1146.7 369.0 L 1136.7 367.8 L 1136.0 363.3 Z M 1279.8 366.7 L 1286.7 371.0 L 1288.1 373.3 L 1286.7 377.6 L 1276.7 376.0 L 1275.4 370.0 L 1279.8 366.7 Z M 1000.3 370.0 L 1003.3 368.3 L 1010.0 373.8 L 1013.3 372.2 L 1020.0 382.2 L 1029.3 386.7 L 1041.3 396.7 L 1041.7 406.7 L 1050.5 416.7 L 1060.0 435.3 L 1066.7 435.5 L 1070.0 427.2 L 1073.7 426.7 L 1064.0 410.0 L 1066.7 408.5 L 1070.0 411.7 L 1073.3 410.4 L 1073.3 404.2 L 1080.0 403.6 L 1085.4 406.7 L 1084.9 413.3 L 1088.3 416.7 L 1086.3 423.3 L 1096.7 436.6 L 1110.0 438.8 L 1116.7 435.2 L 1130.0 439.7 L 1140.0 435.0 L 1146.7 436.4 L 1148.3 446.7 L 1144.3 453.3 L 1143.8 466.7 L 1141.3 473.3 L 1133.3 477.2 L 1116.7 473.7 L 1106.7 478.3 L 1083.3 473.1 L 1060.0 463.1 L 1051.3 466.7 L 1048.9 470.0 L 1048.6 480.0 L 1043.3 482.8 L 1036.7 478.3 L 1023.3 474.8 L 1015.7 466.7 L 1006.7 463.5 L 1000.0 464.2 L 990.0 456.9 L 988.3 453.3 L 992.0 443.3 L 988.6 440.0 L 991.9 433.3 L 983.3 429.8 L 930.0 436.1 L 910.0 445.0 L 893.3 445.5 L 890.0 443.3 L 888.1 440.0 L 893.3 436.2 L 910.0 434.0 L 913.3 429.5 L 919.0 426.7 L 923.5 420.0 L 922.0 413.3 L 923.3 411.2 L 926.9 406.7 L 943.3 396.1 L 945.0 393.3 L 944.3 386.7 L 950.0 384.3 L 963.3 387.1 L 970.0 382.0 L 980.0 378.3 L 983.4 380.0 L 992.4 393.3 L 1009.4 403.3 L 1021.3 413.3 L 1022.4 416.7 L 1020.0 422.2 L 1010.0 424.8 L 1003.3 423.3 L 1000.8 426.7 L 1006.7 431.8 L 1016.7 435.1 L 1020.0 425.5 L 1023.3 425.2 L 1029.3 416.7 L 1025.7 410.0 L 1030.0 407.5 L 1033.3 409.1 L 1036.4 406.7 L 1010.4 390.0 L 1007.1 383.3 L 999.2 376.7 L 1000.3 370.0 Z M 1773.3 367.1 L 1772.2 370.0 L 1777.5 376.7 L 1779.7 383.3 L 1776.1 386.7 L 1775.7 390.0 L 1783.1 400.0 L 1784.9 410.0 L 1789.9 416.7 L 1790.1 423.3 L 1786.7 430.8 L 1783.3 431.9 L 1780.0 428.2 L 1777.6 430.0 L 1776.1 440.0 L 1760.0 443.5 L 1744.6 460.0 L 1746.7 465.7 L 1752.3 470.0 L 1753.5 476.7 L 1756.7 478.3 L 1760.0 478.7 L 1761.7 476.7 L 1763.3 464.5 L 1770.0 465.4 L 1776.7 454.5 L 1783.3 459.4 L 1790.0 452.1 L 1806.7 447.3 L 1808.8 443.3 L 1802.3 426.7 L 1805.0 420.0 L 1802.0 413.3 L 1790.0 398.1 L 1786.7 397.5 L 1783.1 393.3 L 1786.7 390.8 L 1796.7 395.3 L 1800.0 388.6 L 1808.3 386.7 L 1800.0 377.4 L 1790.0 377.8 L 1773.3 367.1 Z M 980.0 388.6 L 975.8 393.3 L 979.7 400.0 L 973.8 403.3 L 974.6 416.7 L 976.7 418.5 L 983.8 413.3 L 985.0 403.3 L 980.3 400.0 L 982.7 393.3 L 980.0 388.6 Z M 1073.3 442.7 L 1073.3 446.8 L 1080.0 448.5 L 1086.5 446.7 L 1080.0 444.6 L 1076.7 445.9 L 1073.3 442.7 Z M 1140.0 442.5 L 1125.8 446.7 L 1130.0 451.7 L 1138.8 446.7 L 1140.0 442.5 Z M 1756.6 456.7 L 1762.4 456.7 L 1760.0 459.6 L 1756.6 456.7 Z M 1142.0 503.3 L 1146.7 501.9 L 1150.0 504.2 L 1162.6 526.7 L 1171.1 533.3 L 1178.8 556.7 L 1187.1 563.3 L 1201.7 590.0 L 1201.4 600.0 L 1206.1 613.3 L 1203.3 613.7 L 1183.3 595.6 L 1174.4 576.7 L 1166.7 569.2 L 1165.0 553.3 L 1155.5 540.0 L 1154.6 533.3 L 1142.4 513.3 L 1139.8 506.7 L 1142.0 503.3 Z M 406.7 516.0 L 396.7 519.4 L 389.6 526.7 L 393.3 527.6 L 406.7 521.7 L 426.7 528.3 L 435.6 536.7 L 436.7 540.6 L 443.3 539.0 L 450.0 540.2 L 455.0 536.7 L 446.7 529.4 L 420.0 516.2 L 406.7 516.0 Z M 463.3 538.8 L 461.2 540.0 L 461.4 546.7 L 452.6 550.0 L 456.7 553.9 L 463.3 552.4 L 470.0 557.9 L 490.3 550.0 L 487.1 543.3 L 480.0 539.3 L 463.3 538.8 Z M 1716.7 570.9 L 1714.0 573.3 L 1714.4 586.7 L 1710.3 590.0 L 1714.7 600.0 L 1719.2 603.3 L 1720.0 609.3 L 1723.3 610.3 L 1726.7 607.7 L 1740.0 615.6 L 1742.5 613.3 L 1740.0 607.2 L 1727.0 603.3 L 1723.9 596.7 L 1729.2 583.3 L 1726.9 576.7 L 1723.3 572.6 L 1716.7 570.9 Z M 1453.3 638.3 L 1450.2 640.0 L 1450.3 653.3 L 1451.7 663.3 L 1456.7 668.4 L 1464.7 663.3 L 1465.0 653.3 L 1453.3 638.3 Z M 1756.7 639.1 L 1746.7 648.9 L 1743.3 646.4 L 1740.0 647.3 L 1733.9 653.3 L 1733.3 659.8 L 1743.8 656.7 L 1749.0 666.7 L 1756.7 669.7 L 1758.5 666.7 L 1756.7 661.1 L 1763.3 663.4 L 1764.5 660.0 L 1761.1 643.3 L 1756.7 639.1 Z M 1700.0 659.1 L 1673.3 688.9 L 1663.3 693.0 L 1660.0 699.0 L 1653.3 696.6 L 1648.1 700.0 L 1648.2 716.7 L 1654.3 723.3 L 1656.7 736.6 L 1663.3 736.1 L 1666.7 738.8 L 1683.3 741.0 L 1686.7 744.3 L 1697.6 736.7 L 1698.8 726.7 L 1706.4 716.7 L 1705.4 710.0 L 1713.7 706.7 L 1713.3 703.3 L 1708.9 700.0 L 1705.5 686.7 L 1715.6 673.3 L 1700.0 659.1 Z M 1556.7 670.3 L 1554.6 673.3 L 1556.3 676.7 L 1578.3 700.0 L 1581.5 710.0 L 1590.0 721.0 L 1594.8 733.3 L 1616.7 756.7 L 1623.3 756.4 L 1625.7 753.3 L 1628.3 736.7 L 1618.6 726.7 L 1611.5 710.0 L 1603.3 705.3 L 1593.3 695.0 L 1590.0 694.2 L 1570.0 673.6 L 1556.7 670.3 Z M 1756.7 699.9 L 1753.3 700.3 L 1750.0 704.5 L 1733.3 704.7 L 1730.0 702.8 L 1721.2 706.7 L 1718.1 713.3 L 1716.5 726.7 L 1711.7 736.7 L 1717.8 743.3 L 1715.6 753.3 L 1716.7 757.3 L 1720.0 757.8 L 1724.3 753.3 L 1723.7 746.7 L 1726.7 734.5 L 1733.3 749.4 L 1741.0 743.3 L 1733.0 730.0 L 1733.8 726.7 L 1744.3 720.0 L 1743.3 717.8 L 1733.3 718.2 L 1726.7 722.0 L 1721.9 716.7 L 1723.3 711.1 L 1726.7 709.0 L 1733.3 709.2 L 1746.7 711.7 L 1753.3 706.8 L 1756.7 699.9 Z M 1803.3 715.6 L 1796.7 719.1 L 1795.4 723.3 L 1804.9 730.0 L 1804.1 736.7 L 1806.6 743.3 L 1813.3 741.2 L 1836.7 752.3 L 1842.1 760.0 L 1846.7 775.0 L 1853.3 776.6 L 1860.0 782.5 L 1870.0 783.7 L 1876.7 775.5 L 1886.7 772.2 L 1894.4 776.7 L 1903.3 791.0 L 1916.7 794.4 L 1921.8 793.3 L 1922.5 790.0 L 1911.0 780.0 L 1907.5 773.3 L 1900.6 766.7 L 1905.8 763.3 L 1905.4 760.0 L 1893.4 753.3 L 1890.7 746.7 L 1886.5 743.3 L 1843.3 724.8 L 1836.7 726.3 L 1823.3 738.2 L 1816.1 730.0 L 1816.8 720.0 L 1803.3 715.6 Z M 1933.3 744.3 L 1930.8 750.0 L 1926.7 753.2 L 1923.3 751.3 L 1909.9 756.7 L 1916.7 761.0 L 1923.3 761.1 L 1935.3 753.3 L 1938.3 746.7 L 1936.7 744.3 L 1933.3 744.3 Z M 1626.7 757.2 L 1620.2 763.3 L 1626.7 765.2 L 1630.0 768.8 L 1656.7 775.0 L 1673.3 775.8 L 1680.0 778.8 L 1682.2 776.7 L 1680.0 771.1 L 1673.3 770.4 L 1670.0 764.2 L 1666.7 762.8 L 1660.0 761.6 L 1653.3 764.7 L 1646.7 764.2 L 1640.0 758.8 L 1626.7 757.2 Z M 1866.7 794.6 L 1859.5 806.7 L 1857.4 826.7 L 1853.7 836.7 L 1846.7 846.3 L 1840.0 844.3 L 1818.9 826.7 L 1819.0 823.3 L 1826.7 813.4 L 1830.0 803.3 L 1823.3 801.3 L 1813.3 803.7 L 1800.0 796.9 L 1796.6 800.0 L 1799.7 803.3 L 1796.7 805.6 L 1790.0 804.2 L 1786.4 806.7 L 1782.7 810.0 L 1776.2 823.3 L 1773.3 825.0 L 1770.0 824.8 L 1763.3 817.9 L 1756.7 818.0 L 1750.0 821.1 L 1740.0 833.1 L 1728.5 840.0 L 1724.7 850.0 L 1716.7 860.3 L 1706.7 864.4 L 1686.7 868.3 L 1673.3 877.1 L 1666.7 878.1 L 1654.8 906.7 L 1660.4 933.3 L 1658.3 943.3 L 1660.2 953.3 L 1656.8 963.3 L 1650.1 970.0 L 1650.5 973.3 L 1660.0 980.5 L 1663.3 980.4 L 1683.3 971.1 L 1703.3 971.7 L 1713.3 962.7 L 1723.3 958.6 L 1733.3 957.8 L 1750.0 952.2 L 1760.0 951.9 L 1773.3 958.6 L 1778.1 970.0 L 1774.8 976.7 L 1776.7 978.5 L 1780.0 978.5 L 1790.0 968.7 L 1792.6 970.0 L 1790.0 975.5 L 1784.0 980.0 L 1786.7 981.7 L 1793.6 980.0 L 1793.4 983.3 L 1797.6 990.0 L 1794.9 996.7 L 1795.9 1000.0 L 1803.3 1004.5 L 1813.3 1007.0 L 1823.3 1004.4 L 1830.0 1010.3 L 1840.0 1002.6 L 1860.0 996.7 L 1865.5 986.7 L 1900.8 950.0 L 1911.9 930.0 L 1916.1 906.7 L 1906.1 883.3 L 1899.1 873.3 L 1899.6 866.7 L 1886.7 857.1 L 1882.8 850.0 L 1885.0 843.3 L 1881.8 833.3 L 1883.9 826.7 L 1873.1 820.0 L 1872.5 803.3 L 1870.4 796.7 L 1866.7 794.6 Z M 1243.3 805.2 L 1241.1 813.3 L 1236.9 816.7 L 1234.4 823.3 L 1226.5 830.0 L 1213.3 836.3 L 1210.0 843.6 L 1211.3 860.0 L 1202.6 883.3 L 1204.8 900.0 L 1210.0 905.1 L 1216.7 906.8 L 1226.7 902.3 L 1241.1 870.0 L 1245.9 843.3 L 1248.5 840.0 L 1249.6 833.3 L 1253.6 830.0 L 1248.5 806.7 L 1246.7 804.6 L 1243.3 805.2 Z M 1813.3 1019.8 L 1809.0 1026.7 L 1807.4 1036.7 L 1810.0 1044.0 L 1823.3 1039.4 L 1834.1 1023.3 L 1830.0 1021.6 L 1823.3 1023.8 L 1816.7 1019.7 L 1813.3 1019.8 Z"
+          fill="url(#cleanMapLand)"
+          stroke="#526E96"
+          strokeWidth="1.6"
+          strokeLinejoin="round"
+          filter="url(#cleanMapGlow)"
+          opacity="0.95"
+        />
       </svg>
     </div>
   );
