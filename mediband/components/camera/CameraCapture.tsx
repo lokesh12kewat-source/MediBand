@@ -24,6 +24,7 @@ import { createDatasetRecord } from '@/lib/dataset-manager';
 import { INDIAN_MEDICINES } from '@/data/indian-medicines';
 import { PredictionCard, MLPredictionResult } from '@/components/ml/PredictionCard';
 import { runClientInference } from '@/lib/onnx-client';
+import { executeFoilOCR, ExtractedFoilInfo } from '@/lib/ocr-engine';
 
 interface CameraCaptureProps {
   onCaptureComplete?: (record: DatasetImageRecord) => void;
@@ -68,10 +69,31 @@ export default function CameraCapture({
   const [predicting, setPredicting] = useState<boolean>(false);
   const [inferenceEngine, setInferenceEngine] = useState<'server' | 'client'>('server');
 
+  // OCR Printed Text Extraction State
+  const [ocrResult, setOcrResult] = useState<ExtractedFoilInfo | null>(null);
+  const [ocrLoading, setOcrLoading] = useState<boolean>(false);
+
   // DOM Refs
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Trigger Optical Character Recognition (OCR) for printed text & foil stamps
+  const triggerOCR = useCallback(async (dataUrl: string) => {
+    setOcrLoading(true);
+    setOcrResult(null);
+    try {
+      const ocrData = await executeFoilOCR(dataUrl);
+      setOcrResult(ocrData);
+      if (ocrData.matchedMedicineId) {
+        setSelectedMedicineId(ocrData.matchedMedicineId);
+      }
+    } catch (err) {
+      console.warn('OCR foil text recognition error:', err);
+    } finally {
+      setOcrLoading(false);
+    }
+  }, []);
 
   // Trigger GPU/Model Inference (with client-side WASM fallback)
   const triggerInference = useCallback(
@@ -284,6 +306,7 @@ export default function CameraCapture({
     stopStream();
     setCameraState('captured');
     triggerInference(dataUrl, recognitionType);
+    triggerOCR(dataUrl);
   }
 
   // Handle file upload fallback
@@ -314,6 +337,7 @@ export default function CameraCapture({
         setCapturedDataUrl(dataUrl);
         setCameraState('captured');
         triggerInference(dataUrl, recognitionType);
+        triggerOCR(dataUrl);
       };
       img.src = dataUrl;
     };
@@ -327,6 +351,8 @@ export default function CameraCapture({
     setSaveSuccess(null);
     setErrorMessage(null);
     setPrediction(null);
+    setOcrResult(null);
+    setOcrLoading(false);
     startCamera();
   }
 
@@ -755,11 +781,13 @@ export default function CameraCapture({
         </div>
       </div>
 
-      {/* AI Vision Neural Prediction Card */}
+      {/* AI Vision Neural Prediction & OCR Decision Card */}
       {cameraState === 'captured' && (
         <PredictionCard
           result={prediction}
           loading={predicting}
+          ocrResult={ocrResult}
+          ocrLoading={ocrLoading}
           onApplyMedicine={medName => {
             const found = INDIAN_MEDICINES.find(
               m => m.brand_name.toLowerCase() === medName.toLowerCase()

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   Sparkles,
   Cpu,
@@ -13,12 +13,17 @@ import {
   Check,
   Calendar,
   Layers,
+  FileText,
+  ScanText,
+  ChevronDown,
+  ChevronUp,
 } from 'lucide-react';
 import { INDIAN_MEDICINES } from '@/data/indian-medicines';
 import { getMedications, addMedication, addPack } from '@/store/cabinet-store';
 import { recordEvent } from '@/store/history-store';
 import { extractIngredientIds, getMedicationIngredients } from '@/lib/ingredient-normalizer';
 import { Medication, MedicationPack } from '@/types';
+import { ExtractedFoilInfo, resolveMedicineIdentity, MultiModalDecision } from '@/lib/ocr-engine';
 
 export interface MLPredictionResult {
   mode: 'packaging' | 'loose_pill';
@@ -35,6 +40,8 @@ export interface MLPredictionResult {
 interface PredictionCardProps {
   result: MLPredictionResult | null;
   loading: boolean;
+  ocrResult?: ExtractedFoilInfo | null;
+  ocrLoading?: boolean;
   onApplyMedicine?: (medicineName: string) => void;
   onRetake?: () => void;
 }
@@ -42,9 +49,14 @@ interface PredictionCardProps {
 export function PredictionCard({
   result,
   loading,
+  ocrResult,
+  ocrLoading,
   onApplyMedicine,
   onRetake,
 }: PredictionCardProps) {
+  // OCR & Decision details toggle
+  const [showOcrDetails, setShowOcrDetails] = useState<boolean>(false);
+
   // Cabinet & Action states
   const [conflicts, setConflicts] = useState<{
     ingredientName: string;
@@ -54,29 +66,36 @@ export function PredictionCard({
   const [cabinetSaved, setCabinetSaved] = useState<boolean>(false);
   const [doseLogged, setDoseLogged] = useState<string | null>(null);
 
-  // Form states for adding to cabinet
+  // Multi-Modal Decision Fusion (Vision + OCR)
+  const decision: MultiModalDecision = useMemo(() => {
+    return resolveMedicineIdentity(result, ocrResult || null);
+  }, [result, ocrResult]);
+
+  // Form states for adding to cabinet (auto-prefilled from OCR when available)
   const [batchNo, setBatchNo] = useState<string>('B' + Math.floor(100000 + Math.random() * 900000));
   const [expiryStr, setExpiryStr] = useState<string>('12/2027');
   const [quantity, setQuantity] = useState<number>(10);
   const [scheduleTime, setScheduleTime] = useState<string>('08:00');
 
-  // Check for ingredient overlaps whenever result changes
+  // Update batch/expiry if OCR detects them
   useEffect(() => {
-    if (!result?.prediction) {
+    if (decision.batchNumber) {
+      setBatchNo(decision.batchNumber);
+    }
+    if (decision.expiryDate) {
+      setExpiryStr(decision.expiryDate);
+    }
+  }, [decision]);
+
+  // Check for ingredient overlaps whenever decision/result changes
+  useEffect(() => {
+    const activeGeneric = decision.resolvedGeneric || '';
+    if (!activeGeneric || activeGeneric === 'Unknown Composition') {
       setConflicts([]);
       return;
     }
 
-    const matched = INDIAN_MEDICINES.find(
-      m => m.brand_name.toLowerCase() === result.prediction!.toLowerCase()
-    );
-
-    if (!matched) {
-      setConflicts([]);
-      return;
-    }
-
-    const candidateIngIds = extractIngredientIds(matched.generic_name);
+    const candidateIngIds = extractIngredientIds(activeGeneric);
     const cabinetMeds = getMedications();
     const detectedConflicts: { ingredientName: string; conflictingMed: Medication }[] = [];
 
@@ -85,7 +104,7 @@ export function PredictionCard({
       for (const ingId of candidateIngIds) {
         if (cabIngIds.includes(ingId)) {
           detectedConflicts.push({
-            ingredientName: matched.generic_name,
+            ingredientName: activeGeneric,
             conflictingMed: cabMed,
           });
           break;
@@ -94,7 +113,7 @@ export function PredictionCard({
     }
 
     setConflicts(detectedConflicts);
-  }, [result]);
+  }, [decision]);
 
   if (loading) {
     return (
@@ -138,22 +157,32 @@ export function PredictionCard({
   const isHighConfidence = result.confidence >= 0.75;
   const confidencePercent = Math.round(result.confidence * 100);
 
-  const matchedMedicine = result.prediction
-    ? INDIAN_MEDICINES.find(m => m.brand_name.toLowerCase() === result.prediction!.toLowerCase())
+  const activeMedicineName =
+    decision.resolutionSource === 'OCR_OVERRIDE'
+      ? decision.resolvedBrand
+      : (result?.prediction || decision.resolvedBrand);
+
+  const matchedMedicine = activeMedicineName
+    ? (INDIAN_MEDICINES.find(m => m.brand_name.toLowerCase() === activeMedicineName.toLowerCase()) ||
+       INDIAN_MEDICINES.find(m => m.generic_name.toLowerCase().includes(activeMedicineName.toLowerCase())))
     : null;
 
   function handleSaveToCabinet() {
-    if (!matchedMedicine) return;
+    const medId = matchedMedicine?.medicine_id || `med_${activeMedicineName.toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
+    const brand = matchedMedicine?.brand_name || activeMedicineName;
+    const generic = matchedMedicine?.generic_name || decision.resolvedGeneric;
+    const strengthVal = matchedMedicine?.strength || decision.resolvedStrength || 'As printed';
+    const dosage = matchedMedicine?.dosage_form || 'Tablet';
+    const mfr = matchedMedicine?.manufacturer || ocrResult?.manufacturer || 'Vivek Pharmaceuticals Pvt. Ltd.';
 
-    const medId = matchedMedicine.medicine_id;
-    const ingIds = extractIngredientIds(matchedMedicine.generic_name);
+    const ingIds = extractIngredientIds(generic);
     const medObj: Medication = {
       id: medId,
-      brandName: matchedMedicine.brand_name,
-      genericName: matchedMedicine.generic_name,
-      strength: matchedMedicine.strength,
-      dosageForm: matchedMedicine.dosage_form,
-      manufacturer: matchedMedicine.manufacturer,
+      brandName: brand,
+      genericName: generic,
+      strength: strengthVal,
+      dosageForm: dosage,
+      manufacturer: mfr,
       activeIngredientId: ingIds[0] || 'ING_UNKNOWN',
       activeIngredients: ingIds,
     };
@@ -162,16 +191,19 @@ export function PredictionCard({
     const packObj: MedicationPack = {
       id: packId,
       medicationId: medId,
-      gtin: matchedMedicine.product_identifier || '00000000000000',
-      batchPrinted: batchNo || 'UNSPECIFIED',
-      batchEncoded: batchNo || 'UNSPECIFIED',
-      expiryPrinted: expiryStr || '12/2027',
-      expiryEncoded: expiryStr || '12/2027',
+      gtin: matchedMedicine?.product_identifier || '00000000000000',
+      batchPrinted: batchNo || decision.batchNumber || 'UNSPECIFIED',
+      batchEncoded: batchNo || decision.batchNumber || 'UNSPECIFIED',
+      expiryPrinted: expiryStr || decision.expiryDate || '12/2027',
+      expiryEncoded: expiryStr || decision.expiryDate || '12/2027',
       addedAt: new Date().toISOString(),
       quantity: { remaining: Number(quantity) || 10, unit: 'tablets' },
       openedAt: new Date().toISOString(),
       inUseExpiryDays: 365,
-      notes: `Identified via MediBand AI Vision (${confidencePercent}% match)`,
+      notes:
+        decision.resolutionSource === 'OCR_OVERRIDE'
+          ? `Verified via Printed Text OCR (Foil Extraction: ${decision.resolvedBrand})`
+          : `Identified via MediBand AI Vision (${confidencePercent}% match)`,
     };
 
     addMedication(medObj);
@@ -182,12 +214,15 @@ export function PredictionCard({
   }
 
   function handleLogDose() {
-    if (!matchedMedicine) return;
+    const medId = matchedMedicine?.medicine_id || `med_${activeMedicineName.toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
+    const brand = matchedMedicine?.brand_name || activeMedicineName;
+    const strengthVal = matchedMedicine?.strength || decision.resolvedStrength || 'As printed';
     const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
     recordEvent(
-      matchedMedicine.medicine_id,
-      matchedMedicine.brand_name,
-      matchedMedicine.strength,
+      medId,
+      brand,
+      strengthVal,
       'TAKEN',
       'USER'
     );
@@ -269,12 +304,48 @@ export function PredictionCard({
         </div>
       </div>
 
-      {/* Main Top Match Box */}
-      {isConfident && result.prediction ? (
+      {/* Multi-Modal Discrepancy & OCR Override Banner */}
+      {decision.discrepancyDetected && decision.resolutionSource === 'OCR_OVERRIDE' && (
         <div
           style={{
-            background: isHighConfidence ? '#F0FDF4' : '#FFFBEB',
-            border: `1.5px solid ${isHighConfidence ? '#BBF7D0' : '#FDE68A'}`,
+            background: '#EFF6FF',
+            border: '1.5px solid #BFDBFE',
+            borderRadius: '10px',
+            padding: '12px',
+            marginBottom: '1rem',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+            <ScanText size={20} color="#2563EB" style={{ marginTop: '2px', flexShrink: 0 }} />
+            <div>
+              <div style={{ fontWeight: 800, fontSize: '0.875rem', color: '#1E40AF' }}>
+                🔍 Foil Text Verification (OCR Override)
+              </div>
+              <div style={{ fontSize: '0.8rem', color: '#1E3A8A', marginTop: '3px', lineHeight: 1.45 }}>
+                {decision.explanation}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Main Top Match Box (Resolved via Decision Fusion) */}
+      {(decision.resolutionSource === 'OCR_OVERRIDE' || (isConfident && result.prediction)) ? (
+        <div
+          style={{
+            background:
+              decision.resolutionSource === 'OCR_OVERRIDE'
+                ? '#F0F9FF'
+                : isHighConfidence
+                ? '#F0FDF4'
+                : '#FFFBEB',
+            border: `1.5px solid ${
+              decision.resolutionSource === 'OCR_OVERRIDE'
+                ? '#BAE6FD'
+                : isHighConfidence
+                ? '#BBF7D0'
+                : '#FDE68A'
+            }`,
             borderRadius: '10px',
             padding: '1rem',
             marginBottom: '1rem',
@@ -282,58 +353,113 @@ export function PredictionCard({
         >
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <CheckCircle2 size={18} color={isHighConfidence ? '#16A34A' : '#D97706'} />
+              <CheckCircle2
+                size={18}
+                color={
+                  decision.resolutionSource === 'OCR_OVERRIDE'
+                    ? '#0284C7'
+                    : isHighConfidence
+                    ? '#16A34A'
+                    : '#D97706'
+                }
+              />
               <div>
                 <span style={{ fontWeight: 800, fontSize: '1.1rem', color: '#1A1A1A' }}>
-                  {result.prediction}
+                  {decision.resolvedBrand}
                 </span>
-                {matchedMedicine && (
-                  <span style={{ marginLeft: '8px', fontSize: '0.75rem', color: '#4B5563', fontWeight: 500 }}>
-                    ({matchedMedicine.strength} · {matchedMedicine.dosage_form})
-                  </span>
-                )}
+                <span style={{ marginLeft: '8px', fontSize: '0.75rem', color: '#4B5563', fontWeight: 500 }}>
+                  ({decision.resolvedStrength} · {matchedMedicine?.dosage_form || 'Tablet'})
+                </span>
               </div>
             </div>
             <span
               style={{
                 fontSize: '0.9rem',
                 fontWeight: 800,
-                color: isHighConfidence ? '#166534' : '#92400E',
+                color:
+                  decision.resolutionSource === 'OCR_OVERRIDE'
+                    ? '#0369A1'
+                    : isHighConfidence
+                    ? '#166534'
+                    : '#92400E',
               }}
             >
-              {confidencePercent}% match
+              {decision.resolutionSource === 'OCR_OVERRIDE' ? 'OCR Verified' : `${confidencePercent}% match`}
             </span>
           </div>
 
-          {matchedMedicine && (
-            <div style={{ fontSize: '0.75rem', color: '#4B5563', marginBottom: '0.5rem' }}>
-              <strong>Active Salt:</strong> {matchedMedicine.generic_name} · <strong>Mfr:</strong> {matchedMedicine.manufacturer}
+          <div style={{ fontSize: '0.75rem', color: '#4B5563', marginBottom: '0.5rem' }}>
+            <strong>Active Salt:</strong> {decision.resolvedGeneric} ·{' '}
+            <strong>Mfr:</strong> {matchedMedicine?.manufacturer || ocrResult?.manufacturer || 'Vivek Pharmaceuticals Pvt. Ltd.'}
+          </div>
+
+          {/* Special Notices (e.g. Government Supply, Schedule H) */}
+          {ocrResult?.notices && ocrResult.notices.length > 0 && (
+            <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap', marginBottom: '0.6rem' }}>
+              {ocrResult.notices.map((n, i) => (
+                <span
+                  key={i}
+                  style={{
+                    background: '#FEE2E2',
+                    color: '#991B1B',
+                    padding: '2px 7px',
+                    borderRadius: '4px',
+                    fontSize: '0.7rem',
+                    fontWeight: 700,
+                    letterSpacing: '0.02em',
+                  }}
+                >
+                  {n}
+                </span>
+              ))}
+            </div>
+          )}
+
+          {/* Printed Batch & Expiry Stamp */}
+          {(decision.batchNumber || decision.expiryDate) && (
+            <div
+              style={{
+                fontSize: '0.75rem',
+                color: '#1E3A8A',
+                background: '#E0F2FE',
+                padding: '4px 8px',
+                borderRadius: '6px',
+                marginBottom: '0.75rem',
+                display: 'inline-flex',
+                gap: '12px',
+                fontWeight: 600,
+              }}
+            >
+              {decision.batchNumber && <span>B.No: {decision.batchNumber}</span>}
+              {decision.expiryDate && <span>EXP: {decision.expiryDate}</span>}
             </div>
           )}
 
           {/* Confidence Progress Bar */}
-          <div
-            style={{
-              width: '100%',
-              height: '8px',
-              background: 'rgba(0,0,0,0.06)',
-              borderRadius: '999px',
-              overflow: 'hidden',
-              marginBottom: '0.75rem',
-            }}
-          >
+          {decision.resolutionSource !== 'OCR_OVERRIDE' && (
             <div
               style={{
-                width: `${confidencePercent}%`,
-                height: '100%',
-                background: isHighConfidence
-                  ? 'linear-gradient(90deg, #22C55E 0%, #16A34A 100%)'
-                  : 'linear-gradient(90deg, #F59E0B 0%, #D97706 100%)',
+                width: '100%',
+                height: '8px',
+                background: 'rgba(0,0,0,0.06)',
                 borderRadius: '999px',
-                transition: 'width 0.4s ease',
+                overflow: 'hidden',
+                marginBottom: '0.75rem',
               }}
-            />
-          </div>
+            >
+              <div
+                style={{
+                  width: `${confidencePercent}%`,
+                  height: '100%',
+                  background: isHighConfidence
+                    ? 'linear-gradient(90deg, #22C55E 0%, #16A34A 100%)'
+                    : 'linear-gradient(90deg, #F59E0B 0%, #D97706 100%)',
+                  borderRadius: '999px',
+                  transition: 'width 0.4s ease',
+                }}
+              />
+            </div>
+          )}
 
           {/* Clinical Conflict Banner (Active Ingredient Overlap) */}
           {conflicts.length > 0 && (
@@ -354,7 +480,7 @@ export function PredictionCard({
                 <strong style={{ display: 'block', fontSize: '0.825rem', marginBottom: '2px' }}>
                   Clinical Warning: Active Ingredient Overlap Detected!
                 </strong>
-                You already have <strong>{conflicts.map(c => c.conflictingMed.brandName).join(', ')}</strong> in your cabinet containing active ingredient <strong>{matchedMedicine?.generic_name}</strong>.
+                You already have <strong>{conflicts.map(c => c.conflictingMed.brandName).join(', ')}</strong> in your cabinet containing active ingredient <strong>{decision.resolvedGeneric}</strong>.
                 Taking both concurrently may exceed recommended daily limits. Verify total intake before consuming.
               </div>
             </div>
@@ -365,7 +491,7 @@ export function PredictionCard({
             {onApplyMedicine && (
               <button
                 type="button"
-                onClick={() => onApplyMedicine(result.prediction!)}
+                onClick={() => onApplyMedicine(decision.resolvedBrand)}
                 className="btn btn-secondary btn-sm"
                 style={{ fontSize: '0.75rem', padding: '6px 10px', flex: 1 }}
               >
@@ -440,6 +566,83 @@ export function PredictionCard({
           <p style={{ fontSize: '0.775rem', color: '#B91C1C', margin: 0 }}>
             Visual patterns are ambiguous. Please verify medicine packaging text or GS1 barcode manually.
           </p>
+        </div>
+      )}
+
+      {/* OCR Extracted Text Inspector Drawer */}
+      {ocrResult && ocrResult.rawText && (
+        <div
+          style={{
+            border: '1px solid #E5E7EB',
+            borderRadius: '8px',
+            marginBottom: '1rem',
+            overflow: 'hidden',
+          }}
+        >
+          <button
+            type="button"
+            onClick={() => setShowOcrDetails(prev => !prev)}
+            style={{
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '8px 12px',
+              background: '#F9FAFB',
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: '0.775rem',
+              fontWeight: 600,
+              color: '#374151',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <ScanText size={15} color="#4F46E5" />
+              <span>Extracted Printed Text from Foil (Optical Character Recognition)</span>
+            </div>
+            {showOcrDetails ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
+          </button>
+
+          {showOcrDetails && (
+            <div style={{ padding: '12px', background: '#FFFFFF', fontSize: '0.775rem' }}>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+                  gap: '8px',
+                  marginBottom: '10px',
+                }}
+              >
+                <div><strong>Detected Drug:</strong> {ocrResult.detectedDrug || '—'}</div>
+                <div><strong>Strength:</strong> {ocrResult.strength || '—'}</div>
+                <div><strong>Batch Number:</strong> {ocrResult.batchNumber || '—'}</div>
+                <div><strong>Expiry Date:</strong> {ocrResult.expiryDate || '—'}</div>
+                <div><strong>Mfg Date:</strong> {ocrResult.mfgDate || '—'}</div>
+                <div><strong>Manufacturer:</strong> {ocrResult.manufacturer || '—'}</div>
+              </div>
+
+              <details style={{ marginTop: '6px' }}>
+                <summary style={{ cursor: 'pointer', color: '#6B7280', fontSize: '0.725rem' }}>
+                  View raw OCR text output
+                </summary>
+                <pre
+                  style={{
+                    background: '#F3F4F6',
+                    padding: '8px',
+                    borderRadius: '4px',
+                    fontSize: '0.7rem',
+                    whiteSpace: 'pre-wrap',
+                    maxHeight: '120px',
+                    overflowY: 'auto',
+                    marginTop: '4px',
+                    border: '1px solid #E5E7EB',
+                  }}
+                >
+                  {ocrResult.rawText}
+                </pre>
+              </details>
+            </div>
+          )}
         </div>
       )}
 

@@ -47,4 +47,7 @@ ml/.cache/
 ml/saved_models/
 ml/data_splits/*.csv
 ml/pharmaia_data_splits/*.csv
+*.traineddata
+__pycache__/
+*.pyc
 
