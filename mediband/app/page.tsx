@@ -25,7 +25,7 @@ function KpiCard({
   sub,
   subColor = '#94a3b8',
   icon: Icon,
-  accent = '#14b8a6',
+  accent = '#FF6115',
 }: {
   label: string;
   value: React.ReactNode;
@@ -98,7 +98,7 @@ export default function DashboardPage() {
 
   return (
     <div style={{ width: '100%' }}>
-      {/* ── Atmospheric Hero Section (Delhi Grid Intelligence style) ── */}
+      {/* ── Atmospheric Hero Section (Delhi Grid layout with MediBand Orange) ── */}
       <section className="hero-section">
         <div className="hero-bg" />
         <div className="hero-overlay" />
@@ -112,7 +112,7 @@ export default function DashboardPage() {
                   width: 7,
                   height: 7,
                   borderRadius: '50%',
-                  background: '#10b981',
+                  background: '#FF6115',
                 }}
               />
               <span>LIVE ENGINE</span>
@@ -141,7 +141,7 @@ export default function DashboardPage() {
                 padding: '0.8rem 1.6rem',
                 fontSize: '0.95rem',
                 borderRadius: '999px',
-                boxShadow: '0 6px 20px rgba(13, 148, 136, 0.45)',
+                boxShadow: '0 6px 20px rgba(255, 97, 21, 0.45)',
               }}
               id="dashboard-scan-cta"
             >
@@ -177,9 +177,9 @@ export default function DashboardPage() {
                   <TrendingUp size={12} /> Stored in Cabinet
                 </>
               }
-              subColor="#0d9488"
+              subColor="#EA580C"
               icon={Package}
-              accent="#14b8a6"
+              accent="#FF6115"
             />
 
             <KpiCard
@@ -234,7 +234,7 @@ export default function DashboardPage() {
           <div
             className="card"
             style={{
-              borderLeft: '4px solid var(--teal)',
+              borderLeft: '4px solid var(--orange)',
               background: '#ffffff',
               display: 'flex',
               alignItems: 'center',
@@ -249,17 +249,17 @@ export default function DashboardPage() {
                   width: 44,
                   height: 44,
                   borderRadius: 12,
-                  background: 'rgba(20, 184, 166, 0.12)',
+                  background: 'rgba(255, 97, 21, 0.12)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   flexShrink: 0,
                 }}
               >
-                <Activity size={22} color="#0d9488" />
+                <Activity size={22} color="#FF6115" />
               </div>
               <div>
-                <div className="card-title" style={{ color: 'var(--teal)', marginBottom: 2 }}>
+                <div className="card-title" style={{ color: 'var(--orange)', marginBottom: 2 }}>
                   Upcoming Scheduled Dose
                 </div>
                 <div style={{ fontWeight: 800, fontSize: '1.15rem', color: '#1e293b' }}>
@@ -286,8 +286,8 @@ export default function DashboardPage() {
         <div
           className="card"
           style={{
-            background: 'linear-gradient(135deg, #f0fdfa 0%, #e6fffa 100%)',
-            border: '1px solid #99f6e4',
+            background: 'linear-gradient(135deg, #FFF7ED 0%, #FFEDD5 100%)',
+            border: '1px solid #FED7AA',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -299,10 +299,10 @@ export default function DashboardPage() {
             <span className="demo-tag" style={{ marginBottom: 6 }}>
               Evidence Workflow
             </span>
-            <h3 style={{ fontWeight: 800, color: '#134e4a', margin: '4px 0 2px' }}>
+            <h3 style={{ fontWeight: 800, color: '#9A3412', margin: '4px 0 2px' }}>
               Have a new medicine pack?
             </h3>
-            <p style={{ fontSize: '0.82rem', color: '#0f766e', margin: 0 }}>
+            <p style={{ fontSize: '0.82rem', color: '#C2410C', margin: 0 }}>
               Scan or enter GS1 DataMatrix / Barcode to run code-print consistency and reference
               registry checks.
             </p>
@@ -331,7 +331,7 @@ export default function DashboardPage() {
                 href="/history"
                 style={{
                   fontSize: '0.8rem',
-                  color: '#0d9488',
+                  color: '#FF6115',
                   fontWeight: 700,
                   textDecoration: 'none',
                   display: 'flex',
@@ -360,7 +360,7 @@ export default function DashboardPage() {
                         width: 8,
                         height: 8,
                         borderRadius: '50%',
-                        background: '#14b8a6',
+                        background: '#FF6115',
                         display: 'inline-block',
                       }}
                     />

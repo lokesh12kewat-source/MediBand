@@ -37,7 +37,7 @@ export default function NavShell() {
           </div>
           <div>
             <div className="navbar-title">
-              Medi<span className="navbar-title-teal">Band</span>
+              Medi<span className="navbar-title-orange">Band</span>
             </div>
             <div className="navbar-subtitle">
               Evidence-Backed Medication Intelligence
@@ -45,7 +45,7 @@ export default function NavShell() {
           </div>
         </Link>
 
-        {/* Center Nav Links (Pills matching Vidyut AI) */}
+        {/* Center Nav Links */}
         <nav className="navbar-menu" aria-label="Sections">
           {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
             const active = isActive(href);
@@ -66,7 +66,16 @@ export default function NavShell() {
         {/* Right Status Badge */}
         <div className="navbar-status">
           <div className="navbar-badge">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 pulse-dot" style={{ display: 'inline-block', width: 7, height: 7, borderRadius: '50%', background: '#10b981' }} />
+            <span
+              className="pulse-dot"
+              style={{
+                display: 'inline-block',
+                width: 7,
+                height: 7,
+                borderRadius: '50%',
+                background: '#FF6115',
+              }}
+            />
             <span>Live Engine</span>
           </div>
           <div className="navbar-subtext">

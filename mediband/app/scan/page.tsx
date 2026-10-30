@@ -87,8 +87,8 @@ function ScanContent() {
                     alignItems: 'center',
                     gap: '0.875rem',
                     padding: '0.875rem',
-                    background: selectedScenario?.id === scenario.id ? 'var(--teal-pale)' : 'var(--surface-muted)',
-                    border: `1px solid ${selectedScenario?.id === scenario.id ? 'var(--teal)' : 'var(--border)'}`,
+                    background: selectedScenario?.id === scenario.id ? 'var(--orange-pale)' : 'var(--surface-muted)',
+                    border: `1px solid ${selectedScenario?.id === scenario.id ? 'var(--orange)' : 'var(--border)'}`,
                     borderRadius: '10px',
                     cursor: 'pointer',
                     textAlign: 'left',
@@ -128,7 +128,7 @@ export default function ScanPage() {
     <Suspense
       fallback={
         <div className="page-content" style={{ textAlign: 'center', paddingTop: '4rem' }}>
-          <div style={{ width: 32, height: 32, border: '3px solid var(--teal)', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 1rem' }} />
+          <div style={{ width: 32, height: 32, border: '3px solid var(--orange)', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 1rem' }} />
           <p style={{ color: 'var(--ink-muted)', fontSize: '0.875rem' }}>Loading scanner…</p>
         </div>
       }
@@ -153,8 +153,8 @@ function ScanProgress({ currentStep }: { currentStep: number }) {
   return (
     <div className="card" style={{ maxWidth: 360, margin: '0 auto', padding: '2rem' }}>
       <div style={{ marginBottom: '1.5rem', textAlign: 'center' }}>
-        <div style={{ width: 48, height: 48, borderRadius: '50%', background: 'var(--teal-pale)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' }}>
-          <div style={{ width: 20, height: 20, border: '2.5px solid var(--teal)', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+        <div style={{ width: 48, height: 48, borderRadius: '50%', background: 'var(--orange-pale)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' }}>
+          <div style={{ width: 20, height: 20, border: '2.5px solid var(--orange)', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
         </div>
         <div style={{ fontWeight: 600, fontSize: '0.95rem' }}>Processing scan…</div>
         <div style={{ marginTop: '0.375rem' }}>

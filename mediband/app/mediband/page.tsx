@@ -215,8 +215,8 @@ export default function MediBandPage() {
                           style={{
                             fontSize: '0.75rem',
                             padding: '0.2rem 0.5rem',
-                            background: 'var(--teal-pale)',
-                            color: 'var(--teal)',
+                            background: 'var(--orange-pale)',
+                            color: 'var(--orange)',
                             borderRadius: 4,
                             fontWeight: 600,
                           }}
@@ -246,8 +246,8 @@ export default function MediBandPage() {
                 <div
                   style={{
                     padding: '0.875rem',
-                    background: redoseWarning ? '#FFF1F2' : 'var(--teal-pale)',
-                    border: `1px solid ${redoseWarning ? '#F43F5E' : 'var(--teal)'}`,
+                    background: redoseWarning ? '#FFF1F2' : 'var(--orange-pale)',
+                    border: `1px solid ${redoseWarning ? '#F43F5E' : 'var(--orange)'}`,
                     borderRadius: 8,
                     display: 'flex',
                     flexDirection: 'column',
@@ -328,7 +328,7 @@ export default function MediBandPage() {
           ))}
           <Link
             href="/history"
-            style={{ display: 'block', marginTop: '0.75rem', fontSize: '0.8125rem', color: 'var(--teal)', fontWeight: 500 }}
+            style={{ display: 'block', marginTop: '0.75rem', fontSize: '0.8125rem', color: 'var(--orange)', fontWeight: 500 }}
           >
             View full medication history →
           </Link>
@@ -389,7 +389,7 @@ function DeviceSimulator({
               <div
                 className="mediband-alert"
                 aria-live="polite"
-                style={{ fontSize: '0.52rem', color: redoseWarning ? '#FB7185' : 'var(--teal)' }}
+                style={{ fontSize: '0.52rem', color: redoseWarning ? '#FB7185' : 'var(--orange)' }}
               >
                 {redoseWarning ? 'RE-DOSE? CONFIRM' : 'CONFIRM TAKEN?'}
               </div>

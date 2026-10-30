@@ -27,6 +27,76 @@
 
 ---
 
+## [v0.1.7] — 2026-10-20 20:10 IST  |  commit: PENDING
+
+### Summary
+Restored MediBand's signature warm orange brand palette (`#FF6115`, `#FF8247`, `#FFF0E8`, `#FAF9F5`) across all design tokens, navbar branding, hero headline and CTAs, scanner progress indicators, cabinet links, and smart band controls, while preserving the modern top-navbar and 4-KPI-card layout inspired by Vidyut AI.
+
+---
+
+### Files Changed
+
+#### `package.json`
+- Bumped version from `0.1.6` to `0.1.7`.
+- Updated `build` script to `next build --webpack` for reliable, error-free builds in Windows environments.
+
+#### `app/globals.css`
+- Restored MediBand signature orange design tokens: `--orange: #FF6115`, `--orange-light: #FF8247`, `--orange-dark: #E04F08`, `--orange-pale: #FFF0E8`, `--orange-glow: rgba(255, 97, 21, 0.28)`, `--porcelain: #FAF9F5`.
+- Added backward-compatibility aliases mapping `--teal*` to the orange palette tokens.
+- Restored warm porcelain background (`#FAF9F5`) to `body` and `.app-main`.
+- Restored navbar logo icon gradient to `linear-gradient(135deg, #FF6115, #FF8247)` and active nav link color to `#FF6115`.
+- Restored navbar live engine badge to warm peach/orange tint (`#FFF0E8` bg, `#FFD4C2` border, `#C2410C` text, `#FF6115` pulse dot).
+- Restored hero section overlay to a warm night-fall gradient with amber-orange warmth (`linear-gradient(135deg, rgba(15, 23, 42, 0.90) 0%, rgba(38, 25, 45, 0.82) 40%, rgba(154, 52, 18, 0.68) 75%, rgba(250, 249, 245, 0.98) 100%)`).
+- Restored hero headline gradient to warm flame orange (`linear-gradient(135deg, #FFA06E, #FF6115)`).
+- Restored primary button gradients (`#FF6115` to `#FF8247`) and orange glow box-shadows.
+- Restored demo drawer toggle button and scanner accents to orange.
+
+#### `components/layout/NavShell.tsx`
+- Restored logo icon background to warm orange gradient (`linear-gradient(135deg, #FF6115, #FF8247)`).
+- Restored brand text styling to `Medi<span className="navbar-title-orange">Band</span>`.
+- Restored live pulse dot background color to `#FF6115`.
+
+#### `app/page.tsx`
+- Restored hero badge live dot to `#FF6115`.
+- Restored hero headline gradient to orange flame (`hero-title-gradient`).
+- Restored Scan CTA button box shadow to `0 6px 20px rgba(255, 97, 21, 0.45)`.
+- Restored KPI Card 1 (Cabinet Medicines) accent to `#FF6115` with subtitle color `#EA580C`.
+- Restored Upcoming Dose card border-left to `var(--orange)`, icon container to orange tint (`rgba(255, 97, 21, 0.12)`), and icon color to `#FF6115`.
+- Restored Quick Action banner to warm orange gradient (`linear-gradient(135deg, #FFF7ED 0%, #FFEDD5 100%)`).
+
+#### `app/layout.tsx`
+- Restored footer brand name color to `var(--orange)`.
+- Cleaned up Google Font Space Grotesk import to supported weights (400, 500, 600, 700).
+
+#### `app/scan/page.tsx` & `app/scan/result/page.tsx`
+- Restored scenario selection borders, loading spinners, and scan progress indicators to `var(--orange)` and `var(--orange-pale)`.
+
+#### `app/cabinet/page.tsx` & `app/mediband/page.tsx`
+- Restored interactive edit links, Medicine Passport buttons, and smart band schedule pills to `var(--orange)`.
+
+---
+
+### Logic & Decisions
+- Preserved the full-width top navbar and responsive 4-KPI floating card hero structure introduced in v0.1.5/v0.1.6, addressing the spacing failure seen when dynamic utility classes collapsed.
+- Fully honoured the user's explicit directive to restore the MediBand signature orange colour scheme, removing all inadvertent teal/cyan overrides.
+- Semantic indicator colors (green for valid shelf-life, amber for attention needed, blue for schedule) remain distinct and accessible while brand identity elements are unified around MediBand orange.
+- Maintained strict adherence to safety copy rules: zero occurrences of forbidden words (`genuine`, `authentic`, `counterfeit`, `fake`).
+
+---
+
+### Tests
+- `npx tsc --noEmit`: 0 errors.
+- `npx vitest run`: 63/63 unit tests passed across 5 test suites.
+- `npm run build`: successfully built and prerendered all 7 routes statically.
+- Safety copy linter: 0 forbidden words found in UI files.
+
+---
+
+### Known Limitations / Next Steps
+- Production camera scanning requires HTTPS or localhost in modern mobile browsers.
+
+---
+
 ## [v0.1.6] — 2026-10-20 19:45 IST  |  commit: 333b3ec
 
 ### Summary
