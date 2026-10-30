@@ -98,7 +98,7 @@ export default function DashboardPage() {
 
   return (
     <div style={{ width: '100%' }}>
-      {/* ── Atmospheric Hero Section (Delhi Grid layout with MediBand Orange) ── */}
+      {/* ── Atmospheric Hero Section (Global World Map with MediBand Orange) ── */}
       <section className="hero-section">
         <div className="hero-bg" />
         <div className="hero-overlay" />

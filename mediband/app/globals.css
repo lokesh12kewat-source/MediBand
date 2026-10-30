@@ -256,21 +256,21 @@ p { color: var(--ink-secondary); line-height: 1.65; }
 .hero-bg {
   position: absolute;
   inset: 0;
-  background-image: url('/hero_bg.jpg');
+  background-image: url('/world_map.svg');
   background-size: cover;
-  background-position: center 30%;
+  background-position: center center;
+  background-repeat: no-repeat;
   z-index: 0;
 }
 
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(15, 23, 42, 0.90) 0%,
-    rgba(38, 25, 45, 0.82) 40%,
-    rgba(154, 52, 18, 0.68) 75%,
-    rgba(250, 249, 245, 0.98) 100%
+  background: radial-gradient(
+    circle at 50% 35%,
+    rgba(15, 23, 42, 0.45) 0%,
+    rgba(15, 23, 42, 0.75) 60%,
+    rgba(10, 15, 29, 0.92) 100%
   );
   z-index: 1;
 }
