@@ -11,10 +11,16 @@ function generateId(): string {
   return `evt-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
 }
 
+const memoryStore: Record<string, string> = {};
+
 function loadFromStorage<T>(key: string, fallback: T): T {
-  if (typeof window === 'undefined') return fallback;
   try {
-    const raw = localStorage.getItem(key);
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const raw = localStorage.getItem(key);
+      if (!raw) return fallback;
+      return JSON.parse(raw) as T;
+    }
+    const raw = memoryStore[key];
     if (!raw) return fallback;
     return JSON.parse(raw) as T;
   } catch {
@@ -23,10 +29,25 @@ function loadFromStorage<T>(key: string, fallback: T): T {
 }
 
 function saveToStorage<T>(key: string, data: T): void {
-  if (typeof window === 'undefined') return;
   try {
-    localStorage.setItem(key, JSON.stringify(data));
+    const serialized = JSON.stringify(data);
+    if (typeof window !== 'undefined' && window.localStorage) {
+      localStorage.setItem(key, serialized);
+    } else {
+      memoryStore[key] = serialized;
+    }
   } catch {}
+}
+
+export function clearHistoryStore(): void {
+  if (typeof window !== 'undefined' && window.localStorage) {
+    localStorage.removeItem(EVENTS_KEY);
+    localStorage.removeItem(SCHEDULE_KEY);
+    localStorage.removeItem(SEEDED_KEY);
+  }
+  delete memoryStore[EVENTS_KEY];
+  delete memoryStore[SCHEDULE_KEY];
+  delete memoryStore[SEEDED_KEY];
 }
 
 // ─── Seed Events (for demo) ───────────────────────────────────────────────────
@@ -113,12 +134,17 @@ const DEFAULT_SCHEDULES: MedicationSchedule[] = [
 // ─── Events Store ─────────────────────────────────────────────────────────────
 
 function isHistorySeeded(): boolean {
-  if (typeof window === 'undefined') return false;
-  return localStorage.getItem(SEEDED_KEY) === 'true';
+  if (typeof window !== 'undefined' && window.localStorage) {
+    return localStorage.getItem(SEEDED_KEY) === 'true';
+  }
+  return memoryStore[SEEDED_KEY] === 'true';
 }
 function markHistorySeeded(): void {
-  if (typeof window === 'undefined') return;
-  localStorage.setItem(SEEDED_KEY, 'true');
+  if (typeof window !== 'undefined' && window.localStorage) {
+    localStorage.setItem(SEEDED_KEY, 'true');
+  } else {
+    memoryStore[SEEDED_KEY] = 'true';
+  }
 }
 
 /**

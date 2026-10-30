@@ -10,10 +10,16 @@ const SEEDED_KEY  = 'mediband_cabinet_seeded_v1';
 
 // ─── Storage helpers ──────────────────────────────────────────────────────────
 
+const memoryStore: Record<string, string> = {};
+
 function load<T>(key: string, fallback: T): T {
-  if (typeof window === 'undefined') return fallback;
   try {
-    const raw = localStorage.getItem(key);
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const raw = localStorage.getItem(key);
+      if (!raw) return fallback;
+      return JSON.parse(raw) as T;
+    }
+    const raw = memoryStore[key];
     if (!raw) return fallback;
     return JSON.parse(raw) as T;
   } catch {
@@ -22,20 +28,42 @@ function load<T>(key: string, fallback: T): T {
 }
 
 function save<T>(key: string, data: T): void {
-  if (typeof window === 'undefined') return;
-  try { localStorage.setItem(key, JSON.stringify(data)); } catch { /* quota */ }
+  try {
+    const serialized = JSON.stringify(data);
+    if (typeof window !== 'undefined' && window.localStorage) {
+      localStorage.setItem(key, serialized);
+    } else {
+      memoryStore[key] = serialized;
+    }
+  } catch { /* quota */ }
 }
 
 // ─── Seeding — only runs once per browser (flag guards it) ───────────────────
 
 function isSeeded(): boolean {
-  if (typeof window === 'undefined') return false;
-  return localStorage.getItem(SEEDED_KEY) === 'true';
+  if (typeof window !== 'undefined' && window.localStorage) {
+    return localStorage.getItem(SEEDED_KEY) === 'true';
+  }
+  return memoryStore[SEEDED_KEY] === 'true';
 }
 
 function markSeeded(): void {
-  if (typeof window === 'undefined') return;
-  localStorage.setItem(SEEDED_KEY, 'true');
+  if (typeof window !== 'undefined' && window.localStorage) {
+    localStorage.setItem(SEEDED_KEY, 'true');
+  } else {
+    memoryStore[SEEDED_KEY] = 'true';
+  }
+}
+
+export function clearCabinetStore(): void {
+  if (typeof window !== 'undefined' && window.localStorage) {
+    localStorage.removeItem(MEDS_KEY);
+    localStorage.removeItem(PACKS_KEY);
+    localStorage.removeItem(SEEDED_KEY);
+  }
+  delete memoryStore[MEDS_KEY];
+  delete memoryStore[PACKS_KEY];
+  delete memoryStore[SEEDED_KEY];
 }
 
 /**
