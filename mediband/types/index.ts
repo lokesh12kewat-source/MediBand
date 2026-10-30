@@ -292,3 +292,60 @@ export interface ReconciliationItem {
   status: ReconciliationStatus;
   matchedWith?: Medication;
 }
+
+// ─── Camera & Dataset Collection Types ─────────────────────────────────────────
+
+export type RecognitionType = 'packaging' | 'loose_pill';
+
+export type ImageView =
+  | 'front'
+  | 'back'
+  | 'blister_foil'
+  | 'strip_front'
+  | 'box_panel'
+  | 'bottle_label'
+  | 'top'
+  | 'side'
+  | 'angled'
+  | 'unspecified';
+
+export interface ImageQualityAssessment {
+  resolution: {
+    width: number;
+    height: number;
+  };
+  megapixels: number;
+  brightness: number;         // 0 - 100 average luminance
+  blurScore: number;          // Edge gradient sharpness score (higher is sharper)
+  glareScore: number;         // 0 - 100 percentage of clipped/glare pixels
+  isAcceptable: boolean;      // True if no critical quality warnings
+  warnings: string[];         // Human-readable warnings
+}
+
+export interface DatasetImageRecord {
+  image_id: string;
+  medicine_id: string | null; // null if unknown / unlabeled — never invent names
+  recognition_type: RecognitionType;
+  capture_timestamp: string;  // ISO 8601
+  image_view: ImageView;
+  image_quality: ImageQualityAssessment;
+  source: 'camera' | 'upload';
+  file_path: string;          // Relative path within MediBand_Dataset/
+  notes?: string;
+  dataUrl?: string;           // Optional base64 for client display
+}
+
+// ─── Medicine Metadata Schema (Indian Medicines) ───────────────────────────────
+
+export type ReferenceStatus = 'approved' | 'reference_listed' | 'common_market';
+
+export interface MedicineMetadata {
+  medicine_id: string;
+  brand_name: string;
+  generic_name: string;
+  strength: string;
+  dosage_form: string;
+  manufacturer: string;
+  product_identifier: string; // e.g. GTIN, drug license, or NDC
+  reference_status: ReferenceStatus;
+}

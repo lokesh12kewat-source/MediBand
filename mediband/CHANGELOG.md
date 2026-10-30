@@ -27,6 +27,89 @@
 
 ---
 
+## [v0.1.8] — 2026-10-30 18:25 IST  |  commit: PENDING
+
+### Summary
+Implemented the camera integration and dataset collection foundation for MediBand Indian medicines, featuring browser-native `getUserMedia` with rear-camera preference, distinct Packaging vs Loose Pill recognition modes, real-time image quality evaluation (resolution, blur, darkness, glare), structured `MediBand_Dataset/` storage, Indian medicines metadata schema, and CSV dataset export.
+
+---
+
+### Files Changed
+
+#### `types/index.ts`
+- Added `RecognitionType` ('packaging' | 'loose_pill') and `ImageView` perspectives.
+- Added `ImageQualityAssessment` interface for resolution, brightness, blur score, glare percentage, and warning diagnostics.
+- Added `DatasetImageRecord` for structured dataset storage.
+- Added `MedicineMetadata` and `ReferenceStatus` for Indian pharmaceutical product information.
+
+#### `lib/image-quality.ts` & `lib/image-quality.vitest.ts`
+- Implemented pure pixel-level analysis for:
+  - Resolution and megapixel validation against minimum thresholds.
+  - Average luminance calculation for excessive darkness detection (< 40 / 255).
+  - High-luminance clipped specular pixel detection for glare warning (> 8% saturation).
+  - Discrete 2D Laplacian kernel variance computation for blur / out-of-focus detection.
+- Added 5 comprehensive vitest tests covering resolution, darkness, glare, flat image blur, and sharp high-contrast samples.
+
+#### `lib/dataset-manager.ts` & `lib/dataset-manager.vitest.ts`
+- Implemented unique chronological Image ID generator (`img_pkg_...` and `img_pill_...`).
+- Implemented `buildDatasetFilePath` targeting `MediBand_Dataset/packaging/` and `MediBand_Dataset/loose_pills/`.
+- Implemented `createDatasetRecord` ensuring unknown medicines are left `null` (never inventing medicine IDs).
+- Implemented CSV conversion and browser download utility with escaping and quotation handling.
+- Added 4 unit tests covering ID format, path resolution, null safety, and CSV serialization.
+
+#### `data/indian-medicines.ts` & `data/indian-medicines.json`
+- Prepared standard Indian medicines reference metadata with 12 common products (Dolo 650, Augmentin 625 Duo, Pantocid 40, Azithral 500, Shelcal 500, Telma 40, Glycomet 500, Pan 40, Montair-LC, Combiflam, Becosules, Calpol 500).
+- Intentionally separated product metadata from variable batch and expiry information.
+
+#### `components/camera/CameraCapture.tsx`
+- Modular, reusable camera component using native `navigator.mediaDevices.getUserMedia()`.
+- Requests permissions on-demand; prefers rear camera (`facingMode: { ideal: 'environment' }`).
+- Live video preview with viewfinder guides and frame dimensions.
+- Captures frame to `<canvas>` at full camera resolution with immediate image quality assessment.
+- Provides Retake and Save controls, plus file-upload fallback (`<input type="file" accept="image/*" />`).
+- Graceful error handling for `NotAllowedError`, `NotFoundError`, and insecure HTTP contexts.
+- Clean track cleanup on unmount or closure.
+
+#### `components/camera/DatasetViewer.tsx`
+- Dataset records gallery and table with type filters (All, Packaging, Loose Pills).
+- Live quality badges and medicine association indicators.
+- One-click CSV export button triggers download.
+
+#### `app/api/dataset/save/route.ts` & `app/api/dataset/export/route.ts`
+- Server-side persistence to disk: writes image files to `MediBand_Dataset/packaging/` or `MediBand_Dataset/loose_pills/`.
+- Appends annotations to `MediBand_Dataset/annotations/metadata.json`.
+- Appends and updates `MediBand_Dataset/exports/dataset_metadata.csv`.
+- Export route serves direct CSV attachment download.
+
+#### `app/scan/page.tsx`
+- Integrated primary tab switcher between "Camera & Dataset Collector" and "GS1 & Demo Scenarios".
+- Minimal porcelain (`#FAF9F5`) and neon orange (`#FF6115`) UI styling.
+
+#### `lib/capture-workflow.vitest.ts`
+- Added 4 end-to-end workflow tests validating schema integrity, packaging capture, loose-pill unassigned labeling, and mixed CSV generation.
+
+---
+
+### Logic & Decisions
+- No ML model or recognition claim is made at this stage; captured images are strictly labeled as either user-assigned known reference or `null` / unlabeled.
+- Image quality checks execute locally on canvas pixel buffers to give immediate real-time feedback before saving.
+- Parallel worker race conditions on Windows OneDrive folders during `next build` were resolved by setting `experimental: { cpus: 1 }` in `next.config.ts`.
+
+---
+
+### Tests
+- `npx tsc --noEmit`: 0 errors.
+- `npx vitest run`: 76/76 unit tests passed across 8 test suites.
+- `npm run build`: successfully compiled and prerendered all 9 routes.
+- Safety copy linter: 0 forbidden words found in UI files.
+
+---
+
+### Known Limitations / Next Steps
+- Dataset collection is active; future phases will integrate training pipelines and lightweight on-device inference for Indian medicine classification.
+
+---
+
 ## [v0.1.7] — 2026-10-20 20:10 IST  |  commit: 1bf101c
 
 ### Summary
