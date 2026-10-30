@@ -47,6 +47,7 @@ describe('AI Vision Safety & Cabinet Workflow', () => {
   });
 
   it('3. Successfully ingests a vision-predicted medicine into user cabinet', () => {
+    const ingIds = extractIngredientIds('Calcium and Vitamin D3');
     const med: Medication = {
       id: 'med_ind_shelcal500',
       brandName: 'Shelcal 500',
@@ -54,16 +55,20 @@ describe('AI Vision Safety & Cabinet Workflow', () => {
       strength: '500 mg + 250 IU',
       dosageForm: 'Film-coated Tablet',
       manufacturer: 'Torrent Pharmaceuticals Ltd',
-      activeIngredients: extractIngredientIds('Calcium and Vitamin D3'),
+      activeIngredientId: ingIds[0] || 'ING_CALCIUM',
+      activeIngredients: ingIds,
     };
 
     const pack: MedicationPack = {
       id: 'pack-shelcal-test-1',
       medicationId: med.id,
-      batchNumber: 'SH12345',
+      gtin: '08901148002017',
+      batchPrinted: 'SH12345',
+      batchEncoded: 'SH12345',
       expiryPrinted: '12/2027',
+      expiryEncoded: '12/2027',
+      addedAt: new Date().toISOString(),
       quantity: { remaining: 15, unit: 'tablets' },
-      verificationStatus: 'verified',
     };
 
     addMedication(med);

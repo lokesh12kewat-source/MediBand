@@ -146,6 +146,7 @@ export function PredictionCard({
     if (!matchedMedicine) return;
 
     const medId = matchedMedicine.medicine_id;
+    const ingIds = extractIngredientIds(matchedMedicine.generic_name);
     const medObj: Medication = {
       id: medId,
       brandName: matchedMedicine.brand_name,
@@ -153,17 +154,21 @@ export function PredictionCard({
       strength: matchedMedicine.strength,
       dosageForm: matchedMedicine.dosage_form,
       manufacturer: matchedMedicine.manufacturer,
-      activeIngredients: extractIngredientIds(matchedMedicine.generic_name),
+      activeIngredientId: ingIds[0] || 'ING_UNKNOWN',
+      activeIngredients: ingIds,
     };
 
     const packId = `pack-${medId}-${Date.now().toString(36)}`;
     const packObj: MedicationPack = {
       id: packId,
       medicationId: medId,
-      batchNumber: batchNo || 'UNSPECIFIED',
+      gtin: matchedMedicine.product_identifier || '00000000000000',
+      batchPrinted: batchNo || 'UNSPECIFIED',
+      batchEncoded: batchNo || 'UNSPECIFIED',
       expiryPrinted: expiryStr || '12/2027',
+      expiryEncoded: expiryStr || '12/2027',
+      addedAt: new Date().toISOString(),
       quantity: { remaining: Number(quantity) || 10, unit: 'tablets' },
-      verificationStatus: 'verified',
       openedAt: new Date().toISOString(),
       inUseExpiryDays: 365,
       notes: `Identified via MediBand AI Vision (${confidencePercent}% match)`,
