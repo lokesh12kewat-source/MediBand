@@ -27,6 +27,48 @@
 
 ---
 
+## [v0.2.2] — 2026-10-30 23:05 IST  |  commit: 3a94cf4
+
+### Summary
+Implemented client-side WebAssembly ONNX inference engine (`lib/onnx-client.ts`) allowing zero-dependency offline execution in user browsers, integrated dynamic engine switching (NVIDIA RTX 4050 GPU vs. Browser WASM) in `CameraCapture.tsx`, and added pure mathematical preprocessing tests passing 84/84 tests across 10 suites.
+
+---
+
+### Files Changed
+
+#### `lib/onnx-client.ts`
+- Created browser-side ONNX Runtime Web client:
+  - Dynamically loads `ort.min.js` asynchronously via CDN without bloating the build bundle.
+  - Preprocesses captured images onto an offscreen 224x224 canvas with ImageNet normalization ($[0.485, 0.456, 0.406]$, $[0.229, 0.224, 0.225]$).
+  - Translates image to planar Float32Array $[1, 3, 224, 224]$.
+  - Runs WebAssembly execution provider on `public/models/mediband_packaging_model.onnx` and `public/models/mediband_loose_pill_model.onnx`.
+  - Computes numerically stable Softmax and enforces the 50% safety confidence threshold.
+
+#### `lib/onnx-client.vitest.ts`
+- Added 4 unit tests verifying:
+  - Softmax probability distributions and numerical stability under uniform shift.
+  - ImageNet pixel normalization math.
+  - Top-3 candidate ranking and 50% confidence safety cutoff.
+
+#### `components/camera/CameraCapture.tsx`
+- Added dual-engine inference architecture:
+  - Default: Server GPU route (`/api/ml/predict`) utilizing NVIDIA GeForce RTX 4050.
+  - Client-side fallback: If server is offline or unreachable, automatically invokes `runClientInference`.
+- Added interactive engine switcher in the top toolbar to allow users to toggle between `⚡ RTX 4050 GPU` and `🌐 In-Browser WASM`.
+
+#### `components/ml/PredictionCard.tsx`
+- Enhanced hardware badge to dynamically display execution environment:
+  - `Browser WASM (<ms> ms)` for client-side execution.
+  - `RTX 4050 GPU (<ms> ms)` for server GPU acceleration.
+
+---
+
+### Tests
+- **Vitest**: 10/10 test suites passed, 84/84 tests passing.
+- **TypeScript**: 0 errors (`tsc --noEmit`).
+
+---
+
 ## [v0.2.1] — 2026-10-30 22:50 IST  |  commit: edc1247
 
 ### Summary
