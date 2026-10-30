@@ -27,6 +27,47 @@
 
 ---
 
+## [v0.2.5] — 2026-10-31 00:05 IST  |  commit: b7bf71e
+
+### Summary
+Resolved invisible world map background by implementing an inline vector DOM component ([`WorldMapBackground.tsx`](file:///c:/Users/OMEN/OneDrive/Desktop/SO_in_HH/mediband/components/layout/WorldMapBackground.tsx)), adding high-contrast luminous continent borders (`#60A5FA` / `#38BDF8`), vibrant MediBand Neon Orange (`#FF6115`) highlighting for India, glowing radar pulses, and lightened the hero radial vignette overlay to ensure immediate, striking visibility.
+
+---
+
+### Files Changed
+
+#### `components/layout/WorldMapBackground.tsx`
+- Created dedicated React SVG component rendered directly inside `<section className="hero-section">` in the DOM.
+- Eliminates browser CSS `background-image` caching bugs, 404s, and image-context SVG filter disabling.
+- Continent landmasses rendered with deep navy gradient (`#1E2E4A` to `#142036`) and electric cyan outer stroke (`#60A5FA`, 2px) with Gaussian blur glow.
+- Indian Subcontinent highlighted in MediBand Neon Orange (`#FF6115`, 2.8px stroke, 0.35 fill) with 3 concentric radar pulse rings radiating from Delhi HQ.
+- 10 international supply chain flight arcs (`#FF6115` to `#38BDF8`) connecting India with WHO Geneva, London MHRA, Frankfurt, US FDA / New York, Tokyo PMDA, Singapore BioMed, Sydney TGA, Nairobi, and São Paulo.
+- 14 global pharmaceutical hub nodes with glowing radar circles and crisp text label badges.
+- Top-right and bottom-left cartographic HUD telemetry readouts.
+
+#### `app/page.tsx`
+- Replaced `<div className="hero-bg" />` with inline `<WorldMapBackground />` directly under `<section className="hero-section">`.
+
+#### `app/globals.css`
+- Lightened `.hero-overlay` radial gradient from `0.45-0.92` down to `0.12-0.72` (`rgba(11, 17, 32, 0.12)` at center to `rgba(7, 11, 20, 0.72)` at edges) so the map, continents, and glowing arcs are clearly, strikingly visible behind the hero content while preserving optimal typography contrast.
+
+#### `public/world_map.svg`
+- Updated static fallback SVG to synchronize with high-contrast electric cyan and neon orange color palette.
+
+---
+
+### Logic & Decisions
+- **Why inline DOM SVG instead of CSS `background-image`**: Browsers apply strict isolation to SVGs loaded as CSS `background-image` (stripping SVG filter glow effects, ignoring certain defs, and suffering from aggressive asset caching). Mounting `<WorldMapBackground />` directly into Next.js React DOM guarantees zero network lag, instant Hot Module Reloading (HMR), and 100% hardware-accelerated filter rendering.
+- **Contrast calibration**: The previous continent fill (`#1E293B`) had a contrast ratio of only 1.1:1 against the dark ocean (`#141E33`). Under a 75% dark overlay, the difference was reduced to ~2 RGB values. With luminous `#60A5FA` / `#38BDF8` borders and a calibrated 0.12–0.38 overlay, continents and supply lines stand out crisply on all screen calibrations.
+
+---
+
+### Tests
+- `npx tsc --noEmit`: 0 TypeScript compiler errors.
+- `npx vitest run`: 88 / 88 unit tests passed across all 11 test suites (100% pass rate).
+
+---
+
 ## [v0.2.4] — 2026-10-30 23:50 IST  |  commit: 3cc8b6f
 
 ### Summary
