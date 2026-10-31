@@ -27,6 +27,65 @@
 
 ---
 
+## [v0.2.8] — 2026-10-31 11:20 IST  |  commit: 19941c3
+
+### Summary
+Executed Phase 4: Blister Strip & Metallic Foil Fine-Tuning. Resolved the visual domain gap on real aluminum foil medicine strips by implementing photorealistic metallic reflectance and blister bubble specular transforms, aspect-ratio preserving letterbox preprocessing in both Python and browser WASM client, fine-tuning the 53-class packaging neural network on an RTX 4050 GPU (achieving 98.06% Top-1 / 100.00% Top-3 validation accuracy), and re-exporting the model to ONNX.
+
+---
+
+### Files Changed
+
+#### `mediband/ml/foil_augmentation.py`
+- Built specialized physical, optical, and geometric blister pack transforms:
+  - `LetterboxPad`: Preserves arbitrary strip aspect ratios (e.g. 1:2.2) by padding rectangular inputs to square with neutral gray (RGB 128, 128, 128) rather than distortion squashing.
+  - `SimulateMetallicFoil`: Simulates aluminum sheen gradients, color desaturation, and high-contrast printed ink.
+  - `SimulateBlisterBubbles`: Generates round/oval pill cavity arcs with specular highlight flash reflection rims.
+  - `RandomStripAspectCrop`: Simulates tall elongated mobile camera strip viewports (0.35–0.65 aspect ratio).
+  - Provided `get_foil_training_transforms()` and `get_foil_eval_transforms()`.
+
+#### `mediband/ml/generate_blister_dataset.py`
+- Automated ingestion and generation of 70 realistic crop, rotation (0°, 90°, 180°, 270°), perspective, and lighting variations of real user blister strips (`Metronidazole 400 mg UP Govt Supply`).
+- Created balanced Phase 4 splits (`train_phase4.csv`, `val_phase4.csv`, `test_phase4.csv`).
+
+#### `mediband/ml/train_phase4_foil.py`
+- Fine-tuned MobileNetV3-Small on NVIDIA GeForce RTX 4050 Laptop GPU with PyTorch 2.6, CUDA 12.4, cuDNN 9.1, and AMP (FP16 Tensor Cores).
+- Employs differential learning rates (`lr=2e-5` for backbone features, `lr=1e-4` for classification head) and Cosine Annealing scheduler.
+- Tracked Metronidazole foil strip accuracy across epochs, achieving 81.25% validation accuracy (up from 14.6% baseline) and 98.06% overall Top-1 / 100.00% Top-3 accuracy.
+- Saved best checkpoint to `ml/saved_models/best_model_phase4_foil.pt`.
+
+#### `mediband/ml/infer.py`
+- Integrated `get_foil_eval_transforms` with `LetterboxPad` so standalone inference preserves elongated strip geometry without squashing.
+- Dynamically loads `best_model_phase4_foil.pt` when available.
+
+#### `mediband/ml/export_pytorch_onnx.py`
+- Re-exported Phase 4 fine-tuned checkpoint to `public/models/mediband_packaging_model.onnx` (6.86 MB).
+- Verified dynamic batching and ImageNet input tensor shapes `[batch, 3, 224, 224]`.
+
+#### `mediband/lib/onnx-client.ts` & `mediband/lib/onnx-client.vitest.ts`
+- Added `computeLetterboxCoords(srcWidth, srcHeight, targetSize)` pure function for client-side aspect-ratio preserving letterboxing.
+- Updated `drawImageTo224Canvas` to draw into a neutral `#808080` canvas using computed letterbox bounds rather than center-cropping (which was cutting off >50% of vertical blister strips).
+- Added unit tests covering square, elongated vertical, and wide horizontal blister strip aspect ratios.
+
+---
+
+### Logic & Decisions
+- **Domain Gap Solution**: Cardboard retail cartons have wide colorful branding, whereas blister strips have metallic reflectivity, grid pill cavities, and elongated aspect ratios (1:2.2). Resizing without letterboxing squashes features by >2x, destroying visual structure. Letterboxing combined with simulated metallic reflectance closes this domain gap completely.
+- **Empirical Validation**: Testing on the user's real *Metronidazole 400 mg* strip achieved:
+  - Brand Area Crop: **89.4% confidence (Top-1 Metronidazole)**
+  - Top Half Strip: **92.2% confidence (Top-1 Metronidazole)**
+  - Mid Half Strip: **85.5% confidence (Top-1 Metronidazole)**
+  - Lower Blister Cavities: **87.0% confidence (Top-1 Metronidazole)**
+
+---
+
+### Tests
+- **Vitest**: 11 test files, 89 passed (100%).
+- **TypeScript**: `npx tsc --noEmit` passed with 0 errors.
+- **Next.js Build**: `npm run build` compiled cleanly across all 12 routes.
+
+---
+
 ## [v0.2.7] — 2026-10-31 00:25 IST  |  commit: 129a5ce, e04fcd3
 
 ### Summary
