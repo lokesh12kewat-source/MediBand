@@ -27,6 +27,42 @@
 
 ---
 
+## [v0.2.10] — 2026-10-31 17:45 IST  |  commit: 5359c5d
+
+### Summary
+Diagnosed and resolved OCR extraction failures and missing confidence progress metrics on reflective metallic blister strips (e.g. *Parafast 500 / Paracetamol Tablets IP 500 mg*, Cipla Ltd, Batch CP50321). Restored multi-modal confidence scoring and progress bars in `PredictionCard`, implemented alphanumeric 3-letter month parsing for dot-matrix stamps (`NOV.25`, `OCT.28`), added optical glare dosage sanitization (`508 mg` -> `500 mg`), prioritized brand matching over generic salts, and added automated high-contrast foil pre-processing in Tesseract OCR.
+
+---
+
+### Files Changed
+
+#### `mediband/components/ml/PredictionCard.tsx`
+- **Restored Confidence Badge**: Updated the top header badge to display the exact match percentage during OCR resolution (`OCR Verified · 92% match` instead of bare `OCR Verified`).
+- **Restored Confidence Progress Bar**: Removed the suppression condition (`{decision.resolutionSource !== 'OCR_OVERRIDE' && ...}`) so that OCR and Decision Fusion predictions display a progress bar with an emerald/sky-blue gradient.
+- **Accurate Manufacturer Binding**: Ensured `ocrResult.manufacturer` (e.g. *Cipla Ltd*) takes precedence over generic DB fallbacks when an OCR override occurs.
+
+#### `mediband/lib/ocr-engine.ts`
+- **Decoupled Brand & Generic Loops**: Split the pharmaceutical database matching into distinct phases. Previously, generic salt matching broke out of the search loop on the first iteration, preventing brand recognition (`Parafast 500`, `Dolo 650`) on strips containing generic lines (`Paracetamol Tablets IP...`).
+- **Dot-Matrix Batch Matching**: Added flexible regexes `(?:B\.?\s*)?NO\.?` and standard Indian pharma pattern `\b([A-Z]{2}\d{5,8})\b` to reliably extract stamped numbers like `CP50321` when the faint leading `B.` is blurred by metallic reflections.
+- **Alphanumeric Month Expiry & Mfg Extraction**: Added support for 3-letter abbreviations (`JAN`–`DEC`), 2-digit years, and stamped OCR ligatures (`EXMOCT.28`, `EXP.OCT.28`, `MFD.NOV.25`).
+- **Optical Glare Dosage Sanitization**: Added pharmaceutical dosage quantization to clean specular highlights on tablet blister curves (e.g. `504–512 mg` -> `500 mg`, `645–659 mg` -> `650 mg`).
+- **High-Contrast Multi-Pass Foil OCR**: In `executeFoilOCR`, added an automatic high-contrast contrast-boost pass (2.2x contrast boost) that activates whenever batch, expiry, or drug is missing, merging faint printed ink with dot-matrix foil stamps.
+
+#### `mediband/data/indian-medicines.ts`
+- Added first-class database entry for `Parafast 500` (`med_ind_parafast500`, Paracetamol 500 mg Tablet, Cipla Ltd, GTIN `08901117245580`).
+
+#### `mediband/lib/ocr-engine.vitest.ts`
+- Added comprehensive unit test covering the user's blister strip: verifies `Parafast 500`, `Paracetamol`, `500 mg` (glare corrected from `508 mg`), Batch `CP50321`, Expiry `OCT 2028`, Mfg `NOV 2025`, and Manufacturer `Cipla Ltd`.
+
+---
+
+### Tests
+- **Vitest**: 11 test suites, **90 passed (100%)**.
+- **TypeScript**: `npx tsc --noEmit` passed with 0 errors.
+- **Production Build**: `next build --webpack` compiled successfully with 0 errors.
+
+---
+
 ## [v0.2.9] — 2026-10-31 11:30 IST  |  commit: 46f0518
 
 ### Summary
