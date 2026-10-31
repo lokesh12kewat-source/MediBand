@@ -12,6 +12,7 @@ import {
   CircleDot,
   Sliders,
   ChevronDown,
+  Sparkles,
 } from 'lucide-react';
 import {
   DatasetImageRecord,
@@ -344,6 +345,51 @@ export default function CameraCapture({
     reader.readAsDataURL(file);
   }
 
+  // Load preset demo sample for instant verification without physical camera
+  const loadDemoSample = async (sampleUrl: string, type: RecognitionType, view: ImageView) => {
+    try {
+      setErrorMessage(null);
+      setSaveSuccess(null);
+      stopStream();
+      setRecognitionType(type);
+      setImageView(view);
+
+      const res = await fetch(sampleUrl);
+      const blob = await res.blob();
+      const reader = new FileReader();
+      reader.onload = event => {
+        const dataUrl = event.target?.result as string;
+        if (!dataUrl) return;
+
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.naturalWidth || img.width;
+          canvas.height = img.naturalHeight || img.height;
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            ctx.drawImage(img, 0, 0);
+            const assessment = analyzeCanvas(canvas);
+            setQuality(assessment);
+          }
+          setCapturedDataUrl(dataUrl);
+          setCameraState('captured');
+          triggerInference(dataUrl, type);
+          if (type === 'packaging') {
+            triggerOCR(dataUrl);
+          } else {
+            setOcrResult(null);
+            setOcrLoading(false);
+          }
+        };
+        img.src = dataUrl;
+      };
+      reader.readAsDataURL(blob);
+    } catch (err) {
+      console.error('Failed to load demo sample:', err);
+    }
+  };
+
   // Retake photo: clear preview and reopen camera
   function retakePhoto() {
     setCapturedDataUrl(null);
@@ -566,6 +612,92 @@ export default function CameraCapture({
               <strong>Category: Loose Pill</strong> — captures individual tablets, caplets, or capsules outside packaging. Place on a clean, solid, matte background.
             </span>
           )}
+        </div>
+
+        {/* Quick 1-Click Verification Presets */}
+        <div
+          style={{
+            marginTop: '0.65rem',
+            padding: '8px 12px',
+            background: '#FDFBF7',
+            border: '1px solid #EBE7DD',
+            borderRadius: '8px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '8px',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.78rem', color: '#6B7280', fontWeight: 600 }}>
+            <Sparkles size={14} color="#FF6115" />
+            <span>QUICK PRESETS:</span>
+          </div>
+          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+            <button
+              type="button"
+              onClick={() => loadDemoSample('/demo-samples/metronidazole_blister.jpg', 'packaging', 'blister_foil')}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '5px',
+                padding: '4px 10px',
+                background: '#FFFFFF',
+                border: '1px solid #CBD5E1',
+                borderRadius: '6px',
+                fontSize: '0.75rem',
+                fontWeight: 600,
+                color: '#0F172A',
+                cursor: 'pointer',
+                transition: 'all 0.15s ease',
+              }}
+              title="Test real silver metallic blister strip with Schedule H printed text"
+            >
+              <span>✨</span> Metronidazole Foil Strip (Phase 4)
+            </button>
+            <button
+              type="button"
+              onClick={() => loadDemoSample('/demo-samples/dolo_box.jpg', 'packaging', 'box_panel')}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '5px',
+                padding: '4px 10px',
+                background: '#FFFFFF',
+                border: '1px solid #CBD5E1',
+                borderRadius: '6px',
+                fontSize: '0.75rem',
+                fontWeight: 600,
+                color: '#0F172A',
+                cursor: 'pointer',
+                transition: 'all 0.15s ease',
+              }}
+              title="Test retail cardboard packaging"
+            >
+              <span>📦</span> Dolo-650 Box
+            </button>
+            <button
+              type="button"
+              onClick={() => loadDemoSample('/demo-samples/loose_pill_sample.jpg', 'loose_pill', 'top')}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '5px',
+                padding: '4px 10px',
+                background: '#FFFFFF',
+                border: '1px solid #CBD5E1',
+                borderRadius: '6px',
+                fontSize: '0.75rem',
+                fontWeight: 600,
+                color: '#0F172A',
+                cursor: 'pointer',
+                transition: 'all 0.15s ease',
+              }}
+              title="Test loose pill classifier on isolated tablet"
+            >
+              <span>💊</span> Loose Tablet (Class A)
+            </button>
+          </div>
         </div>
       </div>
 
