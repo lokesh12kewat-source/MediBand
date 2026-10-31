@@ -104,10 +104,14 @@ export function parseFoilText(rawText: string, confidence: number = 0): Extracte
   let detectedBrand: string | null = null;
   let detectedGeneric: string | null = null;
   let matchedMedicineId: string | null = null;
+  let strength: string | null = null;
+  let batchNumber: string | null = null;
+  let expiryDate: string | null = null;
+  let mfgDate: string | null = null;
+  let manufacturer: string | null = null;
 
-  // 1. Check against INDIAN_MEDICINES database
+  // 1. Check Brand Name matches first (Brand names must always take precedence over generic salts)
   for (const med of INDIAN_MEDICINES) {
-    // Check brand name with flexible hyphen/space matching (e.g. Dolo-650 vs Dolo 650)
     const brandPattern = escapeRegex(med.brand_name).replace(/[-\s]+/g, '[-\\s]*');
     const brandRegex = new RegExp(`\\b${brandPattern}\\b`, 'i');
     if (brandRegex.test(clean)) {
@@ -117,21 +121,56 @@ export function parseFoilText(rawText: string, confidence: number = 0): Extracte
       matchedMedicineId = med.medicine_id;
       break;
     }
+  }
 
-    // Check generic name (or multi-salt components)
-    const genericParts = med.generic_name.split(/[,+]/).map(s => s.trim());
-    for (const part of genericParts) {
-      if (part.length < 4) continue;
-      const genPattern = escapeRegex(part).replace(/[-\s]+/g, '[-\\s]*');
-      const genRegex = new RegExp(`\\b${genPattern}\\b`, 'i');
-      if (genRegex.test(clean)) {
-        detectedGeneric = med.generic_name;
-        detectedDrug = med.generic_name;
-        matchedMedicineId = med.medicine_id;
+  // Check common Indian brand names if not matched in DB
+  if (!detectedBrand) {
+    const commonBrands: { brand: string; generic: string; mfr?: string }[] = [
+      { brand: 'Parafast 500', generic: 'Paracetamol', mfr: 'Cipla Ltd' },
+      { brand: 'Parafast', generic: 'Paracetamol', mfr: 'Cipla Ltd' },
+      { brand: 'Calpol', generic: 'Paracetamol', mfr: 'GlaxoSmithKline' },
+      { brand: 'Crocin', generic: 'Paracetamol', mfr: 'GlaxoSmithKline' },
+      { brand: 'Combiflam', generic: 'Ibuprofen and Paracetamol', mfr: 'Sanofi India' },
+      { brand: 'Meftal-Spas', generic: 'Mefenamic Acid and Dicyclomine', mfr: 'Blue Cross' },
+      { brand: 'Pan-40', generic: 'Pantoprazole', mfr: 'Alkem Laboratories' },
+      { brand: 'Omez', generic: 'Omeprazole', mfr: 'Dr. Reddy\'s Laboratories' },
+      { brand: 'Ascoril', generic: 'Bromhexine and Terbutaline', mfr: 'Glenmark' },
+      { brand: 'Pacimol', generic: 'Paracetamol', mfr: 'Ipca Laboratories' },
+      { brand: 'P-500', generic: 'Paracetamol', mfr: 'Apex Laboratories' },
+      { brand: 'P-650', generic: 'Paracetamol', mfr: 'Apex Laboratories' },
+    ];
+
+    for (const b of commonBrands) {
+      const r = new RegExp(`\\b${escapeRegex(b.brand)}(?:\\s*\\d+)?\\b`, 'i');
+      if (r.test(clean)) {
+        detectedBrand = b.brand;
+        detectedDrug = b.brand;
+        detectedGeneric = b.generic;
+        if (b.mfr && !manufacturer) {
+          manufacturer = b.mfr;
+        }
         break;
       }
     }
-    if (detectedDrug) break;
+  }
+
+  // 2. Check Generic Salts only if NO brand name was found
+  if (!detectedDrug) {
+    for (const med of INDIAN_MEDICINES) {
+      const genericParts = med.generic_name.split(/[,+]/).map(s => s.trim());
+      for (const part of genericParts) {
+        if (part.length < 4) continue;
+        const genPattern = escapeRegex(part).replace(/[-\s]+/g, '[-\\s]*');
+        const genRegex = new RegExp(`\\b${genPattern}\\b`, 'i');
+        if (genRegex.test(clean)) {
+          detectedGeneric = med.generic_name;
+          detectedDrug = med.generic_name;
+          matchedMedicineId = med.medicine_id;
+          break;
+        }
+      }
+      if (detectedDrug) break;
+    }
   }
 
   // Common generic salts frequently found on Indian government supply / Jan Aushadhi packaging
@@ -166,64 +205,92 @@ export function parseFoilText(rawText: string, confidence: number = 0): Extracte
     }
   }
 
-  // 2. Extract Strength / Dosage
-  let strength: string | null = null;
+  // 2. Extract Strength / Dosage with OCR Glare Sanitization
   const strengthMatch = clean.match(/(?:IP\s*)?(\d+(?:\.\d+)?\s*(?:mg|mcg|gm|g|ml|iu|IU))\b/i);
   if (strengthMatch) {
     strength = strengthMatch[1].trim();
+    const numVal = parseInt(strength, 10);
+    const unit = strength.replace(/[\d\.]+/g, '').trim().toLowerCase();
+
+    // Correct optical glare noise (e.g. 508/509/506 mg -> 500 mg, 658/659 mg -> 650 mg)
+    if (unit === 'mg') {
+      if (numVal >= 504 && numVal <= 512) strength = '500 mg';
+      else if (numVal >= 645 && numVal <= 659) strength = '650 mg';
+      else if (numVal >= 985 && numVal <= 1015) strength = '1000 mg';
+      else if (numVal >= 245 && numVal <= 255) strength = '250 mg';
+    }
   }
 
-  // 3. Extract Batch Number
-  let batchNumber: string | null = null;
+  // 3. Extract Batch Number (dot-matrix stamped on blister foil)
   const batchPatterns = [
-    /B(?:\.|\s*)?No(?:\.|\s*)?[:\.\s]*([A-Z0-9\-\/]{4,18})/i,
-    /Batch(?:\.|\s*No\.?)?[:\.\s]*([A-Z0-9\-\/]{4,18})/i,
-    /Lot(?:\.|\s*No\.?)?[:\.\s]*([A-Z0-9\-\/]{4,18})/i,
+    /(?:B\.?\s*)?NO\.?[:\.\s]*([A-Z0-9\-\/]{4,18})/i,
+    /(?:Batch|Lot)(?:\.|\s*No\.?)?[:\.\s]*([A-Z0-9\-\/]{4,18})/i,
     /BNO[:\.\s]*([A-Z0-9\-\/]{4,18})/i,
+    /\b([A-Z]{2}\d{5,8})\b/, // Standard Indian batch format (e.g. CP50321)
   ];
   for (const pat of batchPatterns) {
     const m = clean.match(pat);
     if (m && m[1]) {
-      batchNumber = m[1].trim();
+      batchNumber = m[1].replace(/[^A-Z0-9\-\/]/gi, '').trim();
       break;
     }
   }
 
-  // 4. Extract Expiry Date
-  let expiryDate: string | null = null;
-  const expPatterns = [
-    /EXP(?:IRY)?(?:\.|\s*Dt\.?)?[:\.\s]*([0-9]{1,2}[\/\-\.][0-9]{2,4})/i,
-    /Exp(?:\s*Date)?[:\.\s]*([0-9]{1,2}[\/\-\.][0-9]{2,4})/i,
-    /EXP\.?[:\.\s]*([0-9]{1,2}[\/\-\.][0-9]{2,4})/i,
-  ];
-  for (const pat of expPatterns) {
-    const m = clean.match(pat);
-    if (m && m[1]) {
-      expiryDate = m[1].trim();
-      break;
+  // 4. Extract Expiry Date (handles 3-letter months e.g. OCT.28, NOV-25, and MM/YYYY)
+  const monthsStr = 'JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC';
+  const expMonthRegex = new RegExp(`(?:EX[PMB]|EXPIRY|EXP)(?:\\.|\\s*Dt\\.?)?[:\\.\\s]*(${monthsStr})[\\.\\s\\-\\/]*(\\d{2,4})`, 'i');
+  const expNumRegex = /(?:EX[PMB]|EXPIRY|EXP)(?:\.|\s*Dt\.?)?[:\.\s]*([0-9]{1,2}[\/\-\.][0-9]{2,4})/i;
+
+  const expMonthMatch = clean.match(expMonthRegex);
+  if (expMonthMatch && expMonthMatch[1] && expMonthMatch[2]) {
+    const yr = expMonthMatch[2].length === 2 ? `20${expMonthMatch[2]}` : expMonthMatch[2];
+    expiryDate = `${expMonthMatch[1].toUpperCase()} ${yr}`;
+  } else {
+    const expNumMatch = clean.match(expNumRegex);
+    if (expNumMatch && expNumMatch[1]) {
+      expiryDate = expNumMatch[1].trim();
     }
   }
 
   // 5. Extract Manufacturing Date
-  let mfgDate: string | null = null;
-  const mfgPatterns = [
-    /MFG(?:\.|\s*Dt\.?)?[:\.\s]*([0-9]{1,2}[\/\-\.][0-9]{2,4})/i,
-    /Mfg(?:\s*Date)?[:\.\s]*([0-9]{1,2}[\/\-\.][0-9]{2,4})/i,
-    /MFD\.?[:\.\s]*([0-9]{1,2}[\/\-\.][0-9]{2,4})/i,
-  ];
-  for (const pat of mfgPatterns) {
-    const m = clean.match(pat);
-    if (m && m[1]) {
-      mfgDate = m[1].trim();
-      break;
+  const mfgMonthRegex = new RegExp(`(?:MFG|MFD)(?:\\.|\\s*Dt\\.?)?[:\\.\\s]*(${monthsStr})[\\.\\s\\-\\/]*(\\d{2,4})`, 'i');
+  const mfgNumRegex = /(?:MFG|MFD)(?:\.|\s*Dt\.?)?[:\.\s]*([0-9]{1,2}[\/\-\.][0-9]{2,4})/i;
+
+  const mfgMonthMatch = clean.match(mfgMonthRegex);
+  if (mfgMonthMatch && mfgMonthMatch[1] && mfgMonthMatch[2]) {
+    const yr = mfgMonthMatch[2].length === 2 ? `20${mfgMonthMatch[2]}` : mfgMonthMatch[2];
+    mfgDate = `${mfgMonthMatch[1].toUpperCase()} ${yr}`;
+  } else {
+    const mfgNumMatch = clean.match(mfgNumRegex);
+    if (mfgNumMatch && mfgNumMatch[1]) {
+      mfgDate = mfgNumMatch[1].trim();
     }
   }
 
   // 6. Extract Manufacturer
-  let manufacturer: string | null = null;
-  const mfrMatch = clean.match(/([A-Za-z\s]+(?:Pharmaceuticals|Laboratories|Pharma|Ltd|Pvt\. Ltd\.))/i);
-  if (mfrMatch) {
-    manufacturer = mfrMatch[1].replace(/\n/g, ' ').trim();
+  const knownMfrs = [
+    'CIPLA', 'CIPLA LTD', 'SUN PHARMA', 'DR. REDDY', 'MANKIND', 'LUPIN',
+    'TORRENT', 'ABBOTT', 'ALKEM', 'ZYDUS', 'GLAXOSMITHKLINE', 'GSK',
+    'INTAS', 'MICRO LABS', 'GLENMARK', 'ARISTO', 'HSN BIOTECH', 'PFIZER'
+  ];
+  for (const km of knownMfrs) {
+    const r = new RegExp(`\\b${escapeRegex(km)}\\b`, 'i');
+    if (r.test(clean)) {
+      manufacturer = km === 'CIPLA' || km === 'CIPLA LTD' ? 'Cipla Ltd' : km;
+      break;
+    }
+  }
+  if (!manufacturer) {
+    const mfrMatch = clean.match(/([A-Za-z\s]+(?:Pharmaceuticals|Laboratories|Pharma|Ltd|Pvt\. Ltd\.))/i);
+    if (mfrMatch) {
+      manufacturer = mfrMatch[1].replace(/\n/g, ' ').trim();
+    }
+  }
+  if (!manufacturer && matchedMedicineId) {
+    const med = INDIAN_MEDICINES.find(m => m.medicine_id === matchedMedicineId);
+    if (med?.manufacturer) {
+      manufacturer = med.manufacturer;
+    }
   }
 
   // 7. Extract Regulatory & Tender Notices
@@ -296,7 +363,7 @@ export function resolveMedicineIdentity(
       resolvedGeneric: ocr?.detectedGeneric || ocrDrug,
       resolvedStrength: ocr?.strength || 'As printed',
       medicineId: ocr?.matchedMedicineId || null,
-      confidence: 0.90,
+      confidence: Math.max(0.92, ocr?.confidence ? ocr.confidence / 100 : 0.92),
       resolutionSource: 'OCR_OVERRIDE',
       discrepancyDetected: Boolean(visionPred),
       explanation: visionPred
@@ -361,9 +428,9 @@ export async function getTesseractWorker(onProgress?: (msg: string, pct: number)
 
 /**
  * Runs multi-pass OCR on a medicine image:
- * 1. Checks standard image
- * 2. If confidence or drug detected is low, checks 180° inverted image
- * 3. Merges detected text and extracts structured medicine entities
+ * 1. Pass 1: Standard orientation
+ * 2. Pass 2: High-contrast blister foil enhancement if batch, expiry, or drug is missing
+ * 3. Pass 3: Inverted 180° orientation if still no drug detected
  */
 export async function executeFoilOCR(
   imageSource: string | HTMLCanvasElement,
@@ -381,7 +448,57 @@ export async function executeFoilOCR(
 
   let parsed = parseFoilText(text, conf);
 
-  // If no drug was identified or confidence is low, attempt 180° flip (inverted blister pack)
+  // Pass 2: High-contrast blister foil enhancement if batch or expiry or drug is missing
+  if (
+    (!parsed.batchNumber || !parsed.expiryDate || !parsed.detectedDrug) &&
+    typeof window !== 'undefined' &&
+    typeof document !== 'undefined'
+  ) {
+    try {
+      let canvas: HTMLCanvasElement | null = null;
+      if (typeof imageSource !== 'string' && 'getContext' in imageSource) {
+        canvas = imageSource as HTMLCanvasElement;
+      } else {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        await new Promise((res, rej) => {
+          img.onload = res;
+          img.onerror = rej;
+          img.src = typeof imageSource === 'string' ? imageSource : (imageSource as any).toDataURL();
+        });
+        canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        if (ctx) ctx.drawImage(img, 0, 0);
+      }
+
+      if (canvas) {
+        const { highContrast } = preprocessCanvasForOCR(canvas, 2.2);
+        const retContrast = await worker.recognize(highContrast);
+        const textContrast = retContrast.data.text || '';
+        const confContrast = retContrast.data.confidence || 0;
+
+        const mergedText = `${text}\n${textContrast}`;
+        const parsedContrast = parseFoilText(mergedText, Math.max(conf, confContrast));
+
+        if (
+          (!parsed.detectedDrug && parsedContrast.detectedDrug) ||
+          (!parsed.batchNumber && parsedContrast.batchNumber) ||
+          (!parsed.expiryDate && parsedContrast.expiryDate) ||
+          confContrast > conf
+        ) {
+          text = mergedText;
+          conf = Math.max(conf, confContrast);
+          parsed = parsedContrast;
+        }
+      }
+    } catch (e) {
+      console.warn('High contrast foil OCR pass skipped:', e);
+    }
+  }
+
+  // Pass 3: Inverted 180° orientation if still no drug detected
   if (!parsed.detectedDrug && typeof window !== 'undefined' && typeof document !== 'undefined') {
     try {
       const img = new Image();
@@ -389,7 +506,7 @@ export async function executeFoilOCR(
       await new Promise((res, rej) => {
         img.onload = res;
         img.onerror = rej;
-        img.src = typeof imageSource === 'string' ? imageSource : imageSource.toDataURL();
+        img.src = typeof imageSource === 'string' ? imageSource : (imageSource as any).toDataURL();
       });
 
       const rotCanvas = document.createElement('canvas');

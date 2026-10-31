@@ -153,9 +153,10 @@ export function PredictionCard({
 
   if (!result) return null;
 
-  const isConfident = result.confidence >= 0.50;
-  const isHighConfidence = result.confidence >= 0.75;
-  const confidencePercent = Math.round(result.confidence * 100);
+  const isConfident = result.confidence >= 0.50 || decision.resolutionSource === 'OCR_OVERRIDE';
+  const effectiveConfidence = decision.resolutionSource === 'OCR_OVERRIDE' ? decision.confidence : result.confidence;
+  const isHighConfidence = effectiveConfidence >= 0.75;
+  const confidencePercent = Math.round(effectiveConfidence * 100);
 
   const activeMedicineName =
     decision.resolutionSource === 'OCR_OVERRIDE'
@@ -384,13 +385,18 @@ export function PredictionCard({
                     : '#92400E',
               }}
             >
-              {decision.resolutionSource === 'OCR_OVERRIDE' ? 'OCR Verified' : `${confidencePercent}% match`}
+              {decision.resolutionSource === 'OCR_OVERRIDE'
+                ? `OCR Verified · ${confidencePercent}% match`
+                : `${confidencePercent}% match`}
             </span>
           </div>
 
           <div style={{ fontSize: '0.75rem', color: '#4B5563', marginBottom: '0.5rem' }}>
             <strong>Active Salt:</strong> {decision.resolvedGeneric} ·{' '}
-            <strong>Mfr:</strong> {matchedMedicine?.manufacturer || ocrResult?.manufacturer || 'Vivek Pharmaceuticals Pvt. Ltd.'}
+            <strong>Mfr:</strong>{' '}
+            {decision.resolutionSource === 'OCR_OVERRIDE' && ocrResult?.manufacturer
+              ? ocrResult.manufacturer
+              : matchedMedicine?.manufacturer || ocrResult?.manufacturer || 'Vivek Pharmaceuticals Pvt. Ltd.'}
           </div>
 
           {/* Special Notices (e.g. Government Supply, Schedule H) */}
@@ -436,30 +442,31 @@ export function PredictionCard({
           )}
 
           {/* Confidence Progress Bar */}
-          {decision.resolutionSource !== 'OCR_OVERRIDE' && (
+          <div
+            style={{
+              width: '100%',
+              height: '8px',
+              background: 'rgba(0,0,0,0.06)',
+              borderRadius: '999px',
+              overflow: 'hidden',
+              marginBottom: '0.75rem',
+            }}
+          >
             <div
               style={{
-                width: '100%',
-                height: '8px',
-                background: 'rgba(0,0,0,0.06)',
-                borderRadius: '999px',
-                overflow: 'hidden',
-                marginBottom: '0.75rem',
-              }}
-            >
-              <div
-                style={{
-                  width: `${confidencePercent}%`,
-                  height: '100%',
-                  background: isHighConfidence
+                width: `${confidencePercent}%`,
+                height: '100%',
+                background:
+                  decision.resolutionSource === 'OCR_OVERRIDE'
+                    ? 'linear-gradient(90deg, #0284C7 0%, #059669 100%)'
+                    : isHighConfidence
                     ? 'linear-gradient(90deg, #22C55E 0%, #16A34A 100%)'
                     : 'linear-gradient(90deg, #F59E0B 0%, #D97706 100%)',
-                  borderRadius: '999px',
-                  transition: 'width 0.4s ease',
-                }}
-              />
-            </div>
-          )}
+                borderRadius: '999px',
+                transition: 'width 0.4s ease',
+              }}
+            />
+          </div>
 
           {/* Clinical Conflict Banner (Active Ingredient Overlap) */}
           {conflicts.length > 0 && (

@@ -10,6 +10,16 @@ import { MedicineMetadata } from '@/types';
  */
 export const INDIAN_MEDICINES: MedicineMetadata[] = [
   {
+    medicine_id: 'med_ind_parafast500',
+    brand_name: 'Parafast 500',
+    generic_name: 'Paracetamol',
+    strength: '500 mg',
+    dosage_form: 'Tablet',
+    manufacturer: 'Cipla Ltd',
+    product_identifier: '08901117245580',
+    reference_status: 'approved',
+  },
+  {
     medicine_id: 'med_ind_dolo650',
     brand_name: 'Dolo 650',
     generic_name: 'Paracetamol',

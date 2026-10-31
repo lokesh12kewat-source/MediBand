@@ -120,4 +120,25 @@ describe('OCR Engine - Foil Text Parsing & Multi-Modal Arbiter', () => {
     expect(decision.discrepancyDetected).toBe(false);
     expect(decision.confidence).toBeGreaterThanOrEqual(0.95);
   });
+
+  it('5. Successfully parses user blister strip: Parafast 500, Cipla, CP50321, OCT 2028 and sanitizes 508 mg glare', () => {
+    // User raw OCR output from media_1793447579545_02be00dc.jpg
+    const userParafastOCR = `
+      Tablets IP 508:mg Paracetamol Tablets IP 508 mg Pa
+      ast 500 Parafast 500 arafast 5 oF
+      NO.CP50321 MFD.NOV.25 EXMOCT.28 $514
+      3.9.65 FOR 10 TABS
+      Marketed by CIPLA LTD
+    `;
+
+    const parsed = parseFoilText(userParafastOCR, 78);
+
+    expect(parsed.detectedBrand).toBe('Parafast 500');
+    expect(parsed.detectedGeneric).toBe('Paracetamol');
+    expect(parsed.strength).toBe('500 mg'); // Corrected from 508 mg optical glare
+    expect(parsed.batchNumber).toBe('CP50321');
+    expect(parsed.expiryDate).toBe('OCT 2028');
+    expect(parsed.mfgDate).toBe('NOV 2025');
+    expect(parsed.manufacturer).toBe('Cipla Ltd');
+  });
 });
