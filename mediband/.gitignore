@@ -50,4 +50,5 @@ ml/pharmaia_data_splits/*.csv
 *.traineddata
 __pycache__/
 *.pyc
+ml/real_blister_strips/*/augmented/
 

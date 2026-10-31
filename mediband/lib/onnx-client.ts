@@ -75,6 +75,29 @@ export function extractTopK(
   };
 }
 
+/**
+ * Phase 4 Letterbox Preprocessing Helper:
+ * Computes destination drawing coordinates and dimensions so arbitrary aspect-ratio
+ * medicine packages (including tall blister strips e.g. 1:2.2) fit into the target square
+ * without distortion, squashing, or loss of edge text/bubbles.
+ */
+export function computeLetterboxCoords(
+  srcWidth: number,
+  srcHeight: number,
+  targetSize: number = 224
+): { dx: number; dy: number; dw: number; dh: number; scale: number } {
+  if (srcWidth <= 0 || srcHeight <= 0) {
+    return { dx: 0, dy: 0, dw: targetSize, dh: targetSize, scale: 1 };
+  }
+  const scale = Math.min(targetSize / srcWidth, targetSize / srcHeight);
+  const dw = Math.round(srcWidth * scale);
+  const dh = Math.round(srcHeight * scale);
+  const dx = Math.round((targetSize - dw) / 2);
+  const dy = Math.round((targetSize - dh) / 2);
+
+  return { dx, dy, dw, dh, scale };
+}
+
 // ─── Browser ONNX Runtime Web Loader ──────────────────────────────────────────
 
 let ortLoaderPromise: Promise<any> | null = null;
@@ -138,18 +161,14 @@ export function drawImageTo224Canvas(img: HTMLImageElement): ImageData {
   const ctx = canvas.getContext('2d');
   if (!ctx) throw new Error('Failed to get 2d rendering context');
 
-  // Fill white background for transparent PNGs
-  ctx.fillStyle = '#FFFFFF';
+  // Fill neutral gray (128, 128, 128) matching Phase 4 LetterboxPad training transform
+  ctx.fillStyle = '#808080';
   ctx.fillRect(0, 0, 224, 224);
 
-  // Resize and center crop
-  const scale = Math.max(224 / img.width, 224 / img.height);
-  const sw = 224 / scale;
-  const sh = 224 / scale;
-  const sx = (img.width - sw) / 2;
-  const sy = (img.height - sh) / 2;
+  // Compute aspect-ratio preserving letterbox coordinates
+  const { dx, dy, dw, dh } = computeLetterboxCoords(img.width, img.height, 224);
+  ctx.drawImage(img, 0, 0, img.width, img.height, dx, dy, dw, dh);
 
-  ctx.drawImage(img, sx, sy, sw, sh, 0, 0, 224, 224);
   return ctx.getImageData(0, 0, 224, 224);
 }
 

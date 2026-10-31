@@ -47,8 +47,10 @@ def main():
         nn.Linear(256, NUM_CLASSES)
     )
     
-    # 3. Load checkpoint
-    ckpt_path = MODELS_DIR / "best_model_gpu.pt"
+    # 3. Load checkpoint (prefer Phase 4 fine-tuned blister foil checkpoint)
+    foil_ckpt = MODELS_DIR / "best_model_phase4_foil.pt"
+    base_ckpt = MODELS_DIR / "best_model_gpu.pt"
+    ckpt_path = foil_ckpt if foil_ckpt.exists() else base_ckpt
     print(f"Loading checkpoint: {ckpt_path}")
     checkpoint = torch.load(ckpt_path, map_location="cpu")
     model.load_state_dict(checkpoint["model_state_dict"])

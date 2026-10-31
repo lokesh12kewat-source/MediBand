@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { normalizePixels, softmax, extractTopK } from './onnx-client';
+import { normalizePixels, softmax, extractTopK, computeLetterboxCoords } from './onnx-client';
 
 describe('ONNX Client Mathematics & Preprocessing', () => {
   it('1. Correctly computes softmax probabilities and ensures sum equals 1.0', () => {
@@ -86,5 +86,28 @@ describe('ONNX Client Mathematics & Preprocessing', () => {
     expect(resB.prediction).toBeNull(); // Below 50% threshold
     expect(resB.confidence).toBe(0.38);
     expect(resB.top3[0].label).toBe('Calpol 500');
+  });
+
+  it('5. Phase 4: Preserves aspect ratio with letterbox padding for tall blister packs without squashing', () => {
+    // Square image
+    const square = computeLetterboxCoords(500, 500, 224);
+    expect(square.dw).toBe(224);
+    expect(square.dh).toBe(224);
+    expect(square.dx).toBe(0);
+    expect(square.dy).toBe(0);
+
+    // Elongated tall blister pack (471 x 1024) - real Metronidazole strip format
+    const tallStrip = computeLetterboxCoords(471, 1024, 224);
+    expect(tallStrip.dh).toBe(224);
+    expect(tallStrip.dw).toBe(103); // Math.round(471 * 224 / 1024) = 103
+    expect(tallStrip.dx).toBe(61);  // Math.round((224 - 103) / 2) = 61 (centered horizontally)
+    expect(tallStrip.dy).toBe(0);
+
+    // Wide horizontal strip (1024 x 471)
+    const wideStrip = computeLetterboxCoords(1024, 471, 224);
+    expect(wideStrip.dw).toBe(224);
+    expect(wideStrip.dh).toBe(103);
+    expect(wideStrip.dx).toBe(0);
+    expect(wideStrip.dy).toBe(61);  // centered vertically
   });
 });

@@ -21,16 +21,18 @@ from torchvision import transforms, models
 
 BASE_DIR = Path(__file__).resolve().parent
 PROJECT_DIR = BASE_DIR.parent
+if str(BASE_DIR) not in sys.path:
+    sys.path.insert(0, str(BASE_DIR))
+
+# Local imports for Phase 4 Letterbox Preprocessing
+from foil_augmentation import get_foil_eval_transforms
 MODELS_DIR = BASE_DIR / "saved_models"
 DATA_DIR = PROJECT_DIR / "data"
 
 IMG_SIZE = (224, 224)
 
-transform = transforms.Compose([
-    transforms.Resize(IMG_SIZE),
-    transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-])
+# Phase 4: Aspect-ratio preserving letterbox transform for all packaging & blister packs
+transform = get_foil_eval_transforms(IMG_SIZE)
 
 _models_cache = {}
 _labels_cache = {}
@@ -58,7 +60,12 @@ def load_packaging_model():
         nn.Linear(256, num_classes)
     )
     
-    ckpt = torch.load(MODELS_DIR / "best_model_gpu.pt", map_location=device)
+    # Prefer Phase 4 fine-tuned blister foil checkpoint if available
+    foil_ckpt = MODELS_DIR / "best_model_phase4_foil.pt"
+    base_ckpt = MODELS_DIR / "best_model_gpu.pt"
+    target_ckpt = foil_ckpt if foil_ckpt.exists() else base_ckpt
+    
+    ckpt = torch.load(target_ckpt, map_location=device)
     model.load_state_dict(ckpt["model_state_dict"])
     model.to(device)
     model.eval()
