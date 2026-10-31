@@ -27,6 +27,37 @@
 
 ---
 
+## [v0.2.9] — 2026-10-31 11:30 IST  |  commit: 46f0518
+
+### Summary
+Added 1-Click Multi-Modal Test Verification Presets to the scanner and dataset collector (`/scan`). Enables instant offline and client-side testing of real metallic blister foil strips (`Metronidazole 400 mg`), retail cartons (`Dolo-650`), and isolated tablets (`PharmAIA Class A`) without requiring a physical camera or webcam access.
+
+---
+
+### Files Changed
+
+#### `mediband/components/camera/CameraCapture.tsx`
+- Added `loadDemoSample(sampleUrl, type, view)` handler that fetches preset images, computes full canvas quality metrics, sets recognition mode, and triggers both neural AI inference (RTX 4050 GPU or in-browser WASM) and OCR text extraction.
+- Added the **Quick Presets** pill bar above the camera viewport with 3 instant test samples:
+  - `✨ Metronidazole Foil Strip (Phase 4)`: Demonstrates the newly fine-tuned metallic blister strip model with Schedule H drug recognition.
+  - `📦 Dolo-650 Box`: Demonstrates retail carton packaging recognition.
+  - `💊 Loose Tablet (Class A)`: Demonstrates single tablet classification from the PharmAIA dataset.
+
+#### `mediband/public/demo-samples/`
+- Added 3 high-resolution test assets:
+  - `metronidazole_blister.jpg`: The user's real photographic capture of Metronidazole 400 mg UP Govt Supply.
+  - `dolo_box.jpg`: Standard retail carton packaging from the Pharmassist dataset.
+  - `loose_pill_sample.jpg`: White round tablet image from the PharmAIA dataset.
+
+---
+
+### Tests
+- **Vitest**: 11 test files, 89 passed (100%).
+- **TypeScript**: `npx tsc --noEmit` passed with 0 errors.
+- **Next.js Production Build**: All 12 routes compiled cleanly.
+
+---
+
 ## [v0.2.8] — 2026-10-31 11:20 IST  |  commit: 19941c3
 
 ### Summary
