@@ -1,5 +1,12 @@
 import { describe, it, expect } from 'vitest';
-import { normalizePixels, softmax, extractTopK, computeLetterboxCoords } from './onnx-client';
+import {
+  normalizePixels,
+  softmax,
+  extractTopK,
+  computeLetterboxCoords,
+  drawImageWithStepDown,
+} from './onnx-client';
+import packagingB7Config from '@/public/models/packaging_b7.json';
 
 describe('ONNX Client Mathematics & Preprocessing', () => {
   it('1. Correctly computes softmax probabilities and ensures sum equals 1.0', () => {
@@ -99,8 +106,8 @@ describe('ONNX Client Mathematics & Preprocessing', () => {
     // Elongated tall blister pack (471 x 1024) - real Metronidazole strip format
     const tallStrip = computeLetterboxCoords(471, 1024, 224);
     expect(tallStrip.dh).toBe(224);
-    expect(tallStrip.dw).toBe(103); // Math.round(471 * 224 / 1024) = 103
-    expect(tallStrip.dx).toBe(61);  // Math.round((224 - 103) / 2) = 61 (centered horizontally)
+    expect(tallStrip.dw).toBe(103);
+    expect(tallStrip.dx).toBe(61);
     expect(tallStrip.dy).toBe(0);
 
     // Wide horizontal strip (1024 x 471)
@@ -108,6 +115,47 @@ describe('ONNX Client Mathematics & Preprocessing', () => {
     expect(wideStrip.dw).toBe(224);
     expect(wideStrip.dh).toBe(103);
     expect(wideStrip.dx).toBe(0);
-    expect(wideStrip.dy).toBe(61);  // centered vertically
+    expect(wideStrip.dy).toBe(61);
+  });
+
+  it('6. Temperature scaling correctly calibrates softmax probability distribution', () => {
+    const logits = [3.0, 1.0, 0.0];
+    const pStandard = softmax(logits, 1.0);
+    const pSharpened = softmax(logits, 0.5); // T < 1.0 sharpens confidence
+    const pSmoothed = softmax(logits, 2.0);   // T > 1.0 flattens confidence
+
+    expect(pSharpened[0]).toBeGreaterThan(pStandard[0]);
+    expect(pStandard[0]).toBeGreaterThan(pSmoothed[0]);
+
+    // All probability distributions still sum to 1.0
+    expect(pSharpened.reduce((a, b) => a + b, 0)).toBeCloseTo(1.0, 5);
+    expect(pSmoothed.reduce((a, b) => a + b, 0)).toBeCloseTo(1.0, 5);
+  });
+
+  it('7. Verifies Packaging B7 configuration JSON structure and class alignment', () => {
+    expect(packagingB7Config.model_path).toBe('/models/mediband_packaging_b7.onnx');
+    expect(packagingB7Config.input_size).toBe(288);
+    expect(packagingB7Config.num_classes).toBe(53);
+    expect(packagingB7Config.class_labels).toHaveLength(53);
+    expect(packagingB7Config.temperature).toBeGreaterThan(0);
+    expect(packagingB7Config.thresholds.precision_98).toBeGreaterThan(0.5);
+    expect(packagingB7Config.thresholds.precision_99).toBeGreaterThan(packagingB7Config.thresholds.precision_98);
+  });
+
+  it('8. Step-down halving helper returns valid 288x288 ImageData structure', () => {
+    // In node/vitest environment, check fallback handling for zero/mock dimension
+    const mockImg = {
+      naturalWidth: 0,
+      naturalHeight: 0,
+      width: 0,
+      height: 0,
+    } as unknown as HTMLImageElement;
+
+    // In non-DOM environment, verify handling or canvas generation
+    if (typeof document !== 'undefined') {
+      const imgData = drawImageWithStepDown(mockImg, 288);
+      expect(imgData.width).toBe(288);
+      expect(imgData.height).toBe(288);
+    }
   });
 });

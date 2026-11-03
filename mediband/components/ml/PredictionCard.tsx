@@ -35,6 +35,8 @@ export interface MLPredictionResult {
     confidence: number;
   }>;
   inferenceMs: number;
+  rawLogits?: number[];
+  calibratedProbabilities?: number[];
 }
 
 interface PredictionCardProps {
