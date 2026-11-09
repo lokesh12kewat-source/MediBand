@@ -45,10 +45,19 @@ next-env.d.ts
 __dataset_inspect/
 ml/.cache/
 ml/saved_models/
-ml/data_splits/*.csv
-ml/pharmaia_data_splits/*.csv
+ml/experiments/
+ml/data_splits*/*.csv
+ml/pharmaia_data_splits*/*.csv
+ml/data_splits_v3_cached/
+ml/data_splits_v3_local/
 *.traineddata
 __pycache__/
 *.pyc
 ml/real_blister_strips/*/augmented/
+
+# Browser test large artifacts and dependencies
+ml/browser_test/node_modules/
+ml/browser_test/images/
+ml/browser_test/images_val/
+ml/browser_test/*.onnx
 
