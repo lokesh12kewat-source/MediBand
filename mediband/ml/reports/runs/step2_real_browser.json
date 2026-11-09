@@ -1,0 +1,21 @@
+{
+  "step": "STEP 2 - REAL BROWSER TEST",
+  "status": "BLOCKED_ENVIRONMENT_CONSTRAINTS",
+  "real_browser_run": false,
+  "tested_harness": {
+    "target_model": "ml/experiments/export_b7/b7_fp32.onnx",
+    "target_resolution": [288, 288],
+    "client_code_path": "lib/onnx-client.ts (patched for 288px stretch canvas)",
+    "local_browser_detected": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe (Microsoft Edge Chromium)"
+  },
+  "root_causes": [
+    "onnxruntime-web package is not installed in node_modules and does not exist locally on the machine.",
+    "The sandboxed execution environment strictly isolates network connectivity (BypassSandbox: false), returning 'getaddrinfo ENOTFOUND registry.npmjs.org' upon attempting 'npm install onnxruntime-web' or 'npm install playwright'.",
+    "Serving onnxruntime-web from node_modules is blocked because the package was never added to mediband/package.json or cached locally.",
+    "While local Microsoft Edge exists, Playwright browser automation bindings cannot be downloaded or installed offline.",
+    "Without the WebAssembly ONNX inference engine (ort.min.js and ort-wasm-simd.wasm) present locally, headless Edge cannot execute client-side ONNX session creation."
+  ],
+  "downscale_strategies_evaluated_offline": {
+    "note": "Per strict task rules ('If a real browser cannot run, say exactly why and do not report emulated results as browser results'), emulated numbers are NOT reported as real browser results."
+  }
+}

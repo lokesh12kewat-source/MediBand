@@ -1,0 +1,842 @@
+[
+  {
+    "index": 0,
+    "filename": "test_000_IMG-20251108-WA0381_jpg.rf.3bbeca6ad6b02cd51edc48dbda36c3b5.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Acemiz\\IMG-20251108-WA0381_jpg.rf.3bbeca6ad6b02cd51edc48dbda36c3b5.jpg",
+    "class_idx": 0,
+    "class_name": "Acemiz"
+  },
+  {
+    "index": 1,
+    "filename": "test_001_IMG-20251108-WA0388_jpg.rf.56f996d49a18710070d50e09fad2e84e.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Acemiz\\IMG-20251108-WA0388_jpg.rf.56f996d49a18710070d50e09fad2e84e.jpg",
+    "class_idx": 0,
+    "class_name": "Acemiz"
+  },
+  {
+    "index": 2,
+    "filename": "test_002_IMG-20251108-WA0335_jpg.rf.8e037c4ddace652a8b6fab1ebfa66b16.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Allegra\\IMG-20251108-WA0335_jpg.rf.8e037c4ddace652a8b6fab1ebfa66b16.jpg",
+    "class_idx": 1,
+    "class_name": "Allegra"
+  },
+  {
+    "index": 3,
+    "filename": "test_003_IMG-20251108-WA0331_jpg.rf.6cce37050230e8c401c7cb1de4250c26.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Allegra\\IMG-20251108-WA0331_jpg.rf.6cce37050230e8c401c7cb1de4250c26.jpg",
+    "class_idx": 1,
+    "class_name": "Allegra"
+  },
+  {
+    "index": 4,
+    "filename": "test_004_IMG_7961_jpg.rf.f454f8ab0953de39e0bb4bb81923b396.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Alprax 0-25\\IMG_7961_jpg.rf.f454f8ab0953de39e0bb4bb81923b396.jpg",
+    "class_idx": 2,
+    "class_name": "Alprax 0-25"
+  },
+  {
+    "index": 5,
+    "filename": "test_005_IMG_7962_jpg.rf.8efec1695af0fcf4faeeb7320b81e6ca.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Alprax 0-25\\IMG_7962_jpg.rf.8efec1695af0fcf4faeeb7320b81e6ca.jpg",
+    "class_idx": 2,
+    "class_name": "Alprax 0-25"
+  },
+  {
+    "index": 6,
+    "filename": "test_006_IMG_7843_jpg.rf.b4f32940c35e1891b5bea59203eef6c2.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Amalong\\IMG_7843_jpg.rf.b4f32940c35e1891b5bea59203eef6c2.jpg",
+    "class_idx": 3,
+    "class_name": "Amalong"
+  },
+  {
+    "index": 7,
+    "filename": "test_007_IMG_7810_jpg.rf.211cb0ce8724332f75e9ebb345c0b888.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Amalong\\IMG_7810_jpg.rf.211cb0ce8724332f75e9ebb345c0b888.jpg",
+    "class_idx": 3,
+    "class_name": "Amalong"
+  },
+  {
+    "index": 8,
+    "filename": "test_008_IMG-20251108-WA0170_jpg.rf.09de1b277533c50b99fe4e7570082553.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Atarax\\IMG-20251108-WA0170_jpg.rf.09de1b277533c50b99fe4e7570082553.jpg",
+    "class_idx": 4,
+    "class_name": "Atarax"
+  },
+  {
+    "index": 9,
+    "filename": "test_009_IMG-20251108-WA0172_jpg.rf.414d2409063cd8555009db9ad481cf61.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Atarax\\IMG-20251108-WA0172_jpg.rf.414d2409063cd8555009db9ad481cf61.jpg",
+    "class_idx": 4,
+    "class_name": "Atarax"
+  },
+  {
+    "index": 10,
+    "filename": "test_010_IMG-20251108-WA0032_jpg.rf.e5fdbf4b9aed266209035087f574e679.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Becozinc\\IMG-20251108-WA0032_jpg.rf.e5fdbf4b9aed266209035087f574e679.jpg",
+    "class_idx": 5,
+    "class_name": "Becozinc"
+  },
+  {
+    "index": 11,
+    "filename": "test_011_IMG-20251108-WA0071_jpg.rf.99f876db224c69df4c45f07d6709e4f7.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Bifilac\\IMG-20251108-WA0071_jpg.rf.99f876db224c69df4c45f07d6709e4f7.jpg",
+    "class_idx": 6,
+    "class_name": "Bifilac"
+  },
+  {
+    "index": 12,
+    "filename": "test_012_Image_3_jpg.rf.d5fcdffd1225904e8c831869f8b03072.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Bifilac\\Image_3_jpg.rf.d5fcdffd1225904e8c831869f8b03072.jpg",
+    "class_idx": 6,
+    "class_name": "Bifilac"
+  },
+  {
+    "index": 13,
+    "filename": "test_013_Scan-from-2025-10-21-04_22_45-PM_jpg.rf.297dfec714a452248ee7b2e93b963cd3.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Canitiz\\Scan-from-2025-10-21-04_22_45-PM_jpg.rf.297dfec714a452248ee7b2e93b963cd3.jpg",
+    "class_idx": 7,
+    "class_name": "Canitiz"
+  },
+  {
+    "index": 14,
+    "filename": "test_014_Scan-from-2025-10-21-04_21_57-PM_jpg.rf.52883601d7cbef1c2cbe1aa0c873a53c.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Canitiz\\Scan-from-2025-10-21-04_21_57-PM_jpg.rf.52883601d7cbef1c2cbe1aa0c873a53c.jpg",
+    "class_idx": 7,
+    "class_name": "Canitiz"
+  },
+  {
+    "index": 15,
+    "filename": "test_015_Image_4_jpg.rf.fcde07c478485aeb71688c825ef8e577.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Cetzine\\Image_4_jpg.rf.fcde07c478485aeb71688c825ef8e577.jpg",
+    "class_idx": 8,
+    "class_name": "Cetzine"
+  },
+  {
+    "index": 16,
+    "filename": "test_016_WhatsApp-Image-2025-12-02-at-12_14_52-PM_jpeg.rf.db5e01200f41b8e0d76b7666c44519e0.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Cetzine\\WhatsApp-Image-2025-12-02-at-12_14_52-PM_jpeg.rf.db5e01200f41b8e0d76b7666c44519e0.jpg",
+    "class_idx": 8,
+    "class_name": "Cetzine"
+  },
+  {
+    "index": 17,
+    "filename": "test_017_IMG_8084_jpg.rf.5626733c3fd01f78303795bdde62ee5a.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Ciplar 10\\IMG_8084_jpg.rf.5626733c3fd01f78303795bdde62ee5a.jpg",
+    "class_idx": 9,
+    "class_name": "Ciplar 10"
+  },
+  {
+    "index": 18,
+    "filename": "test_018_IMG_8107_jpg.rf.072e381bb2640598d0463072ce0359ac.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Ciplar 10\\IMG_8107_jpg.rf.072e381bb2640598d0463072ce0359ac.jpg",
+    "class_idx": 9,
+    "class_name": "Ciplar 10"
+  },
+  {
+    "index": 19,
+    "filename": "test_019_IMG-20251102-WA0015_jpg.rf.4c6af3581aa0653b4ad226eabf1bd2be.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Cofsils\\IMG-20251102-WA0015_jpg.rf.4c6af3581aa0653b4ad226eabf1bd2be.jpg",
+    "class_idx": 10,
+    "class_name": "Cofsils"
+  },
+  {
+    "index": 20,
+    "filename": "test_020_IMG-20251102-WA0009_jpg.rf.cdaf3e22c716bcc59d15df5c6d132ab1.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Cofsils\\IMG-20251102-WA0009_jpg.rf.cdaf3e22c716bcc59d15df5c6d132ab1.jpg",
+    "class_idx": 10,
+    "class_name": "Cofsils"
+  },
+  {
+    "index": 21,
+    "filename": "test_021_IMG-20251108-WA0248_jpg.rf.6f7f10e0dee6ded805c927cf63fa12db.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Cranmed\\IMG-20251108-WA0248_jpg.rf.6f7f10e0dee6ded805c927cf63fa12db.jpg",
+    "class_idx": 11,
+    "class_name": "Cranmed"
+  },
+  {
+    "index": 22,
+    "filename": "test_022_IMG-20251108-WA0260_jpg.rf.4182ae477d02b226de506bf6dc0abd6a.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Cranmed\\IMG-20251108-WA0260_jpg.rf.4182ae477d02b226de506bf6dc0abd6a.jpg",
+    "class_idx": 11,
+    "class_name": "Cranmed"
+  },
+  {
+    "index": 23,
+    "filename": "test_023_IMG-20251108-WA0211_jpg.rf.6ee6831c5511240a0e851aeec50e76eb.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Cyclopam\\IMG-20251108-WA0211_jpg.rf.6ee6831c5511240a0e851aeec50e76eb.jpg",
+    "class_idx": 12,
+    "class_name": "Cyclopam"
+  },
+  {
+    "index": 24,
+    "filename": "test_024_IMG-20251108-WA0214_jpg.rf.30cde68d8ca4e11831fa830b23ee0680.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Cyclopam\\IMG-20251108-WA0214_jpg.rf.30cde68d8ca4e11831fa830b23ee0680.jpg",
+    "class_idx": 12,
+    "class_name": "Cyclopam"
+  },
+  {
+    "index": 25,
+    "filename": "test_025_Image_3_jpg.rf.79be23e55bbca9a7e6bf1404ca8680e0.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\D-Rise\\Image_3_jpg.rf.79be23e55bbca9a7e6bf1404ca8680e0.jpg",
+    "class_idx": 13,
+    "class_name": "D-Rise"
+  },
+  {
+    "index": 26,
+    "filename": "test_026_WhatsApp-Image-2025-12-02-at-12_41_07-PM-1-_jpeg.rf.6c26ce1d0a20444bb8b8c8b938f9149e.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\D-Rise\\WhatsApp-Image-2025-12-02-at-12_41_07-PM-1-_jpeg.rf.6c26ce1d0a20444bb8b8c8b938f9149e.jpg",
+    "class_idx": 13,
+    "class_name": "D-Rise"
+  },
+  {
+    "index": 27,
+    "filename": "test_027_Image_2_jpg.rf.be74ec0afedefc21644a58ddfa37b86a.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\D-Well\\Image_2_jpg.rf.be74ec0afedefc21644a58ddfa37b86a.jpg",
+    "class_idx": 14,
+    "class_name": "D-Well"
+  },
+  {
+    "index": 28,
+    "filename": "test_028_IMG-20251108-WA0273_jpg.rf.36bd4638ba4a8871e8ce234dc5508fb5.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\D-Well\\IMG-20251108-WA0273_jpg.rf.36bd4638ba4a8871e8ce234dc5508fb5.jpg",
+    "class_idx": 14,
+    "class_name": "D-Well"
+  },
+  {
+    "index": 29,
+    "filename": "test_029_Scan-from-2025-12-02-07_48_53-PM_jpg.rf.80fa4edfa7ec409e56703ad777548552.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\D3 More 2K\\Scan-from-2025-12-02-07_48_53-PM_jpg.rf.80fa4edfa7ec409e56703ad777548552.jpg",
+    "class_idx": 15,
+    "class_name": "D3 More 2K"
+  },
+  {
+    "index": 30,
+    "filename": "test_030_Scan-from-2025-11-06-04_43_53-PM_jpg.rf.a851ee71cea43a522ff9cf4ed2a01a4f.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\D3 More 2K\\Scan-from-2025-11-06-04_43_53-PM_jpg.rf.a851ee71cea43a522ff9cf4ed2a01a4f.jpg",
+    "class_idx": 15,
+    "class_name": "D3 More 2K"
+  },
+  {
+    "index": 31,
+    "filename": "test_031_Scan-from-2025-11-06-05_38_37-PM_jpg.rf.0ea5b928850492a9d94817f94e7dc6ee.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Dolo-650\\Scan-from-2025-11-06-05_38_37-PM_jpg.rf.0ea5b928850492a9d94817f94e7dc6ee.jpg",
+    "class_idx": 16,
+    "class_name": "Dolo-650"
+  },
+  {
+    "index": 32,
+    "filename": "test_032_Scan-from-2025-12-08-07_39_40-PM_jpg.rf.e8582f6e3a282223f3e258a51da50a8c.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Dolo-650\\Scan-from-2025-12-08-07_39_40-PM_jpg.rf.e8582f6e3a282223f3e258a51da50a8c.jpg",
+    "class_idx": 16,
+    "class_name": "Dolo-650"
+  },
+  {
+    "index": 33,
+    "filename": "test_033_Image_6_jpg.rf.5df7077dfc0cc98536c5deba29b21bf3.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Eldoper\\Image_6_jpg.rf.5df7077dfc0cc98536c5deba29b21bf3.jpg",
+    "class_idx": 17,
+    "class_name": "Eldoper"
+  },
+  {
+    "index": 34,
+    "filename": "test_034_IMG-20251108-WA0358_jpg.rf.96e7a8a75c5174ed2e0e81d3ee7a3bee.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Eldoper\\IMG-20251108-WA0358_jpg.rf.96e7a8a75c5174ed2e0e81d3ee7a3bee.jpg",
+    "class_idx": 17,
+    "class_name": "Eldoper"
+  },
+  {
+    "index": 35,
+    "filename": "test_035_IMG-20251108-WA0311_jpg.rf.baf434cb83f1c119b775df16bdcc11d7.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Emeset\\IMG-20251108-WA0311_jpg.rf.baf434cb83f1c119b775df16bdcc11d7.jpg",
+    "class_idx": 18,
+    "class_name": "Emeset"
+  },
+  {
+    "index": 36,
+    "filename": "test_036_IMG-20251108-WA0308_jpg.rf.1146a4ff9f89a61f1c9188b29f12a4b0.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Emeset\\IMG-20251108-WA0308_jpg.rf.1146a4ff9f89a61f1c9188b29f12a4b0.jpg",
+    "class_idx": 18,
+    "class_name": "Emeset"
+  },
+  {
+    "index": 37,
+    "filename": "test_037_IMG_7189_jpg.rf.17879f38f42444ea4a30df2c661bdc6c.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Etoshine 90\\IMG_7189_jpg.rf.17879f38f42444ea4a30df2c661bdc6c.jpg",
+    "class_idx": 19,
+    "class_name": "Etoshine 90"
+  },
+  {
+    "index": 38,
+    "filename": "test_038_IMG_7236_jpg.rf.9e7196478ec045d79c9c2a00d2436315.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Etoshine 90\\IMG_7236_jpg.rf.9e7196478ec045d79c9c2a00d2436315.jpg",
+    "class_idx": 19,
+    "class_name": "Etoshine 90"
+  },
+  {
+    "index": 39,
+    "filename": "test_039_IMG_7299_jpg.rf.9428e1e5b76dad04f76906e19b63ba70.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Etoshine MR\\IMG_7299_jpg.rf.9428e1e5b76dad04f76906e19b63ba70.jpg",
+    "class_idx": 20,
+    "class_name": "Etoshine MR"
+  },
+  {
+    "index": 40,
+    "filename": "test_040_IMG_7287_jpg.rf.7809c247eb53fa14a5e68106e3afb6f0.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Etoshine MR\\IMG_7287_jpg.rf.7809c247eb53fa14a5e68106e3afb6f0.jpg",
+    "class_idx": 20,
+    "class_name": "Etoshine MR"
+  },
+  {
+    "index": 41,
+    "filename": "test_041_IMG_7416_jpg.rf.0234e83c26496c4236f588211a79c041.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Folvite\\IMG_7416_jpg.rf.0234e83c26496c4236f588211a79c041.jpg",
+    "class_idx": 21,
+    "class_name": "Folvite"
+  },
+  {
+    "index": 42,
+    "filename": "test_042_IMG_7415_jpg.rf.cd9ae86ab3f93c47301925d597c58d1f.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Folvite\\IMG_7415_jpg.rf.cd9ae86ab3f93c47301925d597c58d1f.jpg",
+    "class_idx": 21,
+    "class_name": "Folvite"
+  },
+  {
+    "index": 43,
+    "filename": "test_043_IMG_6673-2_jpg.rf.470ee3015360d3bc9d406b5930a4ff62.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Gelusil\\IMG_6673-2_jpg.rf.470ee3015360d3bc9d406b5930a4ff62.jpg",
+    "class_idx": 22,
+    "class_name": "Gelusil"
+  },
+  {
+    "index": 44,
+    "filename": "test_044_IMG_6656-2_jpg.rf.d31a6e5c4a4228594883404bff4bdaa2.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Gelusil\\IMG_6656-2_jpg.rf.d31a6e5c4a4228594883404bff4bdaa2.jpg",
+    "class_idx": 22,
+    "class_name": "Gelusil"
+  },
+  {
+    "index": 45,
+    "filename": "test_045_WhatsApp-Image-2025-12-02-at-12_24_42-PM_jpeg.rf.3e985981f1a89e69f7a543a89713dda4.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Gestorab\\WhatsApp-Image-2025-12-02-at-12_24_42-PM_jpeg.rf.3e985981f1a89e69f7a543a89713dda4.jpg",
+    "class_idx": 23,
+    "class_name": "Gestorab"
+  },
+  {
+    "index": 46,
+    "filename": "test_046_Image_5_jpg.rf.939ce53a85e647b3713ce980c74a9744.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Gestorab\\Image_5_jpg.rf.939ce53a85e647b3713ce980c74a9744.jpg",
+    "class_idx": 23,
+    "class_name": "Gestorab"
+  },
+  {
+    "index": 47,
+    "filename": "test_047_Scan-from-2025-10-21-02_03_27-PM_jpg.rf.ec84685ac03d9b20967636460c19fdd6.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\GlimiSave M 0-5\\Scan-from-2025-10-21-02_03_27-PM_jpg.rf.ec84685ac03d9b20967636460c19fdd6.jpg",
+    "class_idx": 24,
+    "class_name": "GlimiSave M 0-5"
+  },
+  {
+    "index": 48,
+    "filename": "test_048_Scan-from-2025-10-21-02_04_48-PM_jpg.rf.0bd8ccb13d14fa1001e0420bb640ea2b.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\GlimiSave M 0-5\\Scan-from-2025-10-21-02_04_48-PM_jpg.rf.0bd8ccb13d14fa1001e0420bb640ea2b.jpg",
+    "class_idx": 24,
+    "class_name": "GlimiSave M 0-5"
+  },
+  {
+    "index": 49,
+    "filename": "test_049_Scan-from-2025-10-21-02_01_25-PM_jpg.rf.770118987a36a0390969debcf63d3f32.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Gluxit10\\Scan-from-2025-10-21-02_01_25-PM_jpg.rf.770118987a36a0390969debcf63d3f32.jpg",
+    "class_idx": 25,
+    "class_name": "Gluxit10"
+  },
+  {
+    "index": 50,
+    "filename": "test_050_Scan-from-2025-10-21-01_57_08-PM_jpg.rf.ae7e8df17468519d1c9fda6694c17701.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Gluxit10\\Scan-from-2025-10-21-01_57_08-PM_jpg.rf.ae7e8df17468519d1c9fda6694c17701.jpg",
+    "class_idx": 25,
+    "class_name": "Gluxit10"
+  },
+  {
+    "index": 51,
+    "filename": "test_051_Scan-from-2025-11-06-04_51_07-PM_jpg.rf.7c94df83dc9fb3763e57fb7bb8f6c780.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\M-Strong\\Scan-from-2025-11-06-04_51_07-PM_jpg.rf.7c94df83dc9fb3763e57fb7bb8f6c780.jpg",
+    "class_idx": 26,
+    "class_name": "M-Strong"
+  },
+  {
+    "index": 52,
+    "filename": "test_052_Scan-from-2025-11-06-05_01_07-PM_jpg.rf.f057763bc027c9df3a25e40d348f1379.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\M-Strong\\Scan-from-2025-11-06-05_01_07-PM_jpg.rf.f057763bc027c9df3a25e40d348f1379.jpg",
+    "class_idx": 26,
+    "class_name": "M-Strong"
+  },
+  {
+    "index": 53,
+    "filename": "test_053_IMG_7112_jpg.rf.74144b63e42e0e1f8d0be709b6e1a3e7.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Meftal 250 DT\\IMG_7112_jpg.rf.74144b63e42e0e1f8d0be709b6e1a3e7.jpg",
+    "class_idx": 27,
+    "class_name": "Meftal 250 DT"
+  },
+  {
+    "index": 54,
+    "filename": "test_054_IMG_7103_jpg.rf.3eca1e1e82daf7a9c32ad12e18055252.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Meftal 250 DT\\IMG_7103_jpg.rf.3eca1e1e82daf7a9c32ad12e18055252.jpg",
+    "class_idx": 27,
+    "class_name": "Meftal 250 DT"
+  },
+  {
+    "index": 55,
+    "filename": "test_055_IMG_7880_jpg.rf.9b804851c9e3ecf12eb8dcee494be459.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Melecobalamine\\IMG_7880_jpg.rf.9b804851c9e3ecf12eb8dcee494be459.jpg",
+    "class_idx": 28,
+    "class_name": "Melecobalamine"
+  },
+  {
+    "index": 56,
+    "filename": "test_056_IMG_6535-2_jpg.rf.35c8e24fc4d85273149a7dc132875bd3.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Melecobalamine\\IMG_6535-2_jpg.rf.35c8e24fc4d85273149a7dc132875bd3.jpg",
+    "class_idx": 28,
+    "class_name": "Melecobalamine"
+  },
+  {
+    "index": 57,
+    "filename": "test_057_IMG-20251108-WA0097_jpg.rf.7ed76f8151acc07fa5d27859b58d8eda.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Menoease\\IMG-20251108-WA0097_jpg.rf.7ed76f8151acc07fa5d27859b58d8eda.jpg",
+    "class_idx": 29,
+    "class_name": "Menoease"
+  },
+  {
+    "index": 58,
+    "filename": "test_058_Image_4_jpg.rf.2432df6c8fb3c6fffc8f4a4c3f99cfca.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Menoease\\Image_4_jpg.rf.2432df6c8fb3c6fffc8f4a4c3f99cfca.jpg",
+    "class_idx": 29,
+    "class_name": "Menoease"
+  },
+  {
+    "index": 59,
+    "filename": "test_059_IMG_6962_jpg.rf.a8524baa249ae94c1359a072ff491272.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Metronidazole\\IMG_6962_jpg.rf.a8524baa249ae94c1359a072ff491272.jpg",
+    "class_idx": 30,
+    "class_name": "Metronidazole"
+  },
+  {
+    "index": 60,
+    "filename": "test_060_IMG_6958_jpg.rf.188d18c6fb5567ff15da12e040fe4c58.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Metronidazole\\IMG_6958_jpg.rf.188d18c6fb5567ff15da12e040fe4c58.jpg",
+    "class_idx": 30,
+    "class_name": "Metronidazole"
+  },
+  {
+    "index": 61,
+    "filename": "test_061_Image_18_jpg.rf.077a5d0af9b0618adc0fc1ca630d1000.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Montair\\Image_18_jpg.rf.077a5d0af9b0618adc0fc1ca630d1000.jpg",
+    "class_idx": 31,
+    "class_name": "Montair"
+  },
+  {
+    "index": 62,
+    "filename": "test_062_Image_5_jpg.rf.2308758ee3c974a362d2211c95d8cf89.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Montair\\Image_5_jpg.rf.2308758ee3c974a362d2211c95d8cf89.jpg",
+    "class_idx": 31,
+    "class_name": "Montair"
+  },
+  {
+    "index": 63,
+    "filename": "test_063_WhatsApp-Image-2025-12-02-at-12_24_41-PM_jpeg.rf.e0bba68d869a9c6b73fd5a5f123981f0.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Muvera\\WhatsApp-Image-2025-12-02-at-12_24_41-PM_jpeg.rf.e0bba68d869a9c6b73fd5a5f123981f0.jpg",
+    "class_idx": 32,
+    "class_name": "Muvera"
+  },
+  {
+    "index": 64,
+    "filename": "test_064_Image_7_jpg.rf.35322033f1fe2cca1c87f2ae36d3f90b.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Muvera\\Image_7_jpg.rf.35322033f1fe2cca1c87f2ae36d3f90b.jpg",
+    "class_idx": 32,
+    "class_name": "Muvera"
+  },
+  {
+    "index": 65,
+    "filename": "test_065_Image_12_jpg.rf.fa3d910cdb84fc076da251578475edb6.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Mysopas\\Image_12_jpg.rf.fa3d910cdb84fc076da251578475edb6.jpg",
+    "class_idx": 33,
+    "class_name": "Mysopas"
+  },
+  {
+    "index": 66,
+    "filename": "test_066_Image_3_jpg.rf.9a1efc0432ffebd791e46737540b8127.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Mysopas\\Image_3_jpg.rf.9a1efc0432ffebd791e46737540b8127.jpg",
+    "class_idx": 33,
+    "class_name": "Mysopas"
+  },
+  {
+    "index": 67,
+    "filename": "test_067_IMG-20251108-WA0292_jpg.rf.ea0f4cbc9af9156e08b76b174608fe11.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\P-650\\IMG-20251108-WA0292_jpg.rf.ea0f4cbc9af9156e08b76b174608fe11.jpg",
+    "class_idx": 34,
+    "class_name": "P-650"
+  },
+  {
+    "index": 68,
+    "filename": "test_068_IMG-20251108-WA0305_jpg.rf.f58dd11b9ae03aebfb953ebe68e23194.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\P-650\\IMG-20251108-WA0305_jpg.rf.f58dd11b9ae03aebfb953ebe68e23194.jpg",
+    "class_idx": 34,
+    "class_name": "P-650"
+  },
+  {
+    "index": 69,
+    "filename": "test_069_Scan-from-2025-10-21-01_15_17-PM_jpg.rf.3e5e107d3db073ffda05192d2170b9ea.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Pacimol650\\Scan-from-2025-10-21-01_15_17-PM_jpg.rf.3e5e107d3db073ffda05192d2170b9ea.jpg",
+    "class_idx": 35,
+    "class_name": "Pacimol650"
+  },
+  {
+    "index": 70,
+    "filename": "test_070_Scan-from-2025-10-21-01_22_08-PM_jpg.rf.4ab978fcdc9eb2121d7e678768d198eb.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Pacimol650\\Scan-from-2025-10-21-01_22_08-PM_jpg.rf.4ab978fcdc9eb2121d7e678768d198eb.jpg",
+    "class_idx": 35,
+    "class_name": "Pacimol650"
+  },
+  {
+    "index": 71,
+    "filename": "test_071_IMG_7557_jpg.rf.1e150a85081e8b575c88a1cba021bfc8.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Pan 20\\IMG_7557_jpg.rf.1e150a85081e8b575c88a1cba021bfc8.jpg",
+    "class_idx": 36,
+    "class_name": "Pan 20"
+  },
+  {
+    "index": 72,
+    "filename": "test_072_IMG_7550_jpg.rf.2748722049a96769b02759ee15493083.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Pan 20\\IMG_7550_jpg.rf.2748722049a96769b02759ee15493083.jpg",
+    "class_idx": 36,
+    "class_name": "Pan 20"
+  },
+  {
+    "index": 73,
+    "filename": "test_073_IMG-20251108-WA0193_jpg.rf.9c276ec24dcaea21ed521300fd70dc1b.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Pan-D\\IMG-20251108-WA0193_jpg.rf.9c276ec24dcaea21ed521300fd70dc1b.jpg",
+    "class_idx": 37,
+    "class_name": "Pan-D"
+  },
+  {
+    "index": 74,
+    "filename": "test_074_Image_17_jpg.rf.9241e4560e3498314113cf27c50b2ea4.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Pan-D\\Image_17_jpg.rf.9241e4560e3498314113cf27c50b2ea4.jpg",
+    "class_idx": 37,
+    "class_name": "Pan-D"
+  },
+  {
+    "index": 75,
+    "filename": "test_075_IMG_6595-2_jpg.rf.ca1694f474689937b7c69f13092137ba.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Paracip-650\\IMG_6595-2_jpg.rf.ca1694f474689937b7c69f13092137ba.jpg",
+    "class_idx": 38,
+    "class_name": "Paracip-650"
+  },
+  {
+    "index": 76,
+    "filename": "test_076_IMG_6589-2_jpg.rf.11b2e4514c20b38c210bbcdcc6806d86.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Paracip-650\\IMG_6589-2_jpg.rf.11b2e4514c20b38c210bbcdcc6806d86.jpg",
+    "class_idx": 38,
+    "class_name": "Paracip-650"
+  },
+  {
+    "index": 77,
+    "filename": "test_077_IMG_7344_jpg.rf.6db749541eb4bd444148d31f023ce264.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Redotil\\IMG_7344_jpg.rf.6db749541eb4bd444148d31f023ce264.jpg",
+    "class_idx": 39,
+    "class_name": "Redotil"
+  },
+  {
+    "index": 78,
+    "filename": "test_078_IMG_7385_jpg.rf.60423b7cd16feeaaf62b4846d7da7cdc.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Redotil\\IMG_7385_jpg.rf.60423b7cd16feeaaf62b4846d7da7cdc.jpg",
+    "class_idx": 39,
+    "class_name": "Redotil"
+  },
+  {
+    "index": 79,
+    "filename": "test_079_IMG_7713_jpg.rf.54297f24c6d1d2e770aa7655ce2e06fb.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Shelcal 500\\IMG_7713_jpg.rf.54297f24c6d1d2e770aa7655ce2e06fb.jpg",
+    "class_idx": 40,
+    "class_name": "Shelcal 500"
+  },
+  {
+    "index": 80,
+    "filename": "test_080_IMG_7693_jpg.rf.c2127738b2457d8dc62420121ed78c73.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Shelcal 500\\IMG_7693_jpg.rf.c2127738b2457d8dc62420121ed78c73.jpg",
+    "class_idx": 40,
+    "class_name": "Shelcal 500"
+  },
+  {
+    "index": 81,
+    "filename": "test_081_IMG_8131_jpg.rf.c78ce9af2b7094396069f9f8a759d7fc.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Sibelium 10mg\\IMG_8131_jpg.rf.c78ce9af2b7094396069f9f8a759d7fc.jpg",
+    "class_idx": 41,
+    "class_name": "Sibelium 10mg"
+  },
+  {
+    "index": 82,
+    "filename": "test_082_IMG_8223_jpg.rf.84d3718f75cc5463439c158f2933ce57.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Sibelium 10mg\\IMG_8223_jpg.rf.84d3718f75cc5463439c158f2933ce57.jpg",
+    "class_idx": 41,
+    "class_name": "Sibelium 10mg"
+  },
+  {
+    "index": 83,
+    "filename": "test_083_Scan-from-2025-12-08-06_33_10-PM_jpg.rf.406348a31d553591db2b9d518c091ddd.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Sompraz\\Scan-from-2025-12-08-06_33_10-PM_jpg.rf.406348a31d553591db2b9d518c091ddd.jpg",
+    "class_idx": 42,
+    "class_name": "Sompraz"
+  },
+  {
+    "index": 84,
+    "filename": "test_084_WhatsApp-Image-2025-12-02-at-12_24_48-PM-1-_jpeg.rf.f946c8d127fb3ffe62a1955cac34dce3.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Sompraz\\WhatsApp-Image-2025-12-02-at-12_24_48-PM-1-_jpeg.rf.f946c8d127fb3ffe62a1955cac34dce3.jpg",
+    "class_idx": 42,
+    "class_name": "Sompraz"
+  },
+  {
+    "index": 85,
+    "filename": "test_085_IMG_7750_jpg.rf.6ca4a0059360621d0e771b0b47b4d52c.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Strepsils\\IMG_7750_jpg.rf.6ca4a0059360621d0e771b0b47b4d52c.jpg",
+    "class_idx": 43,
+    "class_name": "Strepsils"
+  },
+  {
+    "index": 86,
+    "filename": "test_086_IMG_6913_jpg.rf.8b84c9ba3d99e944c1cd7142fde834f0.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Strepsils\\IMG_6913_jpg.rf.8b84c9ba3d99e944c1cd7142fde834f0.jpg",
+    "class_idx": 43,
+    "class_name": "Strepsils"
+  },
+  {
+    "index": 87,
+    "filename": "test_087_IMG_7093_jpg.rf.4f6eec5030e5776780a12f0bf21e5f83.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Tayo60k\\IMG_7093_jpg.rf.4f6eec5030e5776780a12f0bf21e5f83.jpg",
+    "class_idx": 44,
+    "class_name": "Tayo60k"
+  },
+  {
+    "index": 88,
+    "filename": "test_088_IMG_7039_jpg.rf.9627d2f20e860ee782024c0d76952a8c.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Tayo60k\\IMG_7039_jpg.rf.9627d2f20e860ee782024c0d76952a8c.jpg",
+    "class_idx": 44,
+    "class_name": "Tayo60k"
+  },
+  {
+    "index": 89,
+    "filename": "test_089_Image_9_jpg.rf.06e5d14f953b291fd28773253b84852b.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Tendonease\\Image_9_jpg.rf.06e5d14f953b291fd28773253b84852b.jpg",
+    "class_idx": 45,
+    "class_name": "Tendonease"
+  },
+  {
+    "index": 90,
+    "filename": "test_090_WhatsApp-Image-2025-12-02-at-12_15_02-PM-1-_jpeg.rf.4a407f83ff981af888680b08797032cf.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Tendonease\\WhatsApp-Image-2025-12-02-at-12_15_02-PM-1-_jpeg.rf.4a407f83ff981af888680b08797032cf.jpg",
+    "class_idx": 45,
+    "class_name": "Tendonease"
+  },
+  {
+    "index": 91,
+    "filename": "test_091_Scan-from-2025-12-02-12_58_40-PM_jpg.rf.ac92e88569c68284fa0d1fd40f94bdc9.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Udapa-Trio\\Scan-from-2025-12-02-12_58_40-PM_jpg.rf.ac92e88569c68284fa0d1fd40f94bdc9.jpg",
+    "class_idx": 46,
+    "class_name": "Udapa-Trio"
+  },
+  {
+    "index": 92,
+    "filename": "test_092_Scan-from-2025-11-06-05_09_48-PM_jpg.rf.88f960245a9b7f3aef5f4af26a587729.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Udapa-Trio\\Scan-from-2025-11-06-05_09_48-PM_jpg.rf.88f960245a9b7f3aef5f4af26a587729.jpg",
+    "class_idx": 46,
+    "class_name": "Udapa-Trio"
+  },
+  {
+    "index": 93,
+    "filename": "test_093_Image_3_jpg.rf.c0f5393b3ebaba569a8eb77168443466.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Unienzyme\\Image_3_jpg.rf.c0f5393b3ebaba569a8eb77168443466.jpg",
+    "class_idx": 47,
+    "class_name": "Unienzyme"
+  },
+  {
+    "index": 94,
+    "filename": "test_094_IMG-20251108-WA0418_jpg.rf.1f40257295ff95e46c36e483cf9e20d6.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Unienzyme\\IMG-20251108-WA0418_jpg.rf.1f40257295ff95e46c36e483cf9e20d6.jpg",
+    "class_idx": 47,
+    "class_name": "Unienzyme"
+  },
+  {
+    "index": 95,
+    "filename": "test_095_WhatsApp-Image-2025-12-02-at-12_36_43-PM-2-_jpeg.rf.7a1c5d68cdce01518f800234cecb1f71.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Velgut\\WhatsApp-Image-2025-12-02-at-12_36_43-PM-2-_jpeg.rf.7a1c5d68cdce01518f800234cecb1f71.jpg",
+    "class_idx": 48,
+    "class_name": "Velgut"
+  },
+  {
+    "index": 96,
+    "filename": "test_096_Image_10_jpg.rf.29b39b7bdc68fc5c6e941ba4b348271d.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Velgut\\Image_10_jpg.rf.29b39b7bdc68fc5c6e941ba4b348271d.jpg",
+    "class_idx": 48,
+    "class_name": "Velgut"
+  },
+  {
+    "index": 97,
+    "filename": "test_097_IMG-20251108-WA0021_jpg.rf.c9a170de5813bf855c31768540c62462.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Vitamin E\\IMG-20251108-WA0021_jpg.rf.c9a170de5813bf855c31768540c62462.jpg",
+    "class_idx": 49,
+    "class_name": "Vitamin E"
+  },
+  {
+    "index": 98,
+    "filename": "test_098_IMG-20251108-WA0030_jpg.rf.757347194c5534367dc815c619b70539.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Vitamin E\\IMG-20251108-WA0030_jpg.rf.757347194c5534367dc815c619b70539.jpg",
+    "class_idx": 49,
+    "class_name": "Vitamin E"
+  },
+  {
+    "index": 99,
+    "filename": "test_099_IMG_7506_jpg.rf.4347c937b20dac84bc58a91b771315b1.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Vomikind\\IMG_7506_jpg.rf.4347c937b20dac84bc58a91b771315b1.jpg",
+    "class_idx": 50,
+    "class_name": "Vomikind"
+  },
+  {
+    "index": 100,
+    "filename": "test_100_IMG_7501_jpg.rf.41e3fa44619b7c3c904325fe05ffb86d.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Vomikind\\IMG_7501_jpg.rf.41e3fa44619b7c3c904325fe05ffb86d.jpg",
+    "class_idx": 50,
+    "class_name": "Vomikind"
+  },
+  {
+    "index": 101,
+    "filename": "test_101_IMG_6636-2_jpg.rf.c730c4446abc57ce8f64216e3f5f92de.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Zincovit\\IMG_6636-2_jpg.rf.c730c4446abc57ce8f64216e3f5f92de.jpg",
+    "class_idx": 51,
+    "class_name": "Zincovit"
+  },
+  {
+    "index": 102,
+    "filename": "test_102_IMG_6630-2_jpg.rf.19594364aeaabf0736b7dfbefa464b71.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Zincovit\\IMG_6630-2_jpg.rf.19594364aeaabf0736b7dfbefa464b71.jpg",
+    "class_idx": 51,
+    "class_name": "Zincovit"
+  },
+  {
+    "index": 103,
+    "filename": "test_103_IMG-20251108-WA0119_jpg.rf.7572052bc8cae29706614785563c6d23.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Zofer\\IMG-20251108-WA0119_jpg.rf.7572052bc8cae29706614785563c6d23.jpg",
+    "class_idx": 52,
+    "class_name": "Zofer"
+  },
+  {
+    "index": 104,
+    "filename": "test_104_IMG-20251108-WA0118_jpg.rf.c79fba399fc5fd494df271a458be13cb.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Zofer\\IMG-20251108-WA0118_jpg.rf.c79fba399fc5fd494df271a458be13cb.jpg",
+    "class_idx": 52,
+    "class_name": "Zofer"
+  },
+  {
+    "index": 105,
+    "filename": "test_105_IMG_7201_jpg.rf.18d8525d28593c31454cdaaf30de245c.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Etoshine 90\\IMG_7201_jpg.rf.18d8525d28593c31454cdaaf30de245c.jpg",
+    "class_idx": 19,
+    "class_name": "Etoshine 90"
+  },
+  {
+    "index": 106,
+    "filename": "test_106_Scan-from-2025-10-21-09_45_08-PM_jpg.rf.5cc1347212f0a0f83b99000f1890bdc9.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Canitiz\\Scan-from-2025-10-21-09_45_08-PM_jpg.rf.5cc1347212f0a0f83b99000f1890bdc9.jpg",
+    "class_idx": 7,
+    "class_name": "Canitiz"
+  },
+  {
+    "index": 107,
+    "filename": "test_107_IMG_7980_jpg.rf.5905fe1cad11c686ec85a1c412c7145e.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Alprax 0-25\\IMG_7980_jpg.rf.5905fe1cad11c686ec85a1c412c7145e.jpg",
+    "class_idx": 2,
+    "class_name": "Alprax 0-25"
+  },
+  {
+    "index": 108,
+    "filename": "test_108_IMG_7321_jpg.rf.9437505f7123934b4c6d3c4cd9c92f93.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Redotil\\IMG_7321_jpg.rf.9437505f7123934b4c6d3c4cd9c92f93.jpg",
+    "class_idx": 39,
+    "class_name": "Redotil"
+  },
+  {
+    "index": 109,
+    "filename": "test_109_Scan-from-2025-12-05-06_15_34-PM_jpg.rf.8f833d69445b274adf64a345c8968858.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\D3 More 2K\\Scan-from-2025-12-05-06_15_34-PM_jpg.rf.8f833d69445b274adf64a345c8968858.jpg",
+    "class_idx": 15,
+    "class_name": "D3 More 2K"
+  },
+  {
+    "index": 110,
+    "filename": "test_110_Scan-from-2025-11-06-04_48_42-PM_jpg.rf.88467c2de4bbdf7503043b7f3023cfce.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\D3 More 2K\\Scan-from-2025-11-06-04_48_42-PM_jpg.rf.88467c2de4bbdf7503043b7f3023cfce.jpg",
+    "class_idx": 15,
+    "class_name": "D3 More 2K"
+  },
+  {
+    "index": 111,
+    "filename": "test_111_IMG_7394_jpg.rf.6b255b1e1d5e1477fe3ae0fd2cd5d2d3.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Folvite\\IMG_7394_jpg.rf.6b255b1e1d5e1477fe3ae0fd2cd5d2d3.jpg",
+    "class_idx": 21,
+    "class_name": "Folvite"
+  },
+  {
+    "index": 112,
+    "filename": "test_112_IMG-20251108-WA0222_jpg.rf.df9ec10d3b8d6f322f13039115e9aa74.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Cyclopam\\IMG-20251108-WA0222_jpg.rf.df9ec10d3b8d6f322f13039115e9aa74.jpg",
+    "class_idx": 12,
+    "class_name": "Cyclopam"
+  },
+  {
+    "index": 113,
+    "filename": "test_113_Scan-from-2025-10-21-01_46_52-PM_jpg.rf.46694706e49a14d40b8ae136f405e307.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Gluxit10\\Scan-from-2025-10-21-01_46_52-PM_jpg.rf.46694706e49a14d40b8ae136f405e307.jpg",
+    "class_idx": 25,
+    "class_name": "Gluxit10"
+  },
+  {
+    "index": 114,
+    "filename": "test_114_IMG_7942_jpg.rf.0b07b45ff9019b99f089e31f744b5655.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Melecobalamine\\IMG_7942_jpg.rf.0b07b45ff9019b99f089e31f744b5655.jpg",
+    "class_idx": 28,
+    "class_name": "Melecobalamine"
+  },
+  {
+    "index": 115,
+    "filename": "test_115_IMG_7987_jpg.rf.a75adafdefdd2d2dbd24acad3b07f9e4.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Alprax 0-25\\IMG_7987_jpg.rf.a75adafdefdd2d2dbd24acad3b07f9e4.jpg",
+    "class_idx": 2,
+    "class_name": "Alprax 0-25"
+  },
+  {
+    "index": 116,
+    "filename": "test_116_IMG_7282_jpg.rf.72835a31c0b8c369278715d819564f4e.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Etoshine MR\\IMG_7282_jpg.rf.72835a31c0b8c369278715d819564f4e.jpg",
+    "class_idx": 20,
+    "class_name": "Etoshine MR"
+  },
+  {
+    "index": 117,
+    "filename": "test_117_Image_3_jpg.rf.0a4dd3eeb45db3c34eadc7ed827d6588.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\D-Well\\Image_3_jpg.rf.0a4dd3eeb45db3c34eadc7ed827d6588.jpg",
+    "class_idx": 14,
+    "class_name": "D-Well"
+  },
+  {
+    "index": 118,
+    "filename": "test_118_IMG_6664-2_jpg.rf.a69e41aa3cba54a0ac72c72056d5cf8e.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Gelusil\\IMG_6664-2_jpg.rf.a69e41aa3cba54a0ac72c72056d5cf8e.jpg",
+    "class_idx": 22,
+    "class_name": "Gelusil"
+  },
+  {
+    "index": 119,
+    "filename": "test_119_IMG-20251108-WA0190_jpg.rf.e25fe72228a8b7e21faa5d4fba732ba2.jpg",
+    "original_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Pan-D\\IMG-20251108-WA0190_jpg.rf.e25fe72228a8b7e21faa5d4fba732ba2.jpg",
+    "class_idx": 37,
+    "class_name": "Pan-D"
+  }
+]

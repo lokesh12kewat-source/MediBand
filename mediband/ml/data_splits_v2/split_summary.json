@@ -1,0 +1,399 @@
+{
+  "dataset_name": "Pharmassist Indian Medicine Packaging (V2 Leak-Free)",
+  "total_raw_images": 2050,
+  "total_groups": 1978,
+  "train_samples": 3397,
+  "train_raw": 1439,
+  "train_augmented": 1958,
+  "val_samples": 308,
+  "test_samples": 303,
+  "dropped_augmented_images": 989,
+  "orphan_augmented_images": 122,
+  "groups_per_split": {
+    "train": 1385,
+    "val": 297,
+    "test": 296
+  },
+  "leakage_verification": {
+    "shared_groups_train_val": 0,
+    "shared_groups_train_test": 0,
+    "shared_groups_val_test": 0,
+    "exact_sha256_overlap_train_val": 0,
+    "exact_sha256_overlap_train_test": 0,
+    "min_raw_phash_distance": 6,
+    "min_raw_dhash_distance": 6
+  },
+  "per_class_counts": {
+    "Acemiz": {
+      "train_raw": 21,
+      "train_aug": 26,
+      "train_total": 47,
+      "val_raw": 3,
+      "test_raw": 2
+    },
+    "Allegra": {
+      "train_raw": 19,
+      "train_aug": 26,
+      "train_total": 45,
+      "val_raw": 7,
+      "test_raw": 6
+    },
+    "Alprax 0-25": {
+      "train_raw": 37,
+      "train_aug": 50,
+      "train_total": 87,
+      "val_raw": 7,
+      "test_raw": 6
+    },
+    "Amalong": {
+      "train_raw": 33,
+      "train_aug": 50,
+      "train_total": 83,
+      "val_raw": 8,
+      "test_raw": 10
+    },
+    "Atarax": {
+      "train_raw": 24,
+      "train_aug": 32,
+      "train_total": 56,
+      "val_raw": 4,
+      "test_raw": 3
+    },
+    "Becozinc": {
+      "train_raw": 16,
+      "train_aug": 24,
+      "train_total": 40,
+      "val_raw": 6,
+      "test_raw": 7
+    },
+    "Bifilac": {
+      "train_raw": 36,
+      "train_aug": 36,
+      "train_total": 72,
+      "val_raw": 4,
+      "test_raw": 3
+    },
+    "Canitiz": {
+      "train_raw": 34,
+      "train_aug": 40,
+      "train_total": 74,
+      "val_raw": 9,
+      "test_raw": 8
+    },
+    "Cetzine": {
+      "train_raw": 24,
+      "train_aug": 32,
+      "train_total": 56,
+      "val_raw": 7,
+      "test_raw": 5
+    },
+    "Ciplar 10": {
+      "train_raw": 36,
+      "train_aug": 60,
+      "train_total": 96,
+      "val_raw": 7,
+      "test_raw": 8
+    },
+    "Cofsils": {
+      "train_raw": 21,
+      "train_aug": 32,
+      "train_total": 53,
+      "val_raw": 4,
+      "test_raw": 4
+    },
+    "Cranmed": {
+      "train_raw": 19,
+      "train_aug": 29,
+      "train_total": 48,
+      "val_raw": 6,
+      "test_raw": 4
+    },
+    "Cyclopam": {
+      "train_raw": 25,
+      "train_aug": 42,
+      "train_total": 67,
+      "val_raw": 4,
+      "test_raw": 7
+    },
+    "D-Rise": {
+      "train_raw": 23,
+      "train_aug": 34,
+      "train_total": 57,
+      "val_raw": 7,
+      "test_raw": 5
+    },
+    "D-Well": {
+      "train_raw": 24,
+      "train_aug": 31,
+      "train_total": 55,
+      "val_raw": 3,
+      "test_raw": 4
+    },
+    "D3 More 2K": {
+      "train_raw": 32,
+      "train_aug": 54,
+      "train_total": 86,
+      "val_raw": 7,
+      "test_raw": 6
+    },
+    "Dolo-650": {
+      "train_raw": 33,
+      "train_aug": 44,
+      "train_total": 77,
+      "val_raw": 5,
+      "test_raw": 8
+    },
+    "Eldoper": {
+      "train_raw": 20,
+      "train_aug": 29,
+      "train_total": 49,
+      "val_raw": 5,
+      "test_raw": 4
+    },
+    "Emeset": {
+      "train_raw": 20,
+      "train_aug": 26,
+      "train_total": 46,
+      "val_raw": 4,
+      "test_raw": 2
+    },
+    "Etoshine 90": {
+      "train_raw": 37,
+      "train_aug": 54,
+      "train_total": 91,
+      "val_raw": 6,
+      "test_raw": 7
+    },
+    "Etoshine MR": {
+      "train_raw": 33,
+      "train_aug": 44,
+      "train_total": 77,
+      "val_raw": 9,
+      "test_raw": 8
+    },
+    "Folvite": {
+      "train_raw": 35,
+      "train_aug": 46,
+      "train_total": 81,
+      "val_raw": 8,
+      "test_raw": 7
+    },
+    "Gelusil": {
+      "train_raw": 21,
+      "train_aug": 28,
+      "train_total": 49,
+      "val_raw": 5,
+      "test_raw": 5
+    },
+    "Gestorab": {
+      "train_raw": 30,
+      "train_aug": 42,
+      "train_total": 72,
+      "val_raw": 6,
+      "test_raw": 6
+    },
+    "GlimiSave M 0-5": {
+      "train_raw": 15,
+      "train_aug": 22,
+      "train_total": 37,
+      "val_raw": 4,
+      "test_raw": 3
+    },
+    "Gluxit10": {
+      "train_raw": 32,
+      "train_aug": 40,
+      "train_total": 72,
+      "val_raw": 4,
+      "test_raw": 6
+    },
+    "M-Strong": {
+      "train_raw": 13,
+      "train_aug": 15,
+      "train_total": 28,
+      "val_raw": 7,
+      "test_raw": 3
+    },
+    "Meftal 250 DT": {
+      "train_raw": 36,
+      "train_aug": 45,
+      "train_total": 81,
+      "val_raw": 4,
+      "test_raw": 7
+    },
+    "Melecobalamine": {
+      "train_raw": 32,
+      "train_aug": 52,
+      "train_total": 84,
+      "val_raw": 9,
+      "test_raw": 8
+    },
+    "Menoease": {
+      "train_raw": 26,
+      "train_aug": 36,
+      "train_total": 62,
+      "val_raw": 3,
+      "test_raw": 7
+    },
+    "Metronidazole": {
+      "train_raw": 34,
+      "train_aug": 39,
+      "train_total": 73,
+      "val_raw": 10,
+      "test_raw": 8
+    },
+    "Montair": {
+      "train_raw": 31,
+      "train_aug": 37,
+      "train_total": 68,
+      "val_raw": 7,
+      "test_raw": 5
+    },
+    "Muvera": {
+      "train_raw": 25,
+      "train_aug": 34,
+      "train_total": 59,
+      "val_raw": 5,
+      "test_raw": 6
+    },
+    "Mysopas": {
+      "train_raw": 25,
+      "train_aug": 30,
+      "train_total": 55,
+      "val_raw": 4,
+      "test_raw": 3
+    },
+    "P-650": {
+      "train_raw": 16,
+      "train_aug": 19,
+      "train_total": 35,
+      "val_raw": 2,
+      "test_raw": 3
+    },
+    "Pacimol650": {
+      "train_raw": 21,
+      "train_aug": 32,
+      "train_total": 53,
+      "val_raw": 6,
+      "test_raw": 5
+    },
+    "Pan 20": {
+      "train_raw": 38,
+      "train_aug": 44,
+      "train_total": 82,
+      "val_raw": 5,
+      "test_raw": 7
+    },
+    "Pan-D": {
+      "train_raw": 30,
+      "train_aug": 46,
+      "train_total": 76,
+      "val_raw": 12,
+      "test_raw": 10
+    },
+    "Paracip-650": {
+      "train_raw": 16,
+      "train_aug": 22,
+      "train_total": 38,
+      "val_raw": 6,
+      "test_raw": 3
+    },
+    "Redotil": {
+      "train_raw": 36,
+      "train_aug": 45,
+      "train_total": 81,
+      "val_raw": 6,
+      "test_raw": 11
+    },
+    "Shelcal 500": {
+      "train_raw": 32,
+      "train_aug": 50,
+      "train_total": 82,
+      "val_raw": 9,
+      "test_raw": 8
+    },
+    "Sibelium 10mg": {
+      "train_raw": 40,
+      "train_aug": 47,
+      "train_total": 87,
+      "val_raw": 4,
+      "test_raw": 7
+    },
+    "Sompraz": {
+      "train_raw": 22,
+      "train_aug": 31,
+      "train_total": 53,
+      "val_raw": 7,
+      "test_raw": 7
+    },
+    "Strepsils": {
+      "train_raw": 38,
+      "train_aug": 52,
+      "train_total": 90,
+      "val_raw": 7,
+      "test_raw": 5
+    },
+    "Tayo60k": {
+      "train_raw": 27,
+      "train_aug": 34,
+      "train_total": 61,
+      "val_raw": 5,
+      "test_raw": 7
+    },
+    "Tendonease": {
+      "train_raw": 26,
+      "train_aug": 32,
+      "train_total": 58,
+      "val_raw": 6,
+      "test_raw": 5
+    },
+    "Udapa-Trio": {
+      "train_raw": 18,
+      "train_aug": 24,
+      "train_total": 42,
+      "val_raw": 3,
+      "test_raw": 3
+    },
+    "Unienzyme": {
+      "train_raw": 22,
+      "train_aug": 32,
+      "train_total": 54,
+      "val_raw": 8,
+      "test_raw": 8
+    },
+    "Velgut": {
+      "train_raw": 29,
+      "train_aug": 39,
+      "train_total": 68,
+      "val_raw": 2,
+      "test_raw": 2
+    },
+    "Vitamin E": {
+      "train_raw": 14,
+      "train_aug": 20,
+      "train_total": 34,
+      "val_raw": 6,
+      "test_raw": 3
+    },
+    "Vomikind": {
+      "train_raw": 28,
+      "train_aug": 38,
+      "train_total": 66,
+      "val_raw": 4,
+      "test_raw": 6
+    },
+    "Zincovit": {
+      "train_raw": 34,
+      "train_aug": 46,
+      "train_total": 80,
+      "val_raw": 9,
+      "test_raw": 9
+    },
+    "Zofer": {
+      "train_raw": 30,
+      "train_aug": 44,
+      "train_total": 74,
+      "val_raw": 3,
+      "test_raw": 3
+    }
+  }
+}

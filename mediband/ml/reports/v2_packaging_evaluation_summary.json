@@ -1,0 +1,10 @@
+{
+  "model_name": "best_model_v2.pt",
+  "device": "NVIDIA GeForce RTX 4050 Laptop GPU",
+  "cuda_version": "12.4",
+  "test_samples": 303,
+  "test_top1_accuracy": 0.9438943894389439,
+  "test_top3_accuracy": 0.9801980198019802,
+  "best_val_top3": 0.9805194805194806,
+  "timestamp": "2026-11-01 13:18:21"
+}

@@ -1,0 +1,129 @@
+{
+  "config": "B7",
+  "seed": 42,
+  "arch": "mobilenet_v3_small",
+  "img_size": 288,
+  "temperature_optimal": 0.4248,
+  "test_uncalibrated": {
+    "top1": 0.9858,
+    "top3": 0.9972,
+    "mean_confidence": 0.7601,
+    "mean_confidence_correct": 0.7687,
+    "mean_confidence_wrong": 0.1646,
+    "ece": 0.2257
+  },
+  "test_calibrated": {
+    "top1": 0.9858,
+    "top3": 0.9972,
+    "mean_confidence": 0.9666,
+    "mean_confidence_correct": 0.9739,
+    "mean_confidence_wrong": 0.4619,
+    "ece": 0.0231,
+    "reliability_10_bins": [
+      {
+        "bin": "[0.00, 0.10]",
+        "count": 0,
+        "accuracy": 0.0,
+        "confidence": 0.05
+      },
+      {
+        "bin": "[0.10, 0.20]",
+        "count": 0,
+        "accuracy": 0.0,
+        "confidence": 0.15
+      },
+      {
+        "bin": "[0.20, 0.30]",
+        "count": 1,
+        "accuracy": 0.0,
+        "confidence": 0.2891
+      },
+      {
+        "bin": "[0.30, 0.40]",
+        "count": 1,
+        "accuracy": 0.0,
+        "confidence": 0.3816
+      },
+      {
+        "bin": "[0.40, 0.50]",
+        "count": 3,
+        "accuracy": 0.6667,
+        "confidence": 0.4512
+      },
+      {
+        "bin": "[0.50, 0.60]",
+        "count": 5,
+        "accuracy": 0.8,
+        "confidence": 0.5249
+      },
+      {
+        "bin": "[0.60, 0.70]",
+        "count": 3,
+        "accuracy": 1.0,
+        "confidence": 0.6441
+      },
+      {
+        "bin": "[0.70, 0.80]",
+        "count": 4,
+        "accuracy": 0.75,
+        "confidence": 0.752
+      },
+      {
+        "bin": "[0.80, 0.90]",
+        "count": 16,
+        "accuracy": 1.0,
+        "confidence": 0.8538
+      },
+      {
+        "bin": "[0.90, 1.00]",
+        "count": 318,
+        "accuracy": 1.0,
+        "confidence": 0.9938
+      }
+    ]
+  },
+  "operating_thresholds": {
+    "precision_95": {
+      "val_threshold": 0.341,
+      "test_coverage": 0.9972,
+      "test_precision": 0.9886,
+      "test_covered_samples": 350,
+      "test_total_samples": 351
+    },
+    "precision_98": {
+      "val_threshold": 0.7916,
+      "test_coverage": 0.9544,
+      "test_precision": 1.0,
+      "test_covered_samples": 335,
+      "test_total_samples": 351
+    },
+    "precision_99": {
+      "val_threshold": 0.9312,
+      "test_coverage": 0.8917,
+      "test_precision": 1.0,
+      "test_covered_samples": 313,
+      "test_total_samples": 351
+    }
+  },
+  "export_comparison": {
+    "pytorch_fp32": {
+      "test_top1": 0.9858,
+      "test_top3": 0.9972
+    },
+    "onnx_fp32": {
+      "test_top1": 0.9858,
+      "test_top3": 0.9972,
+      "file_size_mb": 6.86,
+      "cpu_latency_ms": 2.43,
+      "max_logit_diff_to_pytorch": 0.02178907
+    },
+    "onnx_int8_static": {
+      "test_top1": 0.0228,
+      "test_top3": 0.0513,
+      "file_size_mb": 2.04,
+      "cpu_latency_ms": 7.23,
+      "size_reduction_ratio": 3.36,
+      "speedup_ratio": 0.34
+    }
+  }
+}

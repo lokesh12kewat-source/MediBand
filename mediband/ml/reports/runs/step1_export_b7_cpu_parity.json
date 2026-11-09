@@ -1,0 +1,76 @@
+{
+  "best_seed": 7,
+  "seed_ranking": [
+    {
+      "seed": 7,
+      "val_top3": 1.0,
+      "val_top1": 0.9775,
+      "val_f1": 0.9791,
+      "test_top1": 0.9801,
+      "test_top3": 1.0
+    },
+    {
+      "seed": 123,
+      "val_top3": 1.0,
+      "val_top1": 0.9646,
+      "val_f1": 0.9705,
+      "test_top1": 0.9829,
+      "test_top3": 1.0
+    },
+    {
+      "seed": 42,
+      "val_top3": 0.9968,
+      "val_top1": 0.9582,
+      "val_f1": 0.9642,
+      "test_top1": 0.9858,
+      "test_top3": 0.9972
+    }
+  ],
+  "onnx_path": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\ml\\experiments\\export_b7\\b7_fp32.onnx",
+  "onnx_size_mb": 6.86,
+  "preprocessing_spec": {
+    "model_name": "MediBand B7 Packaging Classifier",
+    "architecture": "mobilenet_v3_small",
+    "input_resolution": [
+      288,
+      288
+    ],
+    "resize_strategy": "stretch",
+    "interpolation": "bilinear",
+    "color_format": "RGB",
+    "normalization": {
+      "mean": [
+        0.485,
+        0.456,
+        0.406
+      ],
+      "std": [
+        0.229,
+        0.224,
+        0.225
+      ]
+    },
+    "input_node_name": "input_image",
+    "output_node_name": "logits",
+    "num_classes": 53
+  },
+  "calibration": {
+    "best_seed": 7,
+    "temperature": 0.3624,
+    "threshold_precision_98": 0.612,
+    "threshold_precision_99": 0.8858
+  },
+  "test_sample_count": 351,
+  "max_abs_logit_diff": 2.589822e-05,
+  "mean_abs_logit_diff": 2.114957e-06,
+  "top1_agreement_count": 351,
+  "top1_agreement_pct": 100.0,
+  "pytorch_cpu_metrics": {
+    "top1": 0.9801,
+    "top3": 1.0
+  },
+  "onnx_cpu_metrics": {
+    "top1": 0.9801,
+    "top3": 1.0
+  }
+}

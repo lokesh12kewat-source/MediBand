@@ -1,0 +1,32 @@
+{
+  "packaging": {
+    "total_test": 303,
+    "strict_clean_N": 98,
+    "strict_clean_percentage": 32.34,
+    "old_checkpoint_top1": 0.9796,
+    "old_checkpoint_top3": 1.0,
+    "min_phash_dist_stats": {
+      "min": 0,
+      "median": 0.0,
+      "max": 20
+    },
+    "min_dhash_dist_stats": {
+      "min": 0,
+      "median": 0.0,
+      "max": 20
+    }
+  },
+  "pharmaia": {
+    "total_test": 384,
+    "strict_clean_N": 61,
+    "strict_clean_percentage": 15.89,
+    "old_checkpoint_top1": 0.8033,
+    "old_checkpoint_top3": 0.9508,
+    "min_phash_dist_stats": {
+      "min": 0
+    },
+    "min_dhash_dist_stats": {
+      "min": 0
+    }
+  }
+}

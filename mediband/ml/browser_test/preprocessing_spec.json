@@ -1,0 +1,26 @@
+{
+  "model_name": "MediBand B7 Packaging Classifier",
+  "architecture": "mobilenet_v3_small",
+  "input_resolution": [
+    288,
+    288
+  ],
+  "resize_strategy": "stretch",
+  "interpolation": "bilinear",
+  "color_format": "RGB",
+  "normalization": {
+    "mean": [
+      0.485,
+      0.456,
+      0.406
+    ],
+    "std": [
+      0.229,
+      0.224,
+      0.225
+    ]
+  },
+  "input_node_name": "input_image",
+  "output_node_name": "logits",
+  "num_classes": 53
+}

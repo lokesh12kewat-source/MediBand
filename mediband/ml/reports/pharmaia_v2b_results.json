@@ -1,0 +1,26 @@
+{
+  "recipe": "v2b (5 warm-up + 25 full fine-tune, weight decay 1e-4, original augmentations)",
+  "wall_clock_seconds": 2036.54,
+  "wall_clock_minutes": 33.94,
+  "val_metrics": {
+    "sample_count": 388,
+    "top1": 0.4252577319587629,
+    "top3": 0.6701030927835051,
+    "macro_f1": 0.4098197217417971,
+    "ece": 0.08186130801734239,
+    "mean_confidence": 0.4397982060909271,
+    "mean_confidence_correct": 0.5500223636627197,
+    "mean_confidence_wrong": 0.3582422137260437
+  },
+  "test_metrics": {
+    "sample_count": 384,
+    "top1": 0.4192708333333333,
+    "top3": 0.6666666666666666,
+    "macro_f1": 0.4187334471260181,
+    "ece": 0.055923404928762466,
+    "mean_confidence": 0.4193650782108307,
+    "mean_confidence_correct": 0.5167073607444763,
+    "mean_confidence_wrong": 0.34908658266067505
+  },
+  "checkpoint_file": "best_pharmaia_v2b.pt"
+}

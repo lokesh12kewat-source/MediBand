@@ -1,0 +1,31 @@
+{
+  "dataset": "Indian Medicine Packaging (Pharmassist)",
+  "hamming_threshold": 10,
+  "raw_images_total": 2050,
+  "distinct_groups": 1631,
+  "hash_merges": 390,
+  "splits": {
+    "train": {
+      "total": 3312,
+      "raw": 1388,
+      "augmented": 1924,
+      "groups": 1102
+    },
+    "val": {
+      "total": 311,
+      "raw": 311,
+      "augmented": 0,
+      "groups": 263
+    },
+    "test": {
+      "total": 351,
+      "raw": 351,
+      "augmented": 0,
+      "groups": 266
+    }
+  },
+  "dropped_augmented_images": 1023,
+  "orphan_augmented_images": 122,
+  "min_phash_distance_train_vs_valtest": 12,
+  "min_dhash_distance_train_vs_valtest": 11
+}

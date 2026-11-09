@@ -1,0 +1,210 @@
+{
+  "dataset_name": "PharmAIA Loose Pill Dataset (V2 Leak-Free)",
+  "total_raw_images": 2579,
+  "total_groups": 2560,
+  "train_samples": 9999,
+  "train_raw": 1807,
+  "train_augmented": 8192,
+  "val_samples": 388,
+  "test_samples": 384,
+  "dropped_augmented_images": 4003,
+  "orphan_augmented_images": 490,
+  "groups_per_split": {
+    "train": 1793,
+    "val": 384,
+    "test": 383
+  },
+  "leakage_verification": {
+    "shared_groups_train_val": 0,
+    "shared_groups_train_test": 0,
+    "shared_groups_val_test": 0,
+    "exact_sha256_overlap_train_val": 0,
+    "exact_sha256_overlap_train_test": 0,
+    "min_raw_phash_distance": 6,
+    "min_raw_dhash_distance": 7
+  },
+  "per_class_counts": {
+    "a": {
+      "train_raw": 70,
+      "train_aug": 350,
+      "train_total": 420,
+      "val_raw": 15,
+      "test_raw": 14
+    },
+    "b": {
+      "train_raw": 69,
+      "train_aug": 345,
+      "train_total": 414,
+      "val_raw": 16,
+      "test_raw": 15
+    },
+    "c": {
+      "train_raw": 70,
+      "train_aug": 350,
+      "train_total": 420,
+      "val_raw": 15,
+      "test_raw": 15
+    },
+    "d": {
+      "train_raw": 70,
+      "train_aug": 350,
+      "train_total": 420,
+      "val_raw": 16,
+      "test_raw": 14
+    },
+    "e": {
+      "train_raw": 72,
+      "train_aug": 360,
+      "train_total": 432,
+      "val_raw": 13,
+      "test_raw": 15
+    },
+    "f": {
+      "train_raw": 66,
+      "train_aug": 330,
+      "train_total": 396,
+      "val_raw": 17,
+      "test_raw": 17
+    },
+    "g": {
+      "train_raw": 72,
+      "train_aug": 432,
+      "train_total": 504,
+      "val_raw": 15,
+      "test_raw": 13
+    },
+    "h": {
+      "train_raw": 71,
+      "train_aug": 0,
+      "train_total": 71,
+      "val_raw": 13,
+      "test_raw": 14
+    },
+    "i": {
+      "train_raw": 67,
+      "train_aug": 335,
+      "train_total": 402,
+      "val_raw": 17,
+      "test_raw": 16
+    },
+    "j": {
+      "train_raw": 68,
+      "train_aug": 340,
+      "train_total": 408,
+      "val_raw": 15,
+      "test_raw": 15
+    },
+    "k": {
+      "train_raw": 69,
+      "train_aug": 345,
+      "train_total": 414,
+      "val_raw": 14,
+      "test_raw": 17
+    },
+    "l": {
+      "train_raw": 72,
+      "train_aug": 360,
+      "train_total": 432,
+      "val_raw": 15,
+      "test_raw": 13
+    },
+    "m": {
+      "train_raw": 70,
+      "train_aug": 350,
+      "train_total": 420,
+      "val_raw": 15,
+      "test_raw": 15
+    },
+    "n": {
+      "train_raw": 68,
+      "train_aug": 340,
+      "train_total": 408,
+      "val_raw": 16,
+      "test_raw": 14
+    },
+    "o": {
+      "train_raw": 70,
+      "train_aug": 350,
+      "train_total": 420,
+      "val_raw": 14,
+      "test_raw": 16
+    },
+    "p": {
+      "train_raw": 69,
+      "train_aug": 345,
+      "train_total": 414,
+      "val_raw": 16,
+      "test_raw": 14
+    },
+    "q": {
+      "train_raw": 73,
+      "train_aug": 365,
+      "train_total": 438,
+      "val_raw": 14,
+      "test_raw": 13
+    },
+    "r": {
+      "train_raw": 71,
+      "train_aug": 355,
+      "train_total": 426,
+      "val_raw": 13,
+      "test_raw": 16
+    },
+    "s": {
+      "train_raw": 71,
+      "train_aug": 355,
+      "train_total": 426,
+      "val_raw": 15,
+      "test_raw": 14
+    },
+    "t": {
+      "train_raw": 70,
+      "train_aug": 350,
+      "train_total": 420,
+      "val_raw": 15,
+      "test_raw": 15
+    },
+    "u": {
+      "train_raw": 67,
+      "train_aug": 335,
+      "train_total": 402,
+      "val_raw": 17,
+      "test_raw": 16
+    },
+    "v": {
+      "train_raw": 73,
+      "train_aug": 365,
+      "train_total": 438,
+      "val_raw": 13,
+      "test_raw": 14
+    },
+    "w": {
+      "train_raw": 71,
+      "train_aug": 71,
+      "train_total": 142,
+      "val_raw": 14,
+      "test_raw": 15
+    },
+    "x": {
+      "train_raw": 69,
+      "train_aug": 69,
+      "train_total": 138,
+      "val_raw": 16,
+      "test_raw": 15
+    },
+    "y": {
+      "train_raw": 61,
+      "train_aug": 305,
+      "train_total": 366,
+      "val_raw": 13,
+      "test_raw": 13
+    },
+    "z": {
+      "train_raw": 68,
+      "train_aug": 340,
+      "train_total": 408,
+      "val_raw": 16,
+      "test_raw": 16
+    }
+  }
+}

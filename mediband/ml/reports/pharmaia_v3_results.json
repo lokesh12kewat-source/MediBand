@@ -1,0 +1,28 @@
+{
+  "checkpoint": "best_pharmaia_v3.pt",
+  "wall_clock_time": "60.0 minutes (stopped at 60-min cap)",
+  "val": {
+    "count": 385,
+    "top1": 0.3584,
+    "top3": 0.5766,
+    "macro_f1": 0.344,
+    "ece": 0.0662,
+    "mean_conf": 0.3796,
+    "mean_conf_correct": 0.4623,
+    "mean_conf_wrong": 0.3334,
+    "correct_count": 138,
+    "wrong_count": 247
+  },
+  "test": {
+    "count": 376,
+    "top1": 0.4016,
+    "top3": 0.6197,
+    "macro_f1": 0.3908,
+    "ece": 0.053,
+    "mean_conf": 0.3891,
+    "mean_conf_correct": 0.4814,
+    "mean_conf_wrong": 0.3271,
+    "correct_count": 151,
+    "wrong_count": 225
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "model_name": "best_pharmaia_v2.pt",
+  "device": "NVIDIA GeForce RTX 4050 Laptop GPU",
+  "cuda_version": "12.4",
+  "test_samples": 384,
+  "test_top1_accuracy": 0.3359375,
+  "test_top3_accuracy": 0.5989583333333334,
+  "best_val_top3": 0.6056701030927835,
+  "timestamp": "2026-11-01 13:36:42"
+}

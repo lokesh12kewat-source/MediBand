@@ -1,0 +1,215 @@
+{
+  "sample_count": 351,
+  "browser_onnx_top1": 0.9972,
+  "browser_onnx_top3": 1.0,
+  "browser_onnx_macro_f1": 0.9952,
+  "browser_onnx_ece": 0.13,
+  "correct_count": 350,
+  "wrong_count": 1,
+  "matching_pytorch_count": 335,
+  "differing_from_pytorch_count": 16,
+  "differing_samples": [
+    {
+      "filepath": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Allegra\\IMG-20251108-WA0111_jpg.rf.b7d38a86461e06ba00e08fda62d89ed7.jpg",
+      "class_name": "Allegra",
+      "true_label": 1,
+      "onnx_pred": 1,
+      "pytorch_pred": 14,
+      "onnx_confidence": 0.8227
+    },
+    {
+      "filepath": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Alprax 0-25\\IMG_7976_jpg.rf.473bf76785833a5ad45bcf580bc5aec1.jpg",
+      "class_name": "Alprax 0-25",
+      "true_label": 2,
+      "onnx_pred": 2,
+      "pytorch_pred": 9,
+      "onnx_confidence": 0.7458
+    },
+    {
+      "filepath": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Alprax 0-25\\IMG_7979_jpg.rf.17bb1336ab89a517604ce31550d90e78.jpg",
+      "class_name": "Alprax 0-25",
+      "true_label": 2,
+      "onnx_pred": 2,
+      "pytorch_pred": 9,
+      "onnx_confidence": 0.9096
+    },
+    {
+      "filepath": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Alprax 0-25\\IMG_7983_jpg.rf.ca90085f137c115f8bd959fa3fb724f3.jpg",
+      "class_name": "Alprax 0-25",
+      "true_label": 2,
+      "onnx_pred": 2,
+      "pytorch_pred": 9,
+      "onnx_confidence": 0.2057
+    },
+    {
+      "filepath": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Bifilac\\IMG-20251108-WA0069_jpg.rf.b70c7da4faead264dd550320cc3f7015.jpg",
+      "class_name": "Bifilac",
+      "true_label": 6,
+      "onnx_pred": 6,
+      "pytorch_pred": 42,
+      "onnx_confidence": 0.8272
+    },
+    {
+      "filepath": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Bifilac\\Image_1_jpg.rf.00c299c83465da53374b0e240fd8c527.jpg",
+      "class_name": "Bifilac",
+      "true_label": 6,
+      "onnx_pred": 6,
+      "pytorch_pred": 37,
+      "onnx_confidence": 0.9287
+    },
+    {
+      "filepath": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Bifilac\\Image_2_jpg.rf.5ba1f37579f361508445299558a7c9b0.jpg",
+      "class_name": "Bifilac",
+      "true_label": 6,
+      "onnx_pred": 6,
+      "pytorch_pred": 37,
+      "onnx_confidence": 0.9833
+    },
+    {
+      "filepath": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\GlimiSave M 0-5\\Scan-from-2025-10-21-02_03_08-PM_jpg.rf.83280c7de027277c02b1949fc24f2321.jpg",
+      "class_name": "GlimiSave M 0-5",
+      "true_label": 24,
+      "onnx_pred": 0,
+      "pytorch_pred": 2,
+      "onnx_confidence": 0.4031
+    },
+    {
+      "filepath": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\GlimiSave M 0-5\\Scan-from-2025-10-21-02_03_27-PM_jpg.rf.ec84685ac03d9b20967636460c19fdd6.jpg",
+      "class_name": "GlimiSave M 0-5",
+      "true_label": 24,
+      "onnx_pred": 24,
+      "pytorch_pred": 2,
+      "onnx_confidence": 0.911
+    },
+    {
+      "filepath": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Melecobalamine\\IMG_7877_jpg.rf.0d376f010fd1a18c2ec80abe5057015b.jpg",
+      "class_name": "Melecobalamine",
+      "true_label": 28,
+      "onnx_pred": 28,
+      "pytorch_pred": 20,
+      "onnx_confidence": 0.7378
+    },
+    {
+      "filepath": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Melecobalamine\\IMG_7880_jpg.rf.9b804851c9e3ecf12eb8dcee494be459.jpg",
+      "class_name": "Melecobalamine",
+      "true_label": 28,
+      "onnx_pred": 28,
+      "pytorch_pred": 50,
+      "onnx_confidence": 0.9754
+    },
+    {
+      "filepath": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Montair\\Image_18_jpg.rf.283d28d59e41a9b88e0694c2aafc84e1.jpg",
+      "class_name": "Montair",
+      "true_label": 31,
+      "onnx_pred": 31,
+      "pytorch_pred": 50,
+      "onnx_confidence": 0.9239
+    },
+    {
+      "filepath": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Redotil\\IMG_7323_jpg.rf.fa96f45866e38bd841af649155f311b8.jpg",
+      "class_name": "Redotil",
+      "true_label": 39,
+      "onnx_pred": 39,
+      "pytorch_pred": 2,
+      "onnx_confidence": 0.8087
+    },
+    {
+      "filepath": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Unienzyme\\Image_5_jpg.rf.9ea59babff9a9157d0a0b9ed0fd6c658.jpg",
+      "class_name": "Unienzyme",
+      "true_label": 47,
+      "onnx_pred": 47,
+      "pytorch_pred": 16,
+      "onnx_confidence": 0.875
+    },
+    {
+      "filepath": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Vitamin E\\Image_3_jpg.rf.97c57a51bb41140e1a5e9acd390126f0.jpg",
+      "class_name": "Vitamin E",
+      "true_label": 49,
+      "onnx_pred": 49,
+      "pytorch_pred": 16,
+      "onnx_confidence": 0.6739
+    },
+    {
+      "filepath": "C:\\Users\\OMEN\\OneDrive\\Desktop\\SO_in_HH\\mediband\\__dataset_inspect\\pharmassist\\Pharmassist Dataset\\raw\\Zincovit\\Scan-from-2025-12-08-05_21_33-PM_jpg.rf.45ebf3745bdf63d9569f7259c55a80c1.jpg",
+      "class_name": "Zincovit",
+      "true_label": 51,
+      "onnx_pred": 51,
+      "pytorch_pred": 31,
+      "onnx_confidence": 0.9372
+    }
+  ],
+  "bin_stats": [
+    {
+      "bin": "[0.20, 0.27]",
+      "count": 2,
+      "accuracy": 1.0,
+      "confidence": 0.2152
+    },
+    {
+      "bin": "[0.27, 0.33]",
+      "count": 1,
+      "accuracy": 1.0,
+      "confidence": 0.2902
+    },
+    {
+      "bin": "[0.33, 0.40]",
+      "count": 3,
+      "accuracy": 1.0,
+      "confidence": 0.3694
+    },
+    {
+      "bin": "[0.40, 0.47]",
+      "count": 5,
+      "accuracy": 0.8,
+      "confidence": 0.4362
+    },
+    {
+      "bin": "[0.47, 0.53]",
+      "count": 5,
+      "accuracy": 1.0,
+      "confidence": 0.4794
+    },
+    {
+      "bin": "[0.53, 0.60]",
+      "count": 9,
+      "accuracy": 1.0,
+      "confidence": 0.5746
+    },
+    {
+      "bin": "[0.60, 0.67]",
+      "count": 13,
+      "accuracy": 1.0,
+      "confidence": 0.6352
+    },
+    {
+      "bin": "[0.67, 0.73]",
+      "count": 14,
+      "accuracy": 1.0,
+      "confidence": 0.6995
+    },
+    {
+      "bin": "[0.73, 0.80]",
+      "count": 24,
+      "accuracy": 1.0,
+      "confidence": 0.7679
+    },
+    {
+      "bin": "[0.80, 0.87]",
+      "count": 39,
+      "accuracy": 1.0,
+      "confidence": 0.8383
+    },
+    {
+      "bin": "[0.87, 0.93]",
+      "count": 75,
+      "accuracy": 1.0,
+      "confidence": 0.9056
+    },
+    {
+      "bin": "[0.93, 1.00]",
+      "count": 161,
+      "accuracy": 1.0,
+      "confidence": 0.9671
+    }
+  ]
+}

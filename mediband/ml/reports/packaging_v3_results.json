@@ -1,0 +1,28 @@
+{
+  "checkpoint": "best_model_v3.pt",
+  "wall_clock_time": "60.0 minutes (capped at epoch 8 of Phase 2)",
+  "val": {
+    "count": 311,
+    "top1": 0.9582,
+    "top3": 0.9904,
+    "macro_f1": 0.9692,
+    "ece": 0.2377,
+    "mean_conf": 0.7205,
+    "mean_conf_correct": 0.7366,
+    "mean_conf_wrong": 0.3498,
+    "correct_count": 298,
+    "wrong_count": 13
+  },
+  "test": {
+    "count": 351,
+    "top1": 0.9544,
+    "top3": 0.9915,
+    "macro_f1": 0.9611,
+    "ece": 0.2146,
+    "mean_conf": 0.7399,
+    "mean_conf_correct": 0.764,
+    "mean_conf_wrong": 0.2353,
+    "correct_count": 335,
+    "wrong_count": 16
+  }
+}

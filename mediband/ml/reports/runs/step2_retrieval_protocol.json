@@ -1,0 +1,337 @@
+{
+  "step": "STEP 2 - OPEN-SET PROTOCOL FOR RETRIEVAL",
+  "splits": [
+    {
+      "seed": 42,
+      "held_out_classes": [
+        1,
+        7,
+        8,
+        14,
+        15,
+        17,
+        40,
+        47
+      ],
+      "sample_counts": {
+        "known_train": 2811,
+        "known_val": 261,
+        "known_test": 296,
+        "unknown_test": 55
+      },
+      "softmax_baseline": {
+        "known_top1": 98.65,
+        "max_softmax": {
+          "auroc": 0.9604,
+          "fpr_at_95_tpr": 12.73,
+          "val_th_95": 0.2615,
+          "val_th_90": 0.3347,
+          "known_accepted_at_val95": 96.28,
+          "known_accepted_at_val90": 94.93,
+          "unknown_accepted_at_val95": 20.0,
+          "unknown_accepted_at_val90": 12.73
+        },
+        "max_logit": {
+          "auroc": 0.9584,
+          "fpr_at_95_tpr": 12.73,
+          "val_th_95": 1.6806,
+          "val_th_90": 2.2561,
+          "known_accepted_at_val95": 96.96,
+          "known_accepted_at_val90": 94.26,
+          "unknown_accepted_at_val95": 30.91,
+          "unknown_accepted_at_val90": 12.73
+        }
+      },
+      "embedding_retrieval": {
+        "mean_gallery": {
+          "known_top1": 99.32,
+          "open_set_metrics": {
+            "auroc": 0.9633,
+            "fpr_at_95_tpr": 12.73,
+            "val_th_95": 0.5487,
+            "val_th_90": 0.6334,
+            "known_accepted_at_val95": 96.96,
+            "known_accepted_at_val90": 93.24,
+            "unknown_accepted_at_val95": 23.64,
+            "unknown_accepted_at_val90": 10.91
+          }
+        },
+        "5ref_gallery": {
+          "known_top1": 98.31,
+          "open_set_metrics": {
+            "auroc": 0.941,
+            "fpr_at_95_tpr": 14.55,
+            "val_th_95": 0.5763,
+            "val_th_90": 0.6136,
+            "known_accepted_at_val95": 96.62,
+            "known_accepted_at_val90": 92.57,
+            "unknown_accepted_at_val95": 16.36,
+            "unknown_accepted_at_val90": 10.91
+          }
+        }
+      },
+      "few_shot_enrolment": {
+        "k_1": {
+          "heldout_test_top1": 27.27,
+          "known_test_top1": 99.32,
+          "heldout_samples": 55,
+          "known_samples": 296
+        },
+        "k_3": {
+          "heldout_test_top1": 70.91,
+          "known_test_top1": 99.32,
+          "heldout_samples": 55,
+          "known_samples": 296
+        },
+        "k_5": {
+          "heldout_test_top1": 56.36,
+          "known_test_top1": 99.32,
+          "heldout_samples": 55,
+          "known_samples": 296
+        }
+      }
+    },
+    {
+      "seed": 7,
+      "held_out_classes": [
+        3,
+        4,
+        6,
+        9,
+        20,
+        25,
+        34,
+        41
+      ],
+      "sample_counts": {
+        "known_train": 2773,
+        "known_val": 257,
+        "known_test": 285,
+        "unknown_test": 66
+      },
+      "softmax_baseline": {
+        "known_top1": 98.25,
+        "max_softmax": {
+          "auroc": 0.9693,
+          "fpr_at_95_tpr": 19.7,
+          "val_th_95": 0.294,
+          "val_th_90": 0.3978,
+          "known_accepted_at_val95": 93.68,
+          "known_accepted_at_val90": 90.18,
+          "unknown_accepted_at_val95": 19.7,
+          "unknown_accepted_at_val90": 7.58
+        },
+        "max_logit": {
+          "auroc": 0.9681,
+          "fpr_at_95_tpr": 22.73,
+          "val_th_95": 2.0165,
+          "val_th_90": 2.5292,
+          "known_accepted_at_val95": 94.04,
+          "known_accepted_at_val90": 90.18,
+          "unknown_accepted_at_val95": 22.73,
+          "unknown_accepted_at_val90": 9.09
+        }
+      },
+      "embedding_retrieval": {
+        "mean_gallery": {
+          "known_top1": 99.65,
+          "open_set_metrics": {
+            "auroc": 0.9752,
+            "fpr_at_95_tpr": 19.7,
+            "val_th_95": 0.5541,
+            "val_th_90": 0.654,
+            "known_accepted_at_val95": 97.54,
+            "known_accepted_at_val90": 91.23,
+            "unknown_accepted_at_val95": 25.76,
+            "unknown_accepted_at_val90": 6.06
+          }
+        },
+        "5ref_gallery": {
+          "known_top1": 97.89,
+          "open_set_metrics": {
+            "auroc": 0.9642,
+            "fpr_at_95_tpr": 30.3,
+            "val_th_95": 0.569,
+            "val_th_90": 0.6082,
+            "known_accepted_at_val95": 95.09,
+            "known_accepted_at_val90": 91.58,
+            "unknown_accepted_at_val95": 33.33,
+            "unknown_accepted_at_val90": 15.15
+          }
+        }
+      },
+      "few_shot_enrolment": {
+        "k_1": {
+          "heldout_test_top1": 46.97,
+          "known_test_top1": 99.3,
+          "heldout_samples": 66,
+          "known_samples": 285
+        },
+        "k_3": {
+          "heldout_test_top1": 66.67,
+          "known_test_top1": 98.6,
+          "heldout_samples": 66,
+          "known_samples": 285
+        },
+        "k_5": {
+          "heldout_test_top1": 75.76,
+          "known_test_top1": 99.3,
+          "heldout_samples": 66,
+          "known_samples": 285
+        }
+      }
+    },
+    {
+      "seed": 123,
+      "held_out_classes": [
+        2,
+        3,
+        5,
+        6,
+        17,
+        26,
+        49,
+        51
+      ],
+      "sample_counts": {
+        "known_train": 2832,
+        "known_val": 262,
+        "known_test": 294,
+        "unknown_test": 57
+      },
+      "softmax_baseline": {
+        "known_top1": 97.96,
+        "max_softmax": {
+          "auroc": 0.9456,
+          "fpr_at_95_tpr": 19.3,
+          "val_th_95": 0.2963,
+          "val_th_90": 0.4351,
+          "known_accepted_at_val95": 98.3,
+          "known_accepted_at_val90": 93.88,
+          "unknown_accepted_at_val95": 36.84,
+          "unknown_accepted_at_val90": 17.54
+        },
+        "max_logit": {
+          "auroc": 0.942,
+          "fpr_at_95_tpr": 22.81,
+          "val_th_95": 2.2406,
+          "val_th_90": 2.6823,
+          "known_accepted_at_val95": 97.28,
+          "known_accepted_at_val90": 93.2,
+          "unknown_accepted_at_val95": 35.09,
+          "unknown_accepted_at_val90": 15.79
+        }
+      },
+      "embedding_retrieval": {
+        "mean_gallery": {
+          "known_top1": 100.0,
+          "open_set_metrics": {
+            "auroc": 0.9471,
+            "fpr_at_95_tpr": 31.58,
+            "val_th_95": 0.5862,
+            "val_th_90": 0.6555,
+            "known_accepted_at_val95": 93.88,
+            "known_accepted_at_val90": 87.76,
+            "unknown_accepted_at_val95": 31.58,
+            "unknown_accepted_at_val90": 12.28
+          }
+        },
+        "5ref_gallery": {
+          "known_top1": 97.96,
+          "open_set_metrics": {
+            "auroc": 0.9387,
+            "fpr_at_95_tpr": 31.58,
+            "val_th_95": 0.5932,
+            "val_th_90": 0.6394,
+            "known_accepted_at_val95": 95.24,
+            "known_accepted_at_val90": 87.76,
+            "unknown_accepted_at_val95": 35.09,
+            "unknown_accepted_at_val90": 14.04
+          }
+        }
+      },
+      "few_shot_enrolment": {
+        "k_1": {
+          "heldout_test_top1": 47.37,
+          "known_test_top1": 99.66,
+          "heldout_samples": 57,
+          "known_samples": 294
+        },
+        "k_3": {
+          "heldout_test_top1": 56.14,
+          "known_test_top1": 99.66,
+          "heldout_samples": 57,
+          "known_samples": 294
+        },
+        "k_5": {
+          "heldout_test_top1": 66.67,
+          "known_test_top1": 99.66,
+          "heldout_samples": 57,
+          "known_samples": 294
+        }
+      }
+    }
+  ],
+  "pooled_summary": {
+    "softmax_max_softmax": {
+      "auroc": 0.9588,
+      "fpr_at_95_tpr": 18.54
+    },
+    "softmax_max_logit": {
+      "auroc": 0.9555,
+      "fpr_at_95_tpr": 21.91
+    },
+    "embedding_mean": {
+      "auroc": 0.9633,
+      "fpr_at_95_tpr": 22.47
+    },
+    "embedding_5ref": {
+      "auroc": 0.949,
+      "fpr_at_95_tpr": 25.28
+    }
+  },
+  "bootstrap_comparisons": {
+    "known_top1_diff_pct": {
+      "mean": 1.3716,
+      "ci_lower": 0.6857,
+      "ci_upper": 2.1714
+    },
+    "auroc_diff_pct": {
+      "mean": 0.4445,
+      "ci_lower": -0.435,
+      "ci_upper": 1.3717
+    },
+    "fpr_at_95_tpr_diff_pct": {
+      "mean": 3.3955,
+      "ci_lower": -4.7375,
+      "ci_upper": 10.989
+    }
+  },
+  "few_shot_enrolment_summary": {
+    "k_1": {
+      "heldout_top1_mean": 40.54,
+      "heldout_top1_std": 9.38,
+      "known_top1_mean": 99.43,
+      "known_top1_std": 0.17
+    },
+    "k_3": {
+      "heldout_top1_mean": 64.57,
+      "heldout_top1_std": 6.21,
+      "known_top1_mean": 99.19,
+      "known_top1_std": 0.44
+    },
+    "k_5": {
+      "heldout_top1_mean": 66.26,
+      "heldout_top1_std": 7.93,
+      "known_top1_mean": 99.43,
+      "known_top1_std": 0.17
+    }
+  },
+  "hardware_and_parity": {
+    "param_count": 1648928,
+    "onnx_size_mb": 6.3,
+    "cpu_latency_ms": 2.42,
+    "max_abs_embedding_diff": 2.2426247596740723e-06,
+    "mean_cosine_similarity": 1.0
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "recipe": "v2c (5 warm-up + 25 full fine-tune, weight decay 1e-4, NO flips, 5-deg rotation)",
+  "wall_clock_seconds": 3017.4,
+  "wall_clock_minutes": 50.29,
+  "val_metrics": {
+    "sample_count": 388,
+    "top1": 0.4793814432989691,
+    "top3": 0.7216494845360825,
+    "macro_f1": 0.4667113598252794,
+    "ece": 0.051201524040133665,
+    "mean_confidence": 0.4546933174133301,
+    "mean_confidence_correct": 0.5875025391578674,
+    "mean_confidence_wrong": 0.33240368962287903
+  },
+  "test_metrics": {
+    "sample_count": 384,
+    "top1": 0.4661458333333333,
+    "top3": 0.6796875,
+    "macro_f1": 0.45691040306128755,
+    "ece": 0.05397855521490176,
+    "mean_confidence": 0.4297594130039215,
+    "mean_confidence_correct": 0.5578284859657288,
+    "mean_confidence_wrong": 0.31793323159217834
+  },
+  "checkpoint_file": "best_pharmaia_v2c.pt"
+}

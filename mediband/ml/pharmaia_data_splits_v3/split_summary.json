@@ -1,0 +1,31 @@
+{
+  "dataset": "PharmAIA Comprehensive Image Dataset of Tablet Names",
+  "hamming_threshold": 10,
+  "raw_images_total": 2579,
+  "distinct_groups": 2384,
+  "hash_merges": 194,
+  "splits": {
+    "train": {
+      "total": 10071,
+      "raw": 1818,
+      "augmented": 8253,
+      "groups": 1669
+    },
+    "val": {
+      "total": 385,
+      "raw": 385,
+      "augmented": 0,
+      "groups": 361
+    },
+    "test": {
+      "total": 376,
+      "raw": 376,
+      "augmented": 0,
+      "groups": 354
+    }
+  },
+  "dropped_augmented_images": 3942,
+  "orphan_augmented_images": 490,
+  "min_phash_distance_train_vs_valtest": 12,
+  "min_dhash_distance_train_vs_valtest": 11
+}

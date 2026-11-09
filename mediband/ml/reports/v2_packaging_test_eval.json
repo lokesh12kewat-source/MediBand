@@ -1,0 +1,353 @@
+{
+  "sample_count": 303,
+  "top1_accuracy": 0.9439,
+  "top3_accuracy": 0.9802,
+  "macro_f1": 0.9437,
+  "ece_15_bins": 0.1917,
+  "bin_stats": [
+    {
+      "bin": "[0.13, 0.20]",
+      "count": 8,
+      "accuracy": 0.75,
+      "confidence": 0.1639000028371811
+    },
+    {
+      "bin": "[0.20, 0.27]",
+      "count": 8,
+      "accuracy": 0.375,
+      "confidence": 0.24250000715255737
+    },
+    {
+      "bin": "[0.27, 0.33]",
+      "count": 7,
+      "accuracy": 0.4286,
+      "confidence": 0.2930000126361847
+    },
+    {
+      "bin": "[0.33, 0.40]",
+      "count": 11,
+      "accuracy": 0.7273,
+      "confidence": 0.3650999963283539
+    },
+    {
+      "bin": "[0.40, 0.47]",
+      "count": 8,
+      "accuracy": 0.875,
+      "confidence": 0.436599999666214
+    },
+    {
+      "bin": "[0.47, 0.53]",
+      "count": 11,
+      "accuracy": 1.0,
+      "confidence": 0.5006999969482422
+    },
+    {
+      "bin": "[0.53, 0.60]",
+      "count": 11,
+      "accuracy": 0.8182,
+      "confidence": 0.5649999976158142
+    },
+    {
+      "bin": "[0.60, 0.67]",
+      "count": 20,
+      "accuracy": 1.0,
+      "confidence": 0.6434999704360962
+    },
+    {
+      "bin": "[0.67, 0.73]",
+      "count": 21,
+      "accuracy": 1.0,
+      "confidence": 0.705299973487854
+    },
+    {
+      "bin": "[0.73, 0.80]",
+      "count": 34,
+      "accuracy": 1.0,
+      "confidence": 0.7706000208854675
+    },
+    {
+      "bin": "[0.80, 0.87]",
+      "count": 41,
+      "accuracy": 1.0,
+      "confidence": 0.8379999995231628
+    },
+    {
+      "bin": "[0.87, 0.93]",
+      "count": 53,
+      "accuracy": 1.0,
+      "confidence": 0.9047999978065491
+    },
+    {
+      "bin": "[0.93, 1.00]",
+      "count": 70,
+      "accuracy": 1.0,
+      "confidence": 0.9599000215530396
+    }
+  ],
+  "per_class": {
+    "Acemiz": {
+      "count": 2,
+      "accuracy": 1.0
+    },
+    "Allegra": {
+      "count": 6,
+      "accuracy": 1.0
+    },
+    "Alprax 0-25": {
+      "count": 6,
+      "accuracy": 1.0
+    },
+    "Amalong": {
+      "count": 10,
+      "accuracy": 1.0
+    },
+    "Atarax": {
+      "count": 3,
+      "accuracy": 1.0
+    },
+    "Becozinc": {
+      "count": 7,
+      "accuracy": 1.0
+    },
+    "Bifilac": {
+      "count": 3,
+      "accuracy": 1.0
+    },
+    "Canitiz": {
+      "count": 8,
+      "accuracy": 1.0
+    },
+    "Cetzine": {
+      "count": 5,
+      "accuracy": 1.0
+    },
+    "Ciplar 10": {
+      "count": 8,
+      "accuracy": 0.875
+    },
+    "Cofsils": {
+      "count": 4,
+      "accuracy": 1.0
+    },
+    "Cranmed": {
+      "count": 4,
+      "accuracy": 1.0
+    },
+    "Cyclopam": {
+      "count": 7,
+      "accuracy": 1.0
+    },
+    "D-Rise": {
+      "count": 5,
+      "accuracy": 1.0
+    },
+    "D-Well": {
+      "count": 4,
+      "accuracy": 1.0
+    },
+    "D3 More 2K": {
+      "count": 6,
+      "accuracy": 0.8333
+    },
+    "Dolo-650": {
+      "count": 8,
+      "accuracy": 1.0
+    },
+    "Eldoper": {
+      "count": 4,
+      "accuracy": 1.0
+    },
+    "Emeset": {
+      "count": 2,
+      "accuracy": 1.0
+    },
+    "Etoshine 90": {
+      "count": 7,
+      "accuracy": 0.8571
+    },
+    "Etoshine MR": {
+      "count": 8,
+      "accuracy": 1.0
+    },
+    "Folvite": {
+      "count": 7,
+      "accuracy": 1.0
+    },
+    "Gelusil": {
+      "count": 5,
+      "accuracy": 1.0
+    },
+    "Gestorab": {
+      "count": 6,
+      "accuracy": 1.0
+    },
+    "GlimiSave M 0-5": {
+      "count": 3,
+      "accuracy": 1.0
+    },
+    "Gluxit10": {
+      "count": 6,
+      "accuracy": 1.0
+    },
+    "M-Strong": {
+      "count": 3,
+      "accuracy": 1.0
+    },
+    "Meftal 250 DT": {
+      "count": 7,
+      "accuracy": 1.0
+    },
+    "Melecobalamine": {
+      "count": 8,
+      "accuracy": 0.625
+    },
+    "Menoease": {
+      "count": 7,
+      "accuracy": 1.0
+    },
+    "Metronidazole": {
+      "count": 8,
+      "accuracy": 0.875
+    },
+    "Montair": {
+      "count": 5,
+      "accuracy": 0.8
+    },
+    "Muvera": {
+      "count": 6,
+      "accuracy": 0.8333
+    },
+    "Mysopas": {
+      "count": 3,
+      "accuracy": 1.0
+    },
+    "P-650": {
+      "count": 3,
+      "accuracy": 1.0
+    },
+    "Pacimol650": {
+      "count": 5,
+      "accuracy": 1.0
+    },
+    "Pan 20": {
+      "count": 7,
+      "accuracy": 1.0
+    },
+    "Pan-D": {
+      "count": 10,
+      "accuracy": 0.9
+    },
+    "Paracip-650": {
+      "count": 3,
+      "accuracy": 0.6667
+    },
+    "Redotil": {
+      "count": 11,
+      "accuracy": 1.0
+    },
+    "Shelcal 500": {
+      "count": 8,
+      "accuracy": 0.875
+    },
+    "Sibelium 10mg": {
+      "count": 7,
+      "accuracy": 1.0
+    },
+    "Sompraz": {
+      "count": 7,
+      "accuracy": 1.0
+    },
+    "Strepsils": {
+      "count": 5,
+      "accuracy": 1.0
+    },
+    "Tayo60k": {
+      "count": 7,
+      "accuracy": 1.0
+    },
+    "Tendonease": {
+      "count": 5,
+      "accuracy": 1.0
+    },
+    "Udapa-Trio": {
+      "count": 3,
+      "accuracy": 1.0
+    },
+    "Unienzyme": {
+      "count": 8,
+      "accuracy": 0.875
+    },
+    "Velgut": {
+      "count": 2,
+      "accuracy": 1.0
+    },
+    "Vitamin E": {
+      "count": 3,
+      "accuracy": 0.6667
+    },
+    "Vomikind": {
+      "count": 6,
+      "accuracy": 0.8333
+    },
+    "Zincovit": {
+      "count": 9,
+      "accuracy": 0.7778
+    },
+    "Zofer": {
+      "count": 3,
+      "accuracy": 1.0
+    }
+  },
+  "top_10_confused_pairs": [
+    {
+      "true_class": "Melecobalamine",
+      "predicted_class": "Paracip-650",
+      "errors": 2
+    },
+    {
+      "true_class": "Ciplar 10",
+      "predicted_class": "Alprax 0-25",
+      "errors": 1
+    },
+    {
+      "true_class": "D3 More 2K",
+      "predicted_class": "Gestorab",
+      "errors": 1
+    },
+    {
+      "true_class": "Etoshine 90",
+      "predicted_class": "Vomikind",
+      "errors": 1
+    },
+    {
+      "true_class": "Melecobalamine",
+      "predicted_class": "Tayo60k",
+      "errors": 1
+    },
+    {
+      "true_class": "Metronidazole",
+      "predicted_class": "Melecobalamine",
+      "errors": 1
+    },
+    {
+      "true_class": "Montair",
+      "predicted_class": "Folvite",
+      "errors": 1
+    },
+    {
+      "true_class": "Muvera",
+      "predicted_class": "Mysopas",
+      "errors": 1
+    },
+    {
+      "true_class": "Pan-D",
+      "predicted_class": "Gestorab",
+      "errors": 1
+    },
+    {
+      "true_class": "Paracip-650",
+      "predicted_class": "Emeset",
+      "errors": 1
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+--- a/lib/onnx-client.ts
++++ b/lib/onnx-client.ts
+@@ -157,17 +157,21 @@
+-export function drawImageTo224Canvas(img: HTMLImageElement): ImageData {
++export function drawImageTo224Canvas(img: HTMLImageElement, mode: 'packaging' | 'loose_pill' = 'packaging'): ImageData {
+   const canvas = document.createElement('canvas');
+   canvas.width = 224;
+   canvas.height = 224;
+   const ctx = canvas.getContext('2d');
+   if (!ctx) throw new Error('Failed to get 2d rendering context');
+ 
+-  // Fill neutral gray (128, 128, 128) matching Phase 4 LetterboxPad training transform
+-  ctx.fillStyle = '#808080';
+-  ctx.fillRect(0, 0, 224, 224);
+-
+-  // Compute aspect-ratio preserving letterbox coordinates
+-  const { dx, dy, dw, dh } = computeLetterboxCoords(img.width, img.height, 224);
+-  ctx.drawImage(img, 0, 0, img.width, img.height, dx, dy, dw, dh);
++  if (mode === 'packaging') {
++    // Stretch resize directly matching PyTorch packaging model transforms.Resize((224, 224))
++    ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, 224, 224);
++  } else {
++    // Neutral gray (128, 128, 128) letterbox padding for tablet text strips
++    ctx.fillStyle = '#808080';
++    ctx.fillRect(0, 0, 224, 224);
++    const { dx, dy, dw, dh } = computeLetterboxCoords(img.width, img.height, 224);
++    ctx.drawImage(img, 0, 0, img.width, img.height, dx, dy, dw, dh);
++  }
+ 
+   return ctx.getImageData(0, 0, 224, 224);
+ }
+@@ -198,3 +202,3 @@
+-  const imageData = drawImageTo224Canvas(img);
++  const imageData = drawImageTo224Canvas(img, mode);
+   const normalized = normalizePixels(imageData.data, 224, 224);

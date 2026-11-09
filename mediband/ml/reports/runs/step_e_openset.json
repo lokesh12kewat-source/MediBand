@@ -1,0 +1,111 @@
+{
+  "config": "B7",
+  "held_out_count": 8,
+  "train_classes_count": 45,
+  "ls_0_0": {
+    "msp": {
+      "held_out_classes": {
+        "auroc": 0.951,
+        "fpr_at_95_tpr": 0.2,
+        "thresh_95_tpr": 0.56
+      },
+      "pharmaia_raw": {
+        "auroc": 0.9773,
+        "fpr_at_95_tpr": 0.0957,
+        "thresh_95_tpr": 0.56
+      },
+      "synthetic_images": {
+        "auroc": 0.9627,
+        "fpr_at_95_tpr": 0.23,
+        "thresh_95_tpr": 0.56
+      }
+    },
+    "max_logit": {
+      "held_out_classes": {
+        "auroc": 0.9577,
+        "fpr_at_95_tpr": 0.2,
+        "thresh_95_tpr": 3.2406
+      },
+      "pharmaia_raw": {
+        "auroc": 0.9767,
+        "fpr_at_95_tpr": 0.0479,
+        "thresh_95_tpr": 3.2406
+      },
+      "synthetic_images": {
+        "auroc": 0.9355,
+        "fpr_at_95_tpr": 0.31,
+        "thresh_95_tpr": 3.2406
+      }
+    },
+    "energy": {
+      "held_out_classes": {
+        "auroc": 0.9549,
+        "fpr_at_95_tpr": 0.2,
+        "thresh_95_tpr": 3.7743
+      },
+      "pharmaia_raw": {
+        "auroc": 0.9716,
+        "fpr_at_95_tpr": 0.0505,
+        "thresh_95_tpr": 3.7743
+      },
+      "synthetic_images": {
+        "auroc": 0.9213,
+        "fpr_at_95_tpr": 0.365,
+        "thresh_95_tpr": 3.7743
+      }
+    }
+  },
+  "ls_0_1": {
+    "msp": {
+      "held_out_classes": {
+        "auroc": 0.9604,
+        "fpr_at_95_tpr": 0.1273,
+        "thresh_95_tpr": 0.3336
+      },
+      "pharmaia_raw": {
+        "auroc": 0.9753,
+        "fpr_at_95_tpr": 0.1011,
+        "thresh_95_tpr": 0.3336
+      },
+      "synthetic_images": {
+        "auroc": 0.9408,
+        "fpr_at_95_tpr": 0.315,
+        "thresh_95_tpr": 0.3336
+      }
+    },
+    "max_logit": {
+      "held_out_classes": {
+        "auroc": 0.9584,
+        "fpr_at_95_tpr": 0.1273,
+        "thresh_95_tpr": 2.1459
+      },
+      "pharmaia_raw": {
+        "auroc": 0.9734,
+        "fpr_at_95_tpr": 0.109,
+        "thresh_95_tpr": 2.1459
+      },
+      "synthetic_images": {
+        "auroc": 0.9208,
+        "fpr_at_95_tpr": 0.31,
+        "thresh_95_tpr": 2.1459
+      }
+    },
+    "energy": {
+      "held_out_classes": {
+        "auroc": 0.9463,
+        "fpr_at_95_tpr": 0.2909,
+        "thresh_95_tpr": 3.2296
+      },
+      "pharmaia_raw": {
+        "auroc": 0.9606,
+        "fpr_at_95_tpr": 0.2048,
+        "thresh_95_tpr": 3.2296
+      },
+      "synthetic_images": {
+        "auroc": 0.9045,
+        "fpr_at_95_tpr": 0.345,
+        "thresh_95_tpr": 3.2296
+      }
+    }
+  }
+}

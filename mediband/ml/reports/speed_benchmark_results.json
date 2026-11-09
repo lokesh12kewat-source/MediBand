@@ -1,0 +1,19 @@
+{
+  "uncached_1epoch_seconds": 130.68,
+  "cached_w0_1epoch_seconds": 32.99,
+  "cached_w2_1epoch_seconds": 35.49,
+  "cached_channels_last_1epoch_seconds": 14.81,
+  "speedup_factor": 3.68,
+  "best_dataloader_settings": {
+    "num_workers": 2,
+    "persistent_workers": true,
+    "pin_memory": true,
+    "prefetch_factor": 2,
+    "channels_last": false
+  },
+  "parity_3epoch_check": {
+    "val_acc_uncached": 0.9646,
+    "val_acc_cached": 0.9357,
+    "difference": 0.0289
+  }
+}

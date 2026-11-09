@@ -1,0 +1,211 @@
+{
+  "config": "B2",
+  "seed": 123,
+  "arch": "mobilenet_v3_small",
+  "img_size": 224,
+  "label_smoothing": 0.1,
+  "param_count": 1794389,
+  "onnx_size_mb": 6.86,
+  "cpu_latency_ms": 2.0,
+  "train_time_seconds": 2849.0,
+  "train_time_minutes": 47.48,
+  "best_epoch": 11,
+  "val": {
+    "sample_count": 311,
+    "top1": 0.9678,
+    "top3": 0.9904,
+    "macro_f1": 0.9545,
+    "ece": 0.2395,
+    "mean_confidence": 0.7285,
+    "mean_confidence_correct": 0.7432,
+    "mean_confidence_wrong": 0.2788,
+    "correct_count": 301,
+    "wrong_count": 10,
+    "bin_stats": [
+      {
+        "bin": "[0.07, 0.13]",
+        "count": 1,
+        "accuracy": 1.0,
+        "confidence": 0.0869
+      },
+      {
+        "bin": "[0.13, 0.20]",
+        "count": 8,
+        "accuracy": 0.625,
+        "confidence": 0.1669
+      },
+      {
+        "bin": "[0.20, 0.27]",
+        "count": 12,
+        "accuracy": 0.6667,
+        "confidence": 0.2422
+      },
+      {
+        "bin": "[0.27, 0.33]",
+        "count": 9,
+        "accuracy": 0.7778,
+        "confidence": 0.293
+      },
+      {
+        "bin": "[0.33, 0.40]",
+        "count": 10,
+        "accuracy": 1.0,
+        "confidence": 0.3745
+      },
+      {
+        "bin": "[0.40, 0.47]",
+        "count": 13,
+        "accuracy": 1.0,
+        "confidence": 0.4353
+      },
+      {
+        "bin": "[0.47, 0.53]",
+        "count": 12,
+        "accuracy": 1.0,
+        "confidence": 0.5049
+      },
+      {
+        "bin": "[0.53, 0.60]",
+        "count": 11,
+        "accuracy": 1.0,
+        "confidence": 0.5708
+      },
+      {
+        "bin": "[0.60, 0.67]",
+        "count": 20,
+        "accuracy": 1.0,
+        "confidence": 0.6455
+      },
+      {
+        "bin": "[0.67, 0.73]",
+        "count": 27,
+        "accuracy": 1.0,
+        "confidence": 0.7056
+      },
+      {
+        "bin": "[0.73, 0.80]",
+        "count": 23,
+        "accuracy": 0.9565,
+        "confidence": 0.7729
+      },
+      {
+        "bin": "[0.80, 0.87]",
+        "count": 54,
+        "accuracy": 1.0,
+        "confidence": 0.835
+      },
+      {
+        "bin": "[0.87, 0.93]",
+        "count": 61,
+        "accuracy": 1.0,
+        "confidence": 0.9033
+      },
+      {
+        "bin": "[0.93, 1.00]",
+        "count": 50,
+        "accuracy": 1.0,
+        "confidence": 0.9575
+      }
+    ],
+    "per_class": {}
+  },
+  "test": {
+    "sample_count": 351,
+    "top1": 0.963,
+    "top3": 0.9915,
+    "macro_f1": 0.9651,
+    "ece": 0.2123,
+    "mean_confidence": 0.7529,
+    "mean_confidence_correct": 0.772,
+    "mean_confidence_wrong": 0.2651,
+    "correct_count": 338,
+    "wrong_count": 13,
+    "bin_stats": [
+      {
+        "bin": "[0.07, 0.13]",
+        "count": 4,
+        "accuracy": 0.0,
+        "confidence": 0.1138
+      },
+      {
+        "bin": "[0.13, 0.20]",
+        "count": 6,
+        "accuracy": 0.8333,
+        "confidence": 0.1581
+      },
+      {
+        "bin": "[0.20, 0.27]",
+        "count": 2,
+        "accuracy": 0.5,
+        "confidence": 0.2322
+      },
+      {
+        "bin": "[0.27, 0.33]",
+        "count": 11,
+        "accuracy": 0.5455,
+        "confidence": 0.2966
+      },
+      {
+        "bin": "[0.33, 0.40]",
+        "count": 12,
+        "accuracy": 1.0,
+        "confidence": 0.3757
+      },
+      {
+        "bin": "[0.40, 0.47]",
+        "count": 12,
+        "accuracy": 0.9167,
+        "confidence": 0.4429
+      },
+      {
+        "bin": "[0.47, 0.53]",
+        "count": 9,
+        "accuracy": 1.0,
+        "confidence": 0.5068
+      },
+      {
+        "bin": "[0.53, 0.60]",
+        "count": 13,
+        "accuracy": 1.0,
+        "confidence": 0.5737
+      },
+      {
+        "bin": "[0.60, 0.67]",
+        "count": 24,
+        "accuracy": 1.0,
+        "confidence": 0.6353
+      },
+      {
+        "bin": "[0.67, 0.73]",
+        "count": 31,
+        "accuracy": 1.0,
+        "confidence": 0.6997
+      },
+      {
+        "bin": "[0.73, 0.80]",
+        "count": 35,
+        "accuracy": 0.9714,
+        "confidence": 0.7637
+      },
+      {
+        "bin": "[0.80, 0.87]",
+        "count": 47,
+        "accuracy": 1.0,
+        "confidence": 0.8374
+      },
+      {
+        "bin": "[0.87, 0.93]",
+        "count": 80,
+        "accuracy": 1.0,
+        "confidence": 0.9038
+      },
+      {
+        "bin": "[0.93, 1.00]",
+        "count": 65,
+        "accuracy": 1.0,
+        "confidence": 0.9551
+      }
+    ],
+    "per_class": {}
+  }
+}

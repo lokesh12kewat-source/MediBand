@@ -1,0 +1,11 @@
+{
+  "test_samples": 407,
+  "top_1_accuracy": 0.9828009828009828,
+  "top_3_accuracy": 0.995085995085995,
+  "meets_top_1_threshold": true,
+  "meets_top_3_threshold": true,
+  "macro_avg_f1": 0.9830223428783507,
+  "weighted_avg_f1": 0.9827439055907955,
+  "inference_ms_per_image": 11.52463217039366,
+  "evaluated_at": "2026-11-01 11:53:36"
+}

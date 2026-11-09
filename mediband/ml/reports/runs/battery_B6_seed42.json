@@ -1,0 +1,113 @@
+{
+  "config": "B6",
+  "seed": 42,
+  "arch": "efficientnet_b0",
+  "img_size": 224,
+  "label_smoothing": 0.1,
+  "param_count": 4349617,
+  "onnx_size_mb": 16.59,
+  "cpu_latency_ms": 7.14,
+  "train_time_seconds": 311.4,
+  "train_time_minutes": 5.19,
+  "best_epoch": 4,
+  "val": {
+    "sample_count": 311,
+    "top1": 0.9614,
+    "top3": 0.9936,
+    "macro_f1": 0.9711,
+    "ece": 0.1907,
+    "mean_confidence": 0.771,
+    "mean_confidence_correct": 0.793,
+    "mean_confidence_wrong": 0.2194,
+    "correct_count": 299,
+    "wrong_count": 12,
+    "bin_stats": [
+      {
+        "bin": "[0.07, 0.13]",
+        "count": 3,
+        "accuracy": 0.3333,
+        "confidence": 0.1222
+      },
+      {
+        "bin": "[0.13, 0.20]",
+        "count": 10,
+        "accuracy": 0.6,
+        "confidence": 0.173
+      },
+      {
+        "bin": "[0.20, 0.27]",
+        "count": 6,
+        "accuracy": 0.3333,
+        "confidence": 0.2249
+      },
+      {
+        "bin": "[0.27, 0.33]",
+        "count": 3,
+        "accuracy": 1.0,
+        "confidence": 0.2905
+      },
+      {
+        "bin": "[0.33, 0.40]",
+        "count": 8,
+        "accuracy": 0.875,
+        "confidence": 0.3633
+      },
+      {
+        "bin": "[0.40, 0.47]",
+        "count": 10,
+        "accuracy": 0.9,
+        "confidence": 0.4338
+      },
+      {
+        "bin": "[0.47, 0.53]",
+        "count": 13,
+        "accuracy": 1.0,
+        "confidence": 0.5093
+      },
+      {
+        "bin": "[0.53, 0.60]",
+        "count": 10,
+        "accuracy": 1.0,
+        "confidence": 0.5659
+      },
+      {
+        "bin": "[0.60, 0.67]",
+        "count": 13,
+        "accuracy": 1.0,
+        "confidence": 0.6372
+      },
+      {
+        "bin": "[0.67, 0.73]",
+        "count": 22,
+        "accuracy": 1.0,
+        "confidence": 0.6997
+      },
+      {
+        "bin": "[0.73, 0.80]",
+        "count": 19,
+        "accuracy": 1.0,
+        "confidence": 0.7739
+      },
+      {
+        "bin": "[0.80, 0.87]",
+        "count": 39,
+        "accuracy": 1.0,
+        "confidence": 0.8354
+      },
+      {
+        "bin": "[0.87, 0.93]",
+        "count": 69,
+        "accuracy": 1.0,
+        "confidence": 0.9058
+      },
+      {
+        "bin": "[0.93, 1.00]",
+        "count": 86,
+        "accuracy": 1.0,
+        "confidence": 0.958
+      }
+    ],
+    "per_class": {}
+  },
+  "test": null
+}

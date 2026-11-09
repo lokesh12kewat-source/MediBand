@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>MediBand In-Browser ONNX Test Runner</title>
+  <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.20.1/dist/ort.min.js"></script>
+</head>
+<body>
+  <h1>MediBand Packaging Model In-Browser Accuracy Test</h1>
+  <div id="status">Initializing ONNX Runtime Web...</div>
+  <pre id="output"></pre>
+
+  <script>
+    async function runInference(imgElement, session) {
+      // 1. Direct stretch draw to 224x224 canvas (matches applied Step A fix)
+      const canvas = document.createElement('canvas');
+      canvas.width = 224;
+      canvas.height = 224;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(imgElement, 0, 0, imgElement.width, imgElement.height, 0, 0, 224, 224);
+      const imgData = ctx.getImageData(0, 0, 224, 224);
+
+      // 2. Normalize RGB pixels with ImageNet mean and std (NCHW Float32Array)
+      const data = imgData.data;
+      const channelSize = 224 * 224;
+      const floatData = new Float32Array(3 * channelSize);
+      const mean = [0.485, 0.456, 0.406];
+      const std = [0.229, 0.224, 0.225];
+
+      for (let i = 0; i < channelSize; i++) {
+        const r = data[i * 4] / 255.0;
+        const g = data[i * 4 + 1] / 255.0;
+        const b = data[i * 4 + 2] / 255.0;
+        floatData[i] = (r - mean[0]) / std[0];
+        floatData[channelSize + i] = (g - mean[1]) / std[1];
+        floatData[2 * channelSize + i] = (b - mean[2]) / std[2];
+      }
+
+      // 3. InferenceSession run
+      const inputTensor = new ort.Tensor('float32', floatData, [1, 3, 224, 224]);
+      const results = await session.run({ input_image: inputTensor });
+      const logits = results.logits.data;
+
+      // 4. Softmax and top-1
+      let maxLogit = -Infinity;
+      for (let i = 0; i < logits.length; i++) if (logits[i] > maxLogit) maxLogit = logits[i];
+      let sum = 0;
+      const exp = new Float64Array(logits.length);
+      for (let i = 0; i < logits.length; i++) {
+        exp[i] = Math.exp(logits[i] - maxLogit);
+        sum += exp[i];
+      }
+      let top1Idx = 0, top1Prob = -1;
+      for (let i = 0; i < logits.length; i++) {
+        const p = exp[i] / sum;
+        if (p > top1Prob) { top1Prob = p; top1Idx = i; }
+      }
+      return { predIdx: top1Idx, confidence: top1Prob, logits: Array.from(logits) };
+    }
+
+    window.runBatch = async function(imageManifestUrl) {
+      document.getElementById('status').innerText = 'Loading model...';
+      const session = await ort.InferenceSession.create('/models/mediband_packaging_model.onnx', {
+        executionProviders: ['wasm']
+      });
+      document.getElementById('status').innerText = 'Running evaluation batch...';
+
+      const resp = await fetch(imageManifestUrl);
+      const manifest = await resp.json();
+      const results = [];
+
+      for (let i = 0; i < manifest.length; i++) {
+        const item = manifest[i];
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.src = item.url;
+        await new Promise(r => { img.onload = r; });
+        const res = await runInference(img, session);
+        results.push({ filepath: item.filepath, trueLabel: item.label, predIdx: res.predIdx, conf: res.confidence });
+      }
+      window.__EVAL_RESULTS__ = results;
+      document.getElementById('status').innerText = 'Batch completed!';
+      document.getElementById('output').innerText = JSON.stringify(results.slice(0, 5), null, 2);
+    };
+  </script>
+</body>
+</html>

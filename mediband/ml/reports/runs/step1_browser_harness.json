@@ -1,0 +1,27 @@
+{
+  "step": "STEP 1 - BROWSER HARNESS",
+  "status": "COMPLETED_READY_FOR_USER_EXECUTION",
+  "harness_directory": "mediband/ml/browser_test/",
+  "dependencies": {
+    "onnxruntime-web": "1.20.1",
+    "playwright-core": "^1.49.0"
+  },
+  "browser_binary": "Microsoft Edge (channel 'msedge')",
+  "model_tested": "b7_fp32.onnx (288x288 stretch, 53 classes)",
+  "sample_count": 120,
+  "pytorch_cpu_accuracy": 98.33,
+  "files_created": [
+    "ml/browser_test/package.json",
+    "ml/browser_test/index.html",
+    "ml/browser_test/run.mjs",
+    "ml/browser_test/expected.json",
+    "ml/browser_test/compare.py",
+    "ml/browser_test/README.md",
+    "ml/browser_test/images/ (120 original stratified test images)"
+  ],
+  "downscale_strategies_evaluated": [
+    "(a) drawImage default",
+    "(b) imageSmoothingQuality = 'high'",
+    "(c) Step-down halving until under 2x target (576 px)"
+  ]
+}

@@ -1,0 +1,143 @@
+{
+  "multi_seed_open_set": {
+    "individual_runs": [
+      {
+        "seed": 42,
+        "temperature": 0.4488,
+        "held_out_classes": [
+          1,
+          7,
+          8,
+          14,
+          15,
+          17,
+          40,
+          47
+        ],
+        "known_test_count": 296,
+        "held_out_test_count": 55,
+        "known_accepted": {
+          "thresh_0.79": 0.9426,
+          "thresh_0.93": 0.8986
+        },
+        "held_out_accepted": {
+          "thresh_0.79": 0.1818,
+          "thresh_0.93": 0.1091
+        },
+        "synthetic_accepted": {
+          "thresh_0.79": 0.475,
+          "thresh_0.93": 0.055
+        },
+        "pharmaia_accepted": {
+          "thresh_0.79": 0.133,
+          "thresh_0.93": 0.0319
+        }
+      },
+      {
+        "seed": 7,
+        "temperature": 0.3233,
+        "held_out_classes": [
+          3,
+          4,
+          6,
+          9,
+          20,
+          25,
+          34,
+          41
+        ],
+        "known_test_count": 285,
+        "held_out_test_count": 66,
+        "known_accepted": {
+          "thresh_0.79": 0.9719,
+          "thresh_0.93": 0.9333
+        },
+        "held_out_accepted": {
+          "thresh_0.79": 0.303,
+          "thresh_0.93": 0.1515
+        },
+        "synthetic_accepted": {
+          "thresh_0.79": 0.62,
+          "thresh_0.93": 0.22
+        },
+        "pharmaia_accepted": {
+          "thresh_0.79": 0.3511,
+          "thresh_0.93": 0.1968
+        }
+      },
+      {
+        "seed": 123,
+        "temperature": 0.3465,
+        "held_out_classes": [
+          2,
+          3,
+          5,
+          6,
+          17,
+          26,
+          49,
+          51
+        ],
+        "known_test_count": 294,
+        "held_out_test_count": 57,
+        "known_accepted": {
+          "thresh_0.79": 0.966,
+          "thresh_0.93": 0.9524
+        },
+        "held_out_accepted": {
+          "thresh_0.79": 0.4912,
+          "thresh_0.93": 0.2281
+        },
+        "synthetic_accepted": {
+          "thresh_0.79": 0.9,
+          "thresh_0.93": 0.79
+        },
+        "pharmaia_accepted": {
+          "thresh_0.79": 0.3856,
+          "thresh_0.93": 0.1702
+        }
+      }
+    ],
+    "pooled_summary": {
+      "pooled_known": {
+        "thresh_0.79": 0.96,
+        "thresh_0.93": 0.928
+      },
+      "pooled_held_out": {
+        "thresh_0.79": 0.3258,
+        "thresh_0.93": 0.1629
+      },
+      "pooled_synthetic": {
+        "thresh_0.79": 0.665,
+        "thresh_0.93": 0.355
+      },
+      "pooled_pharmaia": {
+        "thresh_0.79": 0.2899,
+        "thresh_0.93": 0.133
+      }
+    }
+  },
+  "extra_class_evaluation": {
+    "known_test_top1_accuracy": 0.9966,
+    "known_acceptance_at_0.79": 0.652,
+    "known_acceptance_at_0.93": 0.2601,
+    "synthetic_images": {
+      "total": 200,
+      "classified_as_not_a_medicine_pct": 100.0,
+      "accepted_at_0.79_pct": 0.0,
+      "accepted_at_0.93_pct": 0.0
+    },
+    "held_out_brands": {
+      "total": 57,
+      "classified_as_not_a_medicine_pct": 0.0,
+      "accepted_at_0.79_pct": 56.14,
+      "accepted_at_0.93_pct": 15.79
+    },
+    "pharmaia_loose_pills": {
+      "total": 376,
+      "classified_as_not_a_medicine_pct": 100.0,
+      "accepted_at_0.79_pct": 0.0,
+      "accepted_at_0.93_pct": 0.0
+    }
+  }
+}

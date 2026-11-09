@@ -1,0 +1,59 @@
+                 precision    recall  f1-score   support
+
+         Acemiz       1.00      1.00      1.00         5
+        Allegra       1.00      1.00      1.00         6
+    Alprax 0-25       1.00      1.00      1.00        10
+        Amalong       1.00      1.00      1.00        10
+         Atarax       1.00      1.00      1.00         6
+       Becozinc       1.00      1.00      1.00         6
+        Bifilac       1.00      1.00      1.00         9
+        Canitiz       1.00      0.90      0.95        10
+        Cetzine       1.00      1.00      1.00         7
+      Ciplar 10       1.00      1.00      1.00        10
+        Cofsils       1.00      1.00      1.00         6
+        Cranmed       1.00      1.00      1.00         6
+       Cyclopam       1.00      1.00      1.00         7
+         D-Rise       1.00      1.00      1.00         7
+         D-Well       1.00      0.83      0.91         6
+     D3 More 2K       1.00      1.00      1.00         9
+       Dolo-650       1.00      1.00      1.00         9
+        Eldoper       1.00      1.00      1.00         6
+         Emeset       1.00      1.00      1.00         5
+    Etoshine 90       1.00      1.00      1.00        10
+    Etoshine MR       1.00      1.00      1.00        10
+        Folvite       0.91      1.00      0.95        10
+        Gelusil       1.00      1.00      1.00         6
+       Gestorab       1.00      1.00      1.00         8
+GlimiSave M 0-5       1.00      0.75      0.86         4
+       Gluxit10       1.00      1.00      1.00         8
+       M-Strong       1.00      1.00      1.00         5
+  Meftal 250 DT       1.00      0.78      0.88         9
+ Melecobalamine       1.00      0.90      0.95        10
+       Menoease       1.00      1.00      1.00         7
+  Metronidazole       1.00      1.00      1.00        10
+        Montair       1.00      1.00      1.00         9
+         Muvera       1.00      1.00      1.00         7
+        Mysopas       1.00      1.00      1.00         6
+          P-650       1.00      1.00      1.00         4
+     Pacimol650       1.00      1.00      1.00         6
+         Pan 20       1.00      1.00      1.00        10
+          Pan-D       1.00      1.00      1.00        10
+    Paracip-650       1.00      1.00      1.00         5
+        Redotil       1.00      0.91      0.95        11
+    Shelcal 500       0.91      1.00      0.95        10
+  Sibelium 10mg       0.83      1.00      0.91        10
+        Sompraz       1.00      1.00      1.00         7
+      Strepsils       1.00      1.00      1.00        10
+        Tayo60k       1.00      1.00      1.00         8
+     Tendonease       1.00      1.00      1.00         7
+     Udapa-Trio       0.83      1.00      0.91         5
+      Unienzyme       1.00      1.00      1.00         8
+         Velgut       1.00      1.00      1.00         7
+      Vitamin E       1.00      1.00      1.00         5
+       Vomikind       0.80      1.00      0.89         8
+       Zincovit       1.00      1.00      1.00        10
+          Zofer       1.00      1.00      1.00         7
+
+       accuracy                           0.98       407
+      macro avg       0.99      0.98      0.98       407
+   weighted avg       0.99      0.98      0.98       407
