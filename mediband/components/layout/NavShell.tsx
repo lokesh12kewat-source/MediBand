@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
-  LayoutDashboard,
+  LayoutGrid,
   ScanLine,
   Archive,
   History,
@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 
 const NAV_ITEMS = [
-  { href: '/', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/', label: 'Dashboard', icon: LayoutGrid },
   { href: '/scan', label: 'Scan', icon: ScanLine },
   { href: '/cabinet', label: 'Cabinet', icon: Archive },
   { href: '/history', label: 'History', icon: History },
