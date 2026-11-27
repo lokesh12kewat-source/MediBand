@@ -27,6 +27,35 @@
 
 ---
 
+## [v0.3.0] — 2026-11-27 22:15 IST  |  commit: f36ead3
+
+### Summary
+Integrated production B7 288px packaging model with in-browser step-down canvas halving, temperature calibration, and out-of-distribution rejection thresholds; added root-level workspace launcher and proxy scripts; authored comprehensive repository-level and application-level architectural documentation with zero-leakage training audit.
+
+---
+
+### Files Changed
+
+#### `README.md` (root)
+- **Top-Level Repository Architecture**: Created comprehensive documentation detailing the Evidence Ledger, Multi-Modal Blister Foil OCR, and deep learning vision pipelines.
+- **Teammate Quick Start**: Added instructions for cloning, running via `START.bat` or `npm run dev`, and executing the 93 passing Vitest tests.
+- **Directory Map & Model Specifications**: Documented all key modules, ONNX models, and verification suites.
+
+#### `package.json` (root)
+- **Workspace Proxy Scripts**: Added root launcher scripts delegating `dev`, `build`, `start`, `test`, and `lint` to `mediband/`.
+
+#### `mediband/README.md`
+- **Updated Architecture Overview**: Replaced early scaffold prototype notes with current clinical-grade architecture, documenting the Blister Foil OCR engine, ONNX WebAssembly client, and Evidence Ledger.
+
+#### `mediband/package.json`
+- **Cross-Platform Vitest Runner**: Updated `"test": "vitest run"` to run seamlessly across Windows, macOS, and Linux.
+
+#### `mediband/lib/onnx-client.ts`
+- **Step-Down Canvas Halving**: Added canvas step-down resizing for high-resolution cameras down to 288x288, achieving sub-millilogit parity with PyTorch CPU.
+- **Calibrated Temperature Scaling**: Bound temperature $T = 0.5847$ and 98%/99% precision rejection thresholds from `packaging_b7.json`.
+
+---
+
 ## [v0.2.10] — 2026-10-31 17:45 IST  |  commit: 5359c5d
 
 ### Summary

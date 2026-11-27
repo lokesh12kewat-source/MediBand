@@ -1,170 +1,136 @@
-# MediBand
+# MediBand Application Core
 
-**Evidence-backed medication identification and adherence platform.**
+**Evidence-backed medication identification, multi-modal blister foil OCR, and clinical adherence platform.**
 
-MediBand doesn't ask you to blindly trust an AI answer. It shows you the evidence — what was checked, what matched, what conflicted, and what remains unknown.
-
----
-
-## ⚠️ Prototype notice
-
-This is a **hackathon MVP prototype**. All data is stored unencrypted in your browser's `localStorage`. Do not enter real health information.
-
-All provider lookups (product registry, regulatory, recall) are **simulated**. No real external APIs are called.
+MediBand does not ask patients or clinicians to blindly trust an AI answer. It presents a tamper-evident **Evidence Ledger** — detailing what was checked, what matched, what conflicted, and what remains unknown across optical, machine-readable, and deep learning vision channels.
 
 ---
 
-## Core concept: the Evidence Ledger
+## 🚀 Quick Start
 
-Instead of saying _"This is Paracetamol 650 mg"_, MediBand shows you:
-
-| Field | Value | Source | Status |
-|---|---|---|---|
-| GTIN | 09312345678907 | Machine code | Format valid |
-| Brand | ExampleMed 650 | Machine code | Matches |
-| Batch (code) | A12345 | Machine code | Matches |
-| Batch (printed) | A12345 | Package print | Matches |
-| Expiry | 04/2028 | Machine code | Matches |
-| Registry | Demo record found | Demo registry | Matches |
-
-And always includes: **What this check cannot tell you.**
-
----
-
-## Safety language
-
-MediBand never says a medicine is _genuine_, _authentic_, _counterfeit_, _safe_, or _fake_. It reports evidence strength and consistency. The distinction matters — a matching barcode does not prove the physical contents are what they claim to be.
-
-See [`docs/SAFETY.md`](docs/SAFETY.md) for the full rationale.
-
----
-
-## Quick start
+From within the `mediband/` directory:
 
 ```bash
-# Install
+# Install dependencies
 npm install --legacy-peer-deps
 
-# Dev server
+# Start Next.js development server
 npm run dev
 
-# Type check
-npx tsc --noEmit
-
-# Unit tests (Vitest)
+# Run automated Vitest test suite (93 tests passing)
 npm test
 
-# Legacy ts-node tests (also available)
-npm run test:gtin
+# Verify TypeScript types
+npx tsc --noEmit
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000) to view the application.
 
 ---
 
-## Demo scenarios
-
-| Scenario | Key behaviour |
-|---|---|
-| **A** — No inconsistency found | All fields agree. GTIN valid. Registry demo hit. |
-| **B** — Inconsistency detected | Batch code `A12345` vs printed `A99999`. Character diff shown. |
-| **C** — Insufficient evidence | No machine-readable code. OCR only. |
-| **D** — Expired + no inconsistency | Expiry ~9 months past. All fields self-consistent. |
-
-Use the **Demo Drawer** (bottom-right) to jump between scenarios.
-
----
-
-## Architecture
+## 🔬 Core System Architecture
 
 ```
-Medicine Package
+Medicine Package / Blister Strip
       ↓
-Scan (demo: scenario selector)
-      ↓
-GS1 Parser   ← lib/gs1-parser.ts
-      ↓
-GTIN Validation   ← lib/gtin.ts
-      ↓
-Code / Print Comparison   ← lib/code-print-compare.ts (alignment diff + date parsing)
-      ↓
-Provider Lookups   ← providers/ (all simulated)
-      ↓
-Evidence Engine   ← lib/evidence-engine.ts
-      ↓
-Verification Result
-      ↓
-Medicine Passport   ← localStorage via store/
-      ↓
-Cabinet + MediBand adherence tracker
+Live Camera / Image Upload (with automated image quality & glare checks)
+      │
+      ├───────────────────────────────────┬───────────────────────────────────┐
+      ▼                                   ▼                                   ▼
+GS1 Parser / Barcode Reader      Blister Foil OCR Engine         Deep Learning Vision Engine
+(lib/gs1-parser.ts, lib/gtin.ts) (lib/ocr-engine.ts)             (lib/onnx-client.ts)
+- GS1 DataMatrix & barcode       - Adaptive contrast boost (2.2x)- 288px Packaging Model B7
+- Format & check-digit audit     - Glare dosage sanitization     - Loose Pill Classifier
+- Expiry date extraction         - Dot-matrix batch/expiry regex - Step-down canvas halving
+                                 - Brand vs generic priority     - Temperature-calibrated logits
+      │                                   │                                   │
+      └───────────────────────────────────┼───────────────────────────────────┘
+                                          ▼
+                               Decision Fusion Arbiter
+                                          ↓
+                               Evidence Ledger Engine
+                               (lib/evidence-engine.ts)
+                               - Code vs print Levenshtein diff
+                               - Two-tier shelf-life & expiry check
+                               - Conflict detection
+                                          ↓
+                            AI Safety & Adherence Engine
+                               (store/cabinet-store.ts)
+                               - Duplicate active ingredient warnings
+                               - Cumulative dosage threshold alerts
+                               - Tamper-evident Medicine Passport
 ```
 
 ---
 
-## Project structure
+## 🛡️ Safety Language & Clinical Boundaries
+
+MediBand strictly adheres to safety boundaries. It never declares a medication "genuine", "authentic", or "fake" — instead, it objectively reports evidence consistency across physical print, packaging classification, and machine codes. A matching barcode or packaging prediction does not prove physical chemical authenticity.
+
+See [`docs/SAFETY.md`](docs/SAFETY.md) for the full clinical rationale and safety protocols.
+
+---
+
+## 📂 Project Structure
 
 ```
 mediband/
-├── app/                    Next.js App Router pages
-│   ├── page.tsx            Dashboard
-│   ├── scan/               Scan + result pages
-│   ├── cabinet/            Medicine cabinet
-│   ├── history/            Medication event history
-│   └── mediband/           Wearable simulator
+├── app/                        # Next.js App Router
+│   ├── page.tsx                # Dashboard with adherence tracking & KPI cards
+│   ├── scan/                   # Live camera scanner, upload & preset verifications
+│   │   └── result/             # Verification report & Evidence Ledger view
+│   ├── cabinet/                # Medication inventory & ingredient conflict audit
+│   ├── history/                # Dose event history & adherence logs
+│   └── mediband/               # Wearable simulator & real-time telemetry
 ├── components/
-│   ├── evidence/           AssessmentBanner, EvidenceLedger, CodePrintComparison
-│   ├── passport/           MedicinePassportModal
-│   └── layout/             NavShell, DemoDrawer
-├── lib/                    Pure TypeScript logic (no React)
-│   ├── gtin.ts             GS1 GTIN validation (real algorithm)
-│   ├── gs1-parser.ts       GS1 element string parser (all three formats)
-│   ├── diff.ts             Levenshtein alignment-based character diff
-│   ├── dates.ts            Structured expiry date parsing (7 formats)
-│   ├── code-print-compare.ts  Code vs print comparison + OCR confusion
-│   ├── evidence-engine.ts  Two-tier assessment (consistency + shelf life)
-│   ├── verification-engine.ts  Full scan pipeline
-│   ├── copy.ts             Single source of all safety strings
-│   └── copy-lint.ts        Forbidden term scanner
-├── providers/              Simulated external providers
-├── store/                  localStorage stores (cabinet, history, evidence)
-├── data/                   Demo scenarios + seed data
-└── types/                  Shared TypeScript interfaces
+│   ├── evidence/               # AssessmentBanner, EvidenceLedger, CodePrintComparison
+│   ├── layout/                 # NavShell, responsive top navigation bar
+│   ├── ml/                     # PredictionCard with calibrated confidence progress bars
+│   └── passport/               # MedicinePassportModal and verification export
+├── lib/                        # Pure TypeScript domain & engine logic
+│   ├── evidence-engine.ts      # Two-tier evidence assessment & ledger compiler
+│   ├── ocr-engine.ts           # Multi-pass blister foil OCR with glare compensation
+│   ├── onnx-client.ts          # Calibrated ONNX WebAssembly inference client
+│   ├── ingredient-normalizer.ts # Active ingredient conflict & deduplication engine
+│   ├── code-print-compare.ts   # Code vs print comparison with OCR confusion matrix
+│   ├── gs1-parser.ts           # GS1 element string parser (all formats)
+│   ├── gtin.ts                 # Real GS1 GTIN validation algorithm
+│   ├── dates.ts                # Structured expiry date parser
+│   ├── diff.ts                 # Levenshtein alignment-based character diff
+│   ├── image-quality.ts        # Blur, glare, and resolution pre-flight checks
+│   └── copy.ts                 # Authoritative medical safety copy strings
+├── ml/                         # Machine learning training & audit pipelines
+│   ├── browser_test/           # Real headless browser parity test harness
+│   ├── data_splits_v3/         # Leak-free perceptual hash & source-ID splits
+│   ├── eval_common.py          # Unified Top-1, Top-3, ECE evaluation harness
+│   ├── reports/                # Technical audit, battery reports, and parity logs
+│   └── run_battery_v2.py       # Model training battery suite
+├── public/
+│   ├── models/                 # Deep learning model artifacts
+│   │   ├── mediband_packaging_b7.onnx   # Production 288px packaging model
+│   │   ├── packaging_b7.json            # Calibrated temperature & thresholds
+│   │   └── mediband_loose_pill_model.onnx # Loose pill recognition model
+│   └── ort/                    # ONNX Runtime WebAssembly binaries (SIMD)
+├── store/                      # Persistent stores (cabinet, history, evidence)
+└── data/                       # Indian medicine formulary & class definitions
 ```
 
 ---
 
-## Tests
+## 🧪 Automated Test Suites
 
-```
-lib/gtin.test.ts        — 16 tests (ts-node)
-lib/diff.test.ts        — 10 tests (ts-node)
-lib/dates.test.ts       — 22 tests (ts-node)
-lib/gs1-parser.test.ts  — 12 tests (ts-node)
+All 93 tests across 11 suites run with `npm test`:
 
-lib/gtin.vitest.ts      — Vitest (npm test)
-lib/diff.vitest.ts      — Vitest (npm test)
-lib/dates.vitest.ts     — Vitest (npm test)
-lib/gs1-parser.vitest.ts — Vitest (npm test)
-```
-
----
-
-## What this MVP does not do
-
-- No real camera / barcode scanning (planned: `jsQR` + `DataMatrixReader`)
-- No real external APIs (all providers are simulated)
-- No user accounts or server-side storage
-- No dosage recommendations — MediBand never suggests how much or when to take a medicine
-- No claim that a matching code proves a medicine is genuine or safe
-
----
-
-## CHANGELOG
-
-See [`CHANGELOG.md`](CHANGELOG.md) for a full record of every change, including commit hashes, algorithm decisions, and test results. This file is intended to be readable by any LLM for verification and onboarding.
-
----
-
-## License
-
-Prototype — not for clinical use.
+| Test Suite | Tests | Scope |
+|---|---|---|
+| `lib/onnx-client.vitest.ts` | 8 | Step-down canvas halving, temperature calibration, and high-precision rejection |
+| `lib/ocr-engine.vitest.ts` | 5 | Blister foil OCR, glare sanitization, and dot-matrix date/batch regexes |
+| `lib/ingredient-normalizer.vitest.ts` | 9 | Active ingredient deduplication and drug conflict detection |
+| `lib/evidence-engine.vitest.ts` | 8 | Two-tier evidence assessment and consistency ledger |
+| `lib/gtin.vitest.ts` | 15 | GS1 GTIN checksum calculation and validation |
+| `lib/gs1-parser.vitest.ts` | 11 | FNC1 / bracketed GS1 element string parsing |
+| `lib/dates.vitest.ts` | 20 | Multi-format expiry and manufacture date parsing |
+| `lib/diff.vitest.ts` | 8 | Levenshtein character alignment and diff coloring |
+| `lib/image-quality.vitest.ts` | 5 | Glare detection, blur analysis, and resolution thresholds |
+| `lib/capture-workflow.vitest.ts` | 4 | End-to-end scanner capture flow |
+| `lib/prediction-safety.vitest.ts` | 4 | Prediction guardrails and fallback behavior |

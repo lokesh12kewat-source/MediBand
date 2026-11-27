@@ -1,0 +1,24 @@
+{
+  "name": "mediband-root",
+  "version": "0.3.0",
+  "private": true,
+  "description": "MediBand — Evidence-Backed Medication Verification, Blister Foil OCR, and Deep Learning Vision Platform",
+  "scripts": {
+    "dev": "npm --prefix mediband run dev",
+    "build": "npm --prefix mediband run build",
+    "start": "npm --prefix mediband start",
+    "test": "npm --prefix mediband test",
+    "lint": "npm --prefix mediband run lint"
+  },
+  "keywords": [
+    "mediband",
+    "evidence-engine",
+    "ocr",
+    "onnx",
+    "machine-learning",
+    "nextjs",
+    "healthcare"
+  ],
+  "author": "Lokesh Kewat",
+  "license": "UNLICENSED"
+}
